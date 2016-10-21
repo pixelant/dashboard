@@ -1,5 +1,5 @@
 {
-  "name": "typo3/cms-dashboard",
+  "name": "pixelant/dashboard",
   "type": "typo3-cms-extension",
   "description": "Customizable dashboard which can display dashboard widgets.",
   "license": ["GPL-2.0+"],
@@ -10,7 +10,7 @@
   },
   "require": {
     "php": ">=5.5",
-    "typo3/cms-core": ">=7.6.2,<8.0"
+    "typo3/cms-core": ">=7.6.2, <8.0"
   },
   "autoload": {
     "psr-4": {
