@@ -1,0 +1,25 @@
+<f:comment>
+<f:format.date format="Y-m-d H:i:s">{currentdate}</f:format.date>
+cacheLifetime = {cacheLifetime}
+</f:comment>
+<f:if condition="{feed.channel.item -> f:count()} > 0">
+  <ul class="media-list">
+    <f:for each="{feed.channel.item}" as="item">
+      <li class="media rss-widget">
+        <div class="media-left">
+          <div class="bgColor2 text-center text-uppercase date-badge">
+            <p><strong><f:format.date format="d">{item.pubDate}</f:format.date></strong></p>
+            <p><strong><f:format.date format="M">{item.pubDate}</f:format.date></strong></p>
+          </div>
+        </div>
+        <div class="media-body">
+          <h5 class="media-heading"><f:link.external uri="{item.link}" target="_blank" title="{item.title}"><strong>{item.title}</strong></f:link.external></h5>
+          <f:if condition="{item.description}">
+            <p><f:format.crop maxCharacters="80" respectHtml="TRUE" append="&nbsp;[...]"><f:format.raw>{item.description}</f:format.raw></f:format.crop></p>
+          </f:if>
+        </div>
+        <div class="line"></div>
+      </li>
+    </f:for>
+  </ul>
+</f:if>

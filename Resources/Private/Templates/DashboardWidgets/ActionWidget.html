@@ -1,0 +1,11 @@
+<f:if condition="{actionEntries -> f:count()} > 0">
+  <ul class="list-unstyled">
+    <f:for each="{actionEntries}" as="entry">
+      <li>
+        <a class="dropdown-list-link dropdown-link-list-add-editdelete" href="{entry.action}" target="content">
+          <f:format.raw>{entry.icon}</f:format.raw>{entry.title}
+        </a>
+      </li>
+    </f:for>
+  </ul>
+</f:if>

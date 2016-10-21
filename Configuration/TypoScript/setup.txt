@@ -1,0 +1,18 @@
+
+ # Module configuration
+module.tx_dashboard {
+	persistence {
+		storagePid = {$module.tx_dashboard.persistence.storagePid}
+	}
+	view {
+		templateRootPaths {
+			default = {$module.tx_dashboard.view.templateRootPath}
+		}
+		partialRootPaths {
+			default = {$module.tx_dashboard.view.partialRootPath}
+		}
+		layoutRootPaths {
+			default = {$module.tx_dashboard.view.layoutRootPath}
+		}
+	}
+}

@@ -1,0 +1,59 @@
+.dashboard-content .panel-body {
+	height: 300px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.dashboard-content {
+	margin-top:15px;
+}
+.dashboard-content .panel {
+	margin-bottom:15px;
+	margin-top:15px;
+}
+.rss-widget .date-badge {
+	width: 33px;
+	height: 33px;
+	margin-bottom: 15px;
+}
+.rss-widget .date-badge p:nth-child(1) {
+	font-size: 1.3em;
+}
+.rss-widget .date-badge p:nth-child(n + 2) {
+	margin-top: -12px;
+	font-size: 0.66em;
+}
+.rss-widget .line {
+	height: 1px;
+	border: 1px solid;
+	border-color: #efefef;
+	border-width: 1.5px;
+}
+.sysnews-widget .date-badge {
+	width: 33px;
+	height: 33px;
+	margin-bottom: 15px;
+}
+.sysnews-widget .date-badge p:nth-child(1) {
+	font-size: 1.3em;
+}
+.sysnews-widget .date-badge p:nth-child(n + 2) {
+	margin-top: -12px;
+	font-size: 0.66em;
+}
+.sysnews-widget .line {
+	height: 1px;
+	border: 1px solid;
+	border-color: #efefef;
+	border-width: 1.5px;
+}
+.dashboard-content .height-1 .panel-body {
+	height: 180px;
+}
+.dashboard-content .height-2 .panel-body {
+	height: 438px;
+	/* 180px * 2 + 48px header + 30px margins */
+}
+.dashboard-content .height-3 .panel-body {
+	/* 180px * 3 + 48px * 2 header + 30px * 2 margins */
+	height: 696px;
+}

@@ -1,0 +1,12 @@
+## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+module.tx_dashboard {
+	settings {
+		loadJQuery = 0
+		includeCssFiles {
+			default = EXT:dashboard/Resources/Public/Css/styles.css
+		}
+		includeJsFiles {
+			# default = EXT:dashboard/Resources/Public/Js/dashboard.js
+		}
+	}
+}

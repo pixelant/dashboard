@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-06-18T06:51:45Z" product-name="dashboard">
+		<header/>
+		<body>
+			<trans-unit id="tx_dashboard_domain_model_dashboard">
+				<source>Dashboard</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.dashboard_widget_settings">
+				<source>Dashboard Widget Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.beuser">
+				<source>Beuser</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings">
+				<source>Dashboard Widget Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.widget_identifier">
+				<source>Widget Identifier</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.state">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.position">
+				<source>Position</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.settings_flexform">
+				<source>Settings Flexform</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.dashboard_widgets">
+				<source>Dashboard Widgets</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidget">
+				<source>Dashboard Widget</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidget.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard.tx_extbase_type">
+				<source>Record Type</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard.tx_extbase_type.0">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidget.tx_extbase_type.Tx_Dashboard_DashboardWidget">
+				<source>Dashboard DashboardWidget</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetwelcome">
+				<source>Dashboard Widget Welcome</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetwelcome.message">
+				<source>Message</source>
+			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardwidget.tx_extbase_type.Tx_Dashboard_DashboardWidgetWelcome">
+				<source>Dashboard DashboardWidgetWelcome</source>
+			</trans-unit>
+			<trans-unit id="41385600_sheetTitle">
+				<source>RSS2 Feed Settings</source>
+			</trans-unit>
+			<trans-unit id="41385600_feedUrl">
+				<source>Url</source>
+			</trans-unit>
+			<trans-unit id="41385600_feedLimit">
+				<source>Limit</source>
+			</trans-unit>
+			<trans-unit id="41385600_cache">
+				<source>Cache (minutes)</source>
+			</trans-unit>
+			<trans-unit id="1439446997_sheetTitle">
+				<source>System News settings</source>
+			</trans-unit>
+			<trans-unit id="1439446997_limit">
+				<source>Limit number of news in list</source>
+			</trans-unit>
+			<trans-unit id="1439441923_sheetTitle">
+				<source>Action settings</source>
+			</trans-unit>
+			<trans-unit id="1439441923_limit">
+				<source>Limit number of actions in list</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

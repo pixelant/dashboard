@@ -1,0 +1,21 @@
+<f:if condition="{systemNews -> f:count()} > 0">
+  <ul class="media-list">
+    <f:for each="{systemNews}" as="item">
+      <li class="media sysnews-widget">
+        <div class="media-left">
+          <div class="bgColor2 text-center text-uppercase date-badge">
+            <p><strong><f:format.date format="d">{item.date}</f:format.date></strong></p>
+            <p><strong><f:format.date format="M">{item.date}</f:format.date></strong></p>
+          </div>
+        </div>
+        <div class="media-body">
+          <h5 class="media-heading"><strong>{item.header}</strong></h5>
+          <f:if condition="{item.content}">
+            <p><f:format.raw>{item.content}</f:format.raw></p>
+          </f:if>
+        </div>
+        <div class="line"></div>
+      </li>
+    </f:for>
+  </ul>
+</f:if>

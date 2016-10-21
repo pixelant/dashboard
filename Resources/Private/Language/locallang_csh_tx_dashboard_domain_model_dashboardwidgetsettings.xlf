@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-06-18T06:51:45Z" product-name="dashboard">
+		<header/>
+		<body>
+			<trans-unit id="title.description">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="widget_identifier.description">
+				<source>Widget Indetifier</source>
+			</trans-unit>
+			<trans-unit id="state.description">
+				<source>State of widget (collapsed, expanded etc)</source>
+			</trans-unit>
+			<trans-unit id="position.description">
+				<source>The position of the widget</source>
+			</trans-unit>
+			<trans-unit id="settings_flexform.description">
+				<source>Widget settings</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

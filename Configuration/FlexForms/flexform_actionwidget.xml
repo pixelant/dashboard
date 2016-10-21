@@ -1,0 +1,28 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:1439441923_sheetTitle</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.limit>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:1439441923_limit</label>
+							<config>
+								<type>input</type>
+								<size>10</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</settings.limit>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>

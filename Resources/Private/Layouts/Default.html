@@ -1,0 +1,65 @@
+{namespace d=TYPO3\CMS\Dashboard\ViewHelpers}
+<f:be.container loadJQuery="{settings.loadJQuery}" includeCssFiles="{includeCssFiles}" includeJsFiles="{includeJsFiles}">
+  <div class="typo3-fullDoc">
+    <div id="typo3-docheader">
+      <div class="typo3-docheader-functions">
+        <div class="left">
+          {dashboardCurrent.title}
+          <f:comment>
+          <select onchange="jumpToUrl(this.options[this.selectedIndex].value,this)">
+              <option value="" selected>{dashboardCurrent.title}</option>
+              <f:for each="{dashboards}" as="title" key="uid" iteration="dashboardIteration">
+                  <f:if condition="{key} != {dashboardCurrent.uid}">
+                      <option value="{f:uri.action(action:'list',arguments:'{dashboardUid:uid}')}">{title}</option>
+                  </f:if>
+              </f:for>
+          </select>
+          </f:comment>
+        </div>
+        <div class="right">
+            <a onclick="{link}"><span class="t3-icon fa fa-cog"></span></a>
+        </div>
+      </div>
+      <div class="typo3-docheader-buttons">
+        <div class="left">
+          <a data-toggle="modal" data-target="#addNewWidgetModal"><span class="t3-icon fa fa-plus-square"></span></a>
+        </div>
+        <div class="right">
+        </div>
+      </div>
+    </div>
+    <div id="typo3-docbody">
+        <f:flashMessages renderMode="div" />
+        <f:render section="content" />
+    </div>
+  </div>
+  <!-- Modal Form add new widget-->
+  <div class="modal fade" id="addNewWidgetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"><f:translate key="tx_dashboard_domain_model_dashboardwidgetsettings.add" /></h4>
+        </div>
+        <div class="modal-body">
+          <ul class="media-list">
+            <f:for each="{dashboardWidgets}" as="dashboardWidget">
+              <li class="media">
+                <div class="media-left">
+                  <a href="#" onclick="{dashboardWidget.addNewLink}">
+                    <f:image src="{d:be.dashboardWidget.IconSrc(widgetIdentifier: dashboardWidget.widget_identifier)}" width="32" height="32"></f:image>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading"><a href="#" onclick="{dashboardWidget.addNewLink}">{dashboardWidget.name}</a></h4>
+                  <p><f:format.crop maxCharacters="80" respectHtml="TRUE" append="&nbsp;[...]"><f:format.raw>{dashboardWidget.description}</f:format.raw></f:format.crop></p>
+                </div>
+              </li>
+            </f:for>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</f:be.container>
