@@ -29,136 +29,146 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
 /**
  * Dashboard Widget Settings
  */
-class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
 
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	protected $title = '';
+    /**
+     * Title
+     *
+     * @var string
+     */
+    protected $title = '';
 
-	/**
-	 * Widget Indetifier
-	 *
-	 * @var integer
-	 */
-	protected $widgetIdentifier = '';
+    /**
+     * Widget Indetifier
+     *
+     * @var integer
+     */
+    protected $widgetIdentifier = '';
 
-	/**
-	 * State of widget (collapsed, expanded etc)
-	 *
-	 * @var string
-	 */
-	protected $state = '';
+    /**
+     * State of widget (collapsed, expanded etc)
+     *
+     * @var string
+     */
+    protected $state = '';
 
-	/**
-	 * The position of the widget
-	 *
-	 * @var string
-	 */
-	protected $position = '';
+    /**
+     * The position of the widget
+     *
+     * @var string
+     */
+    protected $position = '';
 
-	/**
-	 * Widget settings
-	 *
-	 * @var string
-	 */
-	protected $settingsFlexform = '';
+    /**
+     * Widget settings
+     *
+     * @var string
+     */
+    protected $settingsFlexform = '';
 
-	/**
-	 * Returns the title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Returns the title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Sets the title
-	 *
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * Sets the title
+     *
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * Returns the state
-	 *
-	 * @return string $state
-	 */
-	public function getState() {
-		return $this->state;
-	}
+    /**
+     * Returns the state
+     *
+     * @return string $state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 
-	/**
-	 * Sets the state
-	 *
-	 * @param string $state
-	 * @return void
-	 */
-	public function setState($state) {
-		$this->state = $state;
-	}
+    /**
+     * Sets the state
+     *
+     * @param string $state
+     * @return void
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
 
-	/**
-	 * Returns the position
-	 *
-	 * @return string $position
-	 */
-	public function getPosition() {
-		return $this->position;
-	}
+    /**
+     * Returns the position
+     *
+     * @return string $position
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
 
-	/**
-	 * Sets the position
-	 *
-	 * @param string $position
-	 * @return void
-	 */
-	public function setPosition($position) {
-		$this->position = $position;
-	}
+    /**
+     * Sets the position
+     *
+     * @param string $position
+     * @return void
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
 
-	/**
-	 * Returns the settingsFlexform
-	 *
-	 * @return string $settingsFlexform
-	 */
-	public function getSettingsFlexform() {
-		return $this->settingsFlexform;
-	}
+    /**
+     * Returns the settingsFlexform
+     *
+     * @return string $settingsFlexform
+     */
+    public function getSettingsFlexform()
+    {
+        return $this->settingsFlexform;
+    }
 
-	/**
-	 * Sets the settingsFlexform
-	 *
-	 * @param string $settingsFlexform
-	 * @return void
-	 */
-	public function setSettingsFlexform($settingsFlexform) {
-		$this->settingsFlexform = $settingsFlexform;
-	}
+    /**
+     * Sets the settingsFlexform
+     *
+     * @param string $settingsFlexform
+     * @return void
+     */
+    public function setSettingsFlexform($settingsFlexform)
+    {
+        $this->settingsFlexform = $settingsFlexform;
+    }
 
-	/**
-	 * Returns the widgetIdentifier
-	 *
-	 * @return integer widgetIdentifier
-	 */
-	public function getWidgetIdentifier() {
-		return $this->widgetIdentifier;
-	}
+    /**
+     * Returns the widgetIdentifier
+     *
+     * @return integer widgetIdentifier
+     */
+    public function getWidgetIdentifier()
+    {
+        return $this->widgetIdentifier;
+    }
 
-	/**
-	 * Sets the widgetIdentifier
-	 *
-	 * @param string $widgetIdentifier
-	 * @return integer widgetIdentifier
-	 */
-	public function setWidgetIdentifier($widgetIdentifier) {
-		$this->widgetIdentifier = $widgetIdentifier;
-	}
-
+    /**
+     * Sets the widgetIdentifier
+     *
+     * @param string $widgetIdentifier
+     * @return integer widgetIdentifier
+     */
+    public function setWidgetIdentifier($widgetIdentifier)
+    {
+        $this->widgetIdentifier = $widgetIdentifier;
+    }
 }

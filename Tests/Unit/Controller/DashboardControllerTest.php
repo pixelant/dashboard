@@ -1,9 +1,10 @@
 <?php
 namespace TYPO3\CMS\Dashboard\Tests\Unit\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 
+ *  (c) 2015
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,36 +28,39 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Controller;
  * Test case for class TYPO3\CMS\Dashboard\Controller\DashboardController.
  *
  */
-class DashboardControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DashboardControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
 
-	/**
-	 * @var \TYPO3\CMS\Dashboard\Controller\DashboardController
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \TYPO3\CMS\Dashboard\Controller\DashboardController
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		$this->subject = $this->getMock('TYPO3\\CMS\\Dashboard\\Controller\\DashboardController', array('redirect', 'forward', 'addFlashMessage'), array(), '', FALSE);
-	}
+    protected function setUp()
+    {
+        $this->subject = $this->getMock('TYPO3\\CMS\\Dashboard\\Controller\\DashboardController', array('redirect', 'forward', 'addFlashMessage'), array(), '', false);
+    }
 
-	protected function tearDown() {
-		unset($this->subject);
-	}
+    protected function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllDashboardsFromRepositoryAndAssignsThemToView() {
+    /**
+     * @test
+     */
+    public function listActionFetchesAllDashboardsFromRepositoryAndAssignsThemToView()
+    {
+        $allDashboards = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', false);
 
-		$allDashboards = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
+        $dashboardRepository = $this->getMock('TYPO3\\CMS\\Dashboard\\Domain\\Repository\\DashboardRepository', array('findAll'), array(), '', false);
+        $dashboardRepository->expects($this->once())->method('findAll')->will($this->returnValue($allDashboards));
+        $this->inject($this->subject, 'dashboardRepository', $dashboardRepository);
 
-		$dashboardRepository = $this->getMock('TYPO3\\CMS\\Dashboard\\Domain\\Repository\\DashboardRepository', array('findAll'), array(), '', FALSE);
-		$dashboardRepository->expects($this->once())->method('findAll')->will($this->returnValue($allDashboards));
-		$this->inject($this->subject, 'dashboardRepository', $dashboardRepository);
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $view->expects($this->once())->method('assign')->with('dashboards', $allDashboards);
+        $this->inject($this->subject, 'view', $view);
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('dashboards', $allDashboards);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
+        $this->subject->listAction();
+    }
 }

@@ -20,24 +20,26 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * Returns path to widget icon
-	 *
-	 * @param string $widgetIdentifier
-	 * @return string Path to icon if ok, else fallback
-	 */
-	public function render($widgetIdentifier) {
-		$fileName = 'EXT:dashboard/Resources/Public/Icons/dashboardWidget.png';
-		$widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
-		$widgetIconName = $widget['icon'];
-		$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetIconName, TRUE);
-		if (file_exists($absoluteFilename)) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFilename)) {
-				$fileName = $widgetIconName;
-			}
-		}
-		return $fileName;
-	}
+    /**
+     * Returns path to widget icon
+     *
+     * @param string $widgetIdentifier
+     * @return string Path to icon if ok, else fallback
+     */
+    public function render($widgetIdentifier)
+    {
+        $fileName = 'EXT:dashboard/Resources/Public/Icons/dashboardWidget.png';
+        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widgetIconName = $widget['icon'];
+        $absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetIconName, true);
+        if (file_exists($absoluteFilename)) {
+            if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFilename)) {
+                $fileName = $widgetIconName;
+            }
+        }
+        return $fileName;
+    }
 }

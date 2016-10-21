@@ -5,7 +5,7 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 
+ *  (c) 2015
  *
  *  All rights reserved
  *
@@ -33,40 +33,45 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DashboardWidgetWelcomeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-	/**
-	 * @var \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetWelcome
-	 */
-	protected $subject = NULL;
+class DashboardWidgetWelcomeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetWelcome
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetWelcome();
-	}
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetWelcome();
+    }
 
-	protected function tearDown() {
-		unset($this->subject);
-	}
+    protected function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getMessageReturnsInitialValueForString() {
-		$this->assertSame(
-			'',
-			$this->subject->getMessage()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getMessageReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getMessage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setMessageForStringSetsMessage() {
-		$this->subject->setMessage('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setMessageForStringSetsMessage()
+    {
+        $this->subject->setMessage('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'message',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'message',
+            $this->subject
+        );
+    }
 }

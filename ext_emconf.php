@@ -11,25 +11,25 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Dashboard',
-	'description' => 'Customizable dashboard which can display dashboard widgets.',
-	'category' => 'be',
-	'author' => '',
-	'author_email' => '',
-	'state' => 'alpha',
-	'internal' => '',
-	'uploadfolder' => '0',
-	'createDirs' => '',
-	'clearCacheOnLoad' => 0,
-	'version' => '0.0.1',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '7.2.0-7.99.99',
+    'title' => 'Dashboard',
+    'description' => 'Customizable dashboard which can display dashboard widgets.',
+    'category' => 'be',
+    'author' => '',
+    'author_email' => '',
+    'state' => 'alpha',
+    'internal' => '',
+    'uploadfolder' => '0',
+    'createDirs' => '',
+    'clearCacheOnLoad' => 0,
+    'version' => '0.0.1',
+    'constraints' => array(
+        'depends' => array(
+            'typo3' => '7.2.0-7.99.99',
             'sys_action' => '7.6.0-7.6.99'
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
+        ),
+        'conflicts' => array(
+        ),
+        'suggests' => array(
+        ),
+    ),
 );

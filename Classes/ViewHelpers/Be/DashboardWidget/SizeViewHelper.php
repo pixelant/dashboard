@@ -20,43 +20,47 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * Returns path to widget icon
-	 *
-	 * @param string $widgetIdentifier
-	 * @return string Path to icon if ok, else fallback
-	 */
-	public function render($widgetIdentifier) {
-		$widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
-		list( $width, $height ) = explode('x', $widget['size']);
-		return $this->getColumnClassName((int)$width) . " " . $this->getHeightClassName((int)$height);
-	}
+    /**
+     * Returns path to widget icon
+     *
+     * @param string $widgetIdentifier
+     * @return string Path to icon if ok, else fallback
+     */
+    public function render($widgetIdentifier)
+    {
+        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        list($width, $height) = explode('x', $widget['size']);
+        return $this->getColumnClassName((int)$width) . " " . $this->getHeightClassName((int)$height);
+    }
 
-	/**
-	 * Returns the correct css class name for width
-	 * @param  int $width
-	 * @return string css class name
-	 */
-	protected function getColumnClassName($width) {
-		$validWith = 1;
-  		if ($width >= 1 && $width <= 3) {
-			$validWith = $width;
-		}
-  		return $columnClass = 'col-md-' . $validWith * 4;
-	}
+    /**
+     * Returns the correct css class name for width
+     * @param  int $width
+     * @return string css class name
+     */
+    protected function getColumnClassName($width)
+    {
+        $validWith = 1;
+        if ($width >= 1 && $width <= 3) {
+            $validWith = $width;
+        }
+        return $columnClass = 'col-md-' . $validWith * 4;
+    }
 
-	/**
-	 * Returns the correct css class name for height
-	 * @param  int $height
-	 * @return string css class name
-	 */
-	protected function getHeightClassName($height) {
-		$validHeight = 1;
-  		if ($height >= 1 && $height <= 3) {
-			$validHeight = $height;
-		}
-  		return 'height-' . $validHeight;
-	}
+    /**
+     * Returns the correct css class name for height
+     * @param  int $height
+     * @return string css class name
+     */
+    protected function getHeightClassName($height)
+    {
+        $validHeight = 1;
+        if ($height >= 1 && $height <= 3) {
+            $validHeight = $height;
+        }
+        return 'height-' . $validHeight;
+    }
 }

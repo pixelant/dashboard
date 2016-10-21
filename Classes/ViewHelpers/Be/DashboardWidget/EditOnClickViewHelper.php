@@ -44,19 +44,20 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  * Clicking on a username will open the TYPO3 info popup for the respective record
  * </output>
  */
-class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * Renders a record list as known from the TYPO3 list module
-	 * Note: This feature is experimental!
-	 *
-	 * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
-	 * @return string the rendered content
-	 * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
-	 */
-	public function render($dashboardWidgetSetting) {
-		
-		$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $dashboardWidgetSetting->getUid() . ']=edit');
-		return $editOnClick;
-	}
+    /**
+     * Renders a record list as known from the TYPO3 list module
+     * Note: This feature is experimental!
+     *
+     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @return string the rendered content
+     * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+     */
+    public function render($dashboardWidgetSetting)
+    {
+        $editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $dashboardWidgetSetting->getUid() . ']=edit');
+        return $editOnClick;
+    }
 }

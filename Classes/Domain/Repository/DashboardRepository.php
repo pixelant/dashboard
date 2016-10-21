@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Dashboard\Domain\Repository;
 /**
  * The repository for Dashboards
  */
-class DashboardRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-
-	
+class DashboardRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 }

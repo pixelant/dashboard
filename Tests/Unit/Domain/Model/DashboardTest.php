@@ -5,7 +5,7 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 
+ *  (c) 2015
  *
  *  All rights reserved
  *
@@ -33,125 +33,139 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class DashboardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-	/**
-	 * @var \TYPO3\CMS\Dashboard\Domain\Model\Dashboard
-	 */
-	protected $subject = NULL;
+class DashboardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
+    /**
+     * @var \TYPO3\CMS\Dashboard\Domain\Model\Dashboard
+     */
+    protected $subject = null;
 
-	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Dashboard\Domain\Model\Dashboard();
-	}
+    protected function setUp()
+    {
+        $this->subject = new \TYPO3\CMS\Dashboard\Domain\Model\Dashboard();
+    }
 
-	protected function tearDown() {
-		unset($this->subject);
-	}
+    protected function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTitleReturnsInitialValueForString() {
-		$this->assertSame(
-			'',
-			$this->subject->getTitle()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTitleReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getTitle()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTitleForStringSetsTitle() {
-		$this->subject->setTitle('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setTitleForStringSetsTitle()
+    {
+        $this->subject->setTitle('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'title',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'title',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDescriptionReturnsInitialValueForString() {
-		$this->assertSame(
-			'',
-			$this->subject->getDescription()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getDescriptionReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getDescription()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDescriptionForStringSetsDescription() {
-		$this->subject->setDescription('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setDescriptionForStringSetsDescription()
+    {
+        $this->subject->setDescription('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'description',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'description',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDashboardWidgetSettingsReturnsInitialValueForDashboardWidgetSettings() {
-		$newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->assertEquals(
-			$newObjectStorage,
-			$this->subject->getDashboardWidgetSettings()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getDashboardWidgetSettingsReturnsInitialValueForDashboardWidgetSettings()
+    {
+        $newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->assertEquals(
+            $newObjectStorage,
+            $this->subject->getDashboardWidgetSettings()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDashboardWidgetSettingsForObjectStorageContainingDashboardWidgetSettingsSetsDashboardWidgetSettings() {
-		$dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
-		$objectStorageHoldingExactlyOneDashboardWidgetSettings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$objectStorageHoldingExactlyOneDashboardWidgetSettings->attach($dashboardWidgetSetting);
-		$this->subject->setDashboardWidgetSettings($objectStorageHoldingExactlyOneDashboardWidgetSettings);
+    /**
+     * @test
+     */
+    public function setDashboardWidgetSettingsForObjectStorageContainingDashboardWidgetSettingsSetsDashboardWidgetSettings()
+    {
+        $dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
+        $objectStorageHoldingExactlyOneDashboardWidgetSettings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorageHoldingExactlyOneDashboardWidgetSettings->attach($dashboardWidgetSetting);
+        $this->subject->setDashboardWidgetSettings($objectStorageHoldingExactlyOneDashboardWidgetSettings);
 
-		$this->assertAttributeEquals(
-			$objectStorageHoldingExactlyOneDashboardWidgetSettings,
-			'dashboardWidgetSettings',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            $objectStorageHoldingExactlyOneDashboardWidgetSettings,
+            'dashboardWidgetSettings',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function addDashboardWidgetSettingToObjectStorageHoldingDashboardWidgetSettings() {
-		$dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
-		$dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('attach'), array(), '', FALSE);
-		$dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('attach')->with($this->equalTo($dashboardWidgetSetting));
-		$this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
+    /**
+     * @test
+     */
+    public function addDashboardWidgetSettingToObjectStorageHoldingDashboardWidgetSettings()
+    {
+        $dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
+        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('attach'), array(), '', false);
+        $dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('attach')->with($this->equalTo($dashboardWidgetSetting));
+        $this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
 
-		$this->subject->addDashboardWidgetSetting($dashboardWidgetSetting);
-	}
+        $this->subject->addDashboardWidgetSetting($dashboardWidgetSetting);
+    }
 
-	/**
-	 * @test
-	 */
-	public function removeDashboardWidgetSettingFromObjectStorageHoldingDashboardWidgetSettings() {
-		$dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
-		$dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('detach'), array(), '', FALSE);
-		$dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('detach')->with($this->equalTo($dashboardWidgetSetting));
-		$this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
+    /**
+     * @test
+     */
+    public function removeDashboardWidgetSettingFromObjectStorageHoldingDashboardWidgetSettings()
+    {
+        $dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
+        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('detach'), array(), '', false);
+        $dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('detach')->with($this->equalTo($dashboardWidgetSetting));
+        $this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
 
-		$this->subject->removeDashboardWidgetSetting($dashboardWidgetSetting);
+        $this->subject->removeDashboardWidgetSetting($dashboardWidgetSetting);
+    }
 
-	}
+    /**
+     * @test
+     */
+    public function getBeuserReturnsInitialValueForBackendUser()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function getBeuserReturnsInitialValueForBackendUser() {	}
-
-	/**
-	 * @test
-	 */
-	public function setBeuserForBackendUserSetsBeuser() {	}
+    /**
+     * @test
+     */
+    public function setBeuserForBackendUserSetsBeuser()
+    {
+    }
 }

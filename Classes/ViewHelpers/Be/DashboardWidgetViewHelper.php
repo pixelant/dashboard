@@ -44,32 +44,36 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be;
  * Clicking on a username will open the TYPO3 info popup for the respective record
  * </output>
  */
-class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @inject
+     */
+    protected $configurationManager;
 
-	/**
-	 * Renders a record list as known from the TYPO3 list module
-	 * Note: This feature is experimental!
-	 *
-	 * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
-	 * @return string the rendered content
-	 * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
-	 */
-	public function render($dashboardWidgetSetting) {
-		
-		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
+    /**
+     * Renders a record list as known from the TYPO3 list module
+     * Note: This feature is experimental!
+     *
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @return string the rendered content
+     * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+     */
+    public function render($dashboardWidgetSetting)
+    {
+        $pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(
+            \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'),
+            $GLOBALS['BE_USER']->getPagePermsClause(1)
+        );
         $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
         $widgetClassName = $widget['class'];
 
         if (class_exists($widgetClassName)) {
             $widgetClass = $this->objectManager->get($widgetClassName);
             return $widgetClass->render($dashboardWidgetSetting);
-        } else  {
+        } else {
             return 'Class : ' . $widgetClassName .' could not be found!';
         }
     }
