@@ -28,7 +28,7 @@ class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
 
     /**
      * Renders content
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
     public function render($dashboardWidgetSetting = null)
@@ -40,7 +40,7 @@ class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)
@@ -75,7 +75,13 @@ class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
     {
         $systemNewsTable = 'sys_news';
         $systemNews = array();
-        $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC', $this->getLimit());
+        $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'title, content, crdate',
+            $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '
+            ',
+            'crdate DESC',
+            $this->getLimit()
+        );
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = array(
                 'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
