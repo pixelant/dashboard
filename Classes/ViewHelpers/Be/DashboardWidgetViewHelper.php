@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * View helper which renders a record list as known from the TYPO3 list module
  * Note: This feature is experimental!
@@ -64,8 +63,8 @@ class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstract
 	public function render($dashboardWidgetSetting) {
 		
 		$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
-
-        if (array_key_exists($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()])) {
+//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'], $dashboardWidgetSetting->getWidgetIdentifier());die;
+        //if (array_key_exists($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()])) {
             $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
             $widgetClassName = $widget['class'];
 
@@ -75,6 +74,6 @@ class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstract
             } else  {
                 return 'Class : ' . $widgetClassName .' could not be found!';
             }
-        }
+        //}
 	}
 }

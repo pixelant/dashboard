@@ -1,17 +1,10 @@
 <?php
 namespace TYPO3\CMS\Dashboard\DashboardWidgets;
-/*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+
+/**
+ * Class RssWidget
+ * @package TYPO3\CMS\Dashboard\DashboardWidgets
+ */
 class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 	
 	/**
@@ -45,11 +38,11 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 
 	/**
 	 * Renders content
-	 * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+	 * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
 	 * @return string the rendered content
 	 */
 	public function render($dashboardWidgetSetting = NULL) {
-		
+
 		$this->initialize($dashboardWidgetSetting);
 
 		$content = false;
@@ -68,20 +61,20 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 			}
 			unset($cacheManager);
 		}
-		return $content;	
+		return $content;
 	}
 
 	/**
 	 * Initializes settings from flexform
-	 * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+	 * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
 	 * @return void
 	 */
 	private function initialize($dashboardWidgetSetting = NULL) {
-		$flexformSettings = \TYPO3\CMS\Extbase\Service\FlexFormService::convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
-		$this->feedUrl = $flexformSettings['settings']['feedUrl'];
-		$this->feedLimit = (int)$flexformSettings['settings']['feedLimit'];
-		$this->cacheLifetime = (int)$flexformSettings['settings']['cacheLifetime'] * 60;
-		$this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $flexformSettings = \TYPO3\CMS\Extbase\Service\FlexFormService::convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
+        $this->feedUrl = $flexformSettings['settings']['feedUrl'];
+        $this->feedLimit = (int)$flexformSettings['settings']['feedLimit'];
+        $this->cacheLifetime = (int)$flexformSettings['settings']['cacheLifetime'] * 60;
+        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
 	}
 
 	/**
@@ -90,7 +83,8 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 	 */
 	private function generateContent() {
 		$widgetTemplateName = $this->widget['template'];
-		$rssView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$rssView = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetTemplateName);
 		$rssView->setTemplatePathAndFilename($template);
 		$feed = $this->getFeed();
@@ -110,8 +104,9 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 		$feed = array();
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($this->feedUrl)) {
 			try {
-				$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Http\\HttpRequest',
+                /** @var \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 $request */
+			    $request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					\TYPO3\CMS\Core\Http\HttpRequest::class,
 					$this->feedUrl,
 					\TYPO3\CMS\Core\Http\HttpRequest::METHOD_GET,
 					array(
@@ -120,7 +115,7 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 					)
 				);
 				$result = $request->send();
-				$content = $result->getBody();				
+				$content = $result->getBody();
 				$simpleXmlElement = simplexml_load_string( $content ,'SimpleXMLElement');
 				$feed['channel'] = $this->rssToArray($simpleXmlElement);
 				if ((int)$this->feedLimit > 0) {
