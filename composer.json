@@ -1,5 +1,5 @@
 {
-  "name": "TYPO3/CMS/Dashboard",
+  "name": "typo3/cms-dashboard",
   "type": "typo3-cms-extension",
   "description": "Customizable dashboard which can display dashboard widgets.",
   "license": ["GPL-2.0+"],
