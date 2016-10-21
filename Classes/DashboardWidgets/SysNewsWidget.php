@@ -77,8 +77,9 @@ class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
         $systemNews = array();
         $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'title, content, crdate',
-            $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '
-            ',
+            $systemNewsTable,
+            '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable),
+            '',
             'crdate DESC',
             $this->getLimit()
         );
