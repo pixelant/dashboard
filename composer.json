@@ -1,0 +1,21 @@
+{
+  "name": "TYPO3/CMS/Dashboard",
+  "type": "typo3-cms-extension",
+  "description": "Customizable dashboard which can display dashboard widgets.",
+  "license": ["GPL-2.0+"],
+  "keywords": ["TYPO3 CMS", "Dashboard"],
+  "require": {
+    "php": ">=5.5",
+    "typo3/cms-core": ">=7.6.2,<8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "TYPO3\\CMS\\Dashboard\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TYPO3\\CMS\\Dashboard\\Tests\\": "Tests/"
+    }
+  }
+}

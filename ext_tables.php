@@ -9,13 +9,12 @@ if (TYPO3_MODE === 'BE') {
 	 * Registers a Backend Module
 	 */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3\CMS.' . $_EXTKEY,
+		'\TYPO3\CMS.' . $_EXTKEY,
 		'user',	 // Make module a submodule of 'user'
 		'dashboardmod1',	// Submodule key
 		'',						// Position
 		array(
 			'Dashboard' => 'list',
-
 		),
 		array(
 			'access' => 'user,group',
