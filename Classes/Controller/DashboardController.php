@@ -40,6 +40,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 	 */
 	protected $dashboardRepository = NULL;
 
+    /**
+     * Initialize action
+     */
 	public function initializeAction() {
 		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
@@ -57,10 +60,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/SortPanels');
 
-		$includeCssFiles = $this->getIncludeCssFilesFromSettings();
-		$this->view->assign('includeCssFiles', $includeCssFiles);
-		$includeJsFiles = $this->getIncludeJsFilesFromSettings();
-		$this->view->assign('includeJsFiles', $includeJsFiles);
+        $this->view->assignMultiple([
+            'includeCssFiles' => $this->getIncludeCssFilesFromSettings(),
+            'includeJsFiles' => $this->getIncludeJsFilesFromSettings()
+        ]);
 
 		if (isset($GLOBALS['BE_USER']->user['uid'])) {
 			$beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
@@ -83,9 +86,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 				}
 			}
 
-			if ( $this->request->hasArgument('dashboardUid') ){
+			if ($this->request->hasArgument('dashboardUid') ){
 				$dashboardCurrent = $this->dashboardRepository->findByUid($this->request->getArgument('dashboardUid'));
-			}else{
+			} else{
 				$dashboardCurrent = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
 			};
 
@@ -109,7 +112,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 			}
 			$this->view->assign('dashboardWidgets', $dashboardWidgets);
 
-			$link = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboard][' . $dashboards->getFirst()->getUid() . ']=edit');	
+			$link = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboard][' . $dashboards->getFirst()->getUid() . ']=edit');
 			$this->view->assign('link', $link);
 		}
 
