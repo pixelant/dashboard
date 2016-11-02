@@ -1,6 +1,12 @@
 <?php
 namespace TYPO3\CMS\Dashboard\Controller;
 
+
+//use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
+
 /***************************************************************
  *
  *  Copyright notice
@@ -96,6 +102,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 $dashboardCurrent = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
             };
 
+            // Get Storage Pid
+            $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
+		        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
+            $storagePid = $configuration['persistence']['storagePid'];
+
             $dashboardWidgets = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'];
             if (is_array($dashboardWidgets) && count($dashboardWidgets) > 0) {
                 foreach ($dashboardWidgets as $index => $dashboardWidget) {
@@ -103,7 +114,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                     $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][state]=new';
                     $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][position]=last';
                     $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $index;
-                    $editOnClick = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings]['.$dashboardCurrent->getUid().']=new' . $overrideVals;
+                    $editOnClick = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings]['.$storagePid.']=new' . $overrideVals;
                     $dashboardWidgets[$index]['addNewLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($editOnClick);
                     $dashboardWidgets[$index]['widget_identifier'] = $index;
                     if (substr($dashboardWidget['name'], 0, 4) == 'LLL:') {
@@ -169,26 +180,26 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $newDashboardWidgetSetting->setState('new');
         $newDashboardWidgetSetting->setPosition('1');
         $newDashboardWidgetSetting->setSettingsFlexform('<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<T3FlexForms>
-    <data>
-        <sheet index="sDEF">
-            <language index="lDEF">
-                <field index="settings.header">
-                    <value index="vDEF">TYPO3 News</value>
-                </field>
-                <field index="settings.feedUrl">
-                    <value index="vDEF">http://typo3.org/xml-feeds/rss.xml</value>
-                </field>
-                <field index="settings.feedLimit">
-                    <value index="vDEF">10</value>
-                </field>
-                <field index="settings.cacheLifetime">
-                    <value index="vDEF">10</value>
-                </field>
-            </language>
-        </sheet>
-    </data>
-</T3FlexForms>');
+                <T3FlexForms>
+                    <data>
+                        <sheet index="sDEF">
+                            <language index="lDEF">
+                                <field index="settings.header">
+                                    <value index="vDEF">TYPO3 News</value>
+                                </field>
+                                <field index="settings.feedUrl">
+                                    <value index="vDEF">http://typo3.org/xml-feeds/rss.xml</value>
+                                </field>
+                                <field index="settings.feedLimit">
+                                    <value index="vDEF">10</value>
+                                </field>
+                                <field index="settings.cacheLifetime">
+                                    <value index="vDEF">10</value>
+                                </field>
+                            </language>
+                        </sheet>
+                    </data>
+                </T3FlexForms>');
         return $newDashboardWidgetSetting;
     }
 }

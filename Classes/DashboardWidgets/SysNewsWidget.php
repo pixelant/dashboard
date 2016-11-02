@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
 {
-    
+
     /**
      * Limit, If set, it will limit the results in the list.
      *
