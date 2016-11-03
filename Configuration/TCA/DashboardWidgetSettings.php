@@ -123,6 +123,7 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns'][
             '41385600' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
             '1439441923' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
             '1439446997' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
+            'default' => '<T3DataStructure><ROOT><type>array</type><el><empty><TCEforms><label>Please select Widget identifier first</label><config><type>none</type></config></TCEforms></empty></el></ROOT></T3DataStructure>',
         )
     )
 );
