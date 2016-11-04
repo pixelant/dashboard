@@ -10,6 +10,6 @@ module.tx_dashboard {
 	}
 	persistence {
 		# cat=module.tx_dashboard//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 1
 	}
 }
