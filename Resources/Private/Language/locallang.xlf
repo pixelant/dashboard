@@ -72,6 +72,9 @@
 			<trans-unit id="1439446997.description">
 				<source>List of system news in a dashboard widget</source>
 			</trans-unit>
+			<trans-unit id="tx_dashboard_domain_model_dashboardsettings">
+				<source>Dashboard Settings</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
