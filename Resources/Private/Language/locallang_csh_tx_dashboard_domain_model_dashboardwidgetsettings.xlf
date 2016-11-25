@@ -7,7 +7,7 @@
 				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="widget_identifier.description">
-				<source>Widget Indetifier</source>
+				<source>Widget Identifier</source>
 			</trans-unit>
 			<trans-unit id="state.description">
 				<source>State of widget (collapsed, expanded etc)</source>
