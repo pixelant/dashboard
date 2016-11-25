@@ -49,7 +49,7 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboard'] = array(
         ),
         'searchFields' => 'title,description,dashboard_widget_settings,beuser,',
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Dashboard.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_dashboard_domain_model_dashboard.gif'
+        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboard.gif'
     ),
 );
 
@@ -74,7 +74,7 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings'] = array(
         ),
         'searchFields' => 'title,widget_identifier,state,position,settings_flexform,',
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/DashboardWidgetSettings.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif'
+        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif'
     ),
 );
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
