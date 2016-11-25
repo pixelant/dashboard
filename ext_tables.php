@@ -105,7 +105,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'icon' => 'EXT:dashboard/Resources/Public/Icons/SysNewsWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\SysNewsWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/SysNewsWidget.html',
-            'size' => '1x1',
+            'size' => '1x2',
         )
     )
 );
