@@ -1,11 +1,6 @@
 <?php
 namespace TYPO3\CMS\Dashboard\Controller;
 
-
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-
-
 /***************************************************************
  *
  *  Copyright notice
@@ -30,6 +25,9 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
@@ -103,31 +101,35 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
             // Get Storage Pid
             $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
-		        $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
+            $configuration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
             $storagePid = $configuration['persistence']['storagePid'];
 
             $dashboardWidgets = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'];
             if (is_array($dashboardWidgets) && count($dashboardWidgets) > 0) {
                 foreach ($dashboardWidgets as $index => $dashboardWidget) {
-                    $overrideVals = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $dashboardCurrent->getUid();
-                    $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][state]=new';
-                    $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][position]=last';
-                    $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $index;
-                    $editOnClick = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings]['.$storagePid.']=new' . $overrideVals;
-                    $dashboardWidgets[$index]['addNewLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($editOnClick);
-                    $dashboardWidgets[$index]['widget_identifier'] = $index;
-                    if (substr($dashboardWidget['name'], 0, 4) == 'LLL:') {
-                        $dashboardWidgets[$index]['name'] =    $GLOBALS['LANG']->sL($dashboardWidget['name']);
-                    }
-                    if (substr($dashboardWidget['description'], 0, 4) == 'LLL:') {
-                        $dashboardWidgets[$index]['description'] =    $GLOBALS['LANG']->sL($dashboardWidget['description']);
+                    if ($dashboardCurrent !== null) {
+                        $overrideVals = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $dashboardCurrent->getUid();
+                        $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][state]=new';
+                        $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][position]=last';
+                        $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $index;
+                        $editOnClick = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings]['.$storagePid.']=new' . $overrideVals;
+                        $dashboardWidgets[$index]['addNewLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($editOnClick);
+                        $dashboardWidgets[$index]['widget_identifier'] = $index;
+                        if (substr($dashboardWidget['name'], 0, 4) == 'LLL:') {
+                            $dashboardWidgets[$index]['name'] =    $GLOBALS['LANG']->sL($dashboardWidget['name']);
+                        }
+                        if (substr($dashboardWidget['description'], 0, 4) == 'LLL:') {
+                            $dashboardWidgets[$index]['description'] =    $GLOBALS['LANG']->sL($dashboardWidget['description']);
+                        }
                     }
                 }
             }
             $this->view->assign('dashboardWidgets', $dashboardWidgets);
 
-            $link = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboard][' . $dashboards->getFirst()->getUid() . ']=edit');
-            $this->view->assign('link', $link);
+            if ($dashboards->getFirst() !== null) {
+                $link = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboard][' . $dashboards->getFirst()->getUid() . ']=edit');
+                $this->view->assign('link', $link);
+            }
         }
 
         $this->view->assign('dashboards', $dashboards);
