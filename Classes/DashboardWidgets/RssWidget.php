@@ -5,8 +5,11 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Class RssWidget
  * @package TYPO3\CMS\Dashboard\DashboardWidgets
  */
-class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
-	
+
+use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+
+class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
+
 	/**
 	 * Feed URL
 	 *
@@ -21,7 +24,7 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 	 * @var integer
 	 */
 	protected $feedLimit = 0;
-	
+
 	/**
 	 * Limit, If set, it will limit the results in the list.
 	 *
@@ -70,7 +73,7 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 	 * @return void
 	 */
 	private function initialize($dashboardWidgetSetting = NULL) {
-        $flexformSettings = \TYPO3\CMS\Extbase\Service\FlexFormService::convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
+        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
         $this->feedUrl = $flexformSettings['settings']['feedUrl'];
         $this->feedLimit = (int)$flexformSettings['settings']['feedLimit'];
         $this->cacheLifetime = (int)$flexformSettings['settings']['cacheLifetime'] * 60;
@@ -121,9 +124,8 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 				if ((int)$this->feedLimit > 0) {
 					$feed['channel']['item'] = array_splice($feed['channel']['item'], 0, $this->feedLimit);
 				}
-			} catch (HTTP_Request2_MessageException $e) {
+			} catch (\HTTP_Request2_MessageException $e) {
 				// If we timeout, just move on
-				continue;
 			}
 		}
 		return $feed;
@@ -131,7 +133,7 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 
 	/**
 	 * rssToArray RSS to array from a SimpleXMLElement
-	 * @param  SimpleXmlElement $simpleXmlElement
+	 * @param  \SimpleXmlElement $simpleXmlElement
 	 * @return array
 	 */
 	private function rssToArray($simpleXmlElement) {
@@ -148,7 +150,7 @@ class RssWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface {
 
 	/**
 	 * sxeToArray Generates the base array for the element, also includes namespaces.
-	 * @param  SimpleXMLElement $simpleXmlElement The element to create an array of
+	 * @param  \SimpleXMLElement $simpleXmlElement The element to create an array of
 	 * @return array
 	 */
 	private function sxeToArray($simpleXmlElement) {

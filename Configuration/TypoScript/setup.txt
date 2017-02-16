@@ -15,4 +15,14 @@ module.tx_dashboard {
 			default = {$module.tx_dashboard.view.layoutRootPath}
 		}
 	}
+
+	settings {
+		includeCssFiles {
+			gridList = EXT:dashboard/Resources/Public/Css/jquery.gridList.css
+		}
+		includeJsFiles {
+			gridList = EXT:dashboard/Resources/Public/JavaScript/jquery.gridList.js
+			draggableGridList = EXT:dashboard/Resources/Public/JavaScript/jquery.draggableGridList.js
+		}
+	}
 }

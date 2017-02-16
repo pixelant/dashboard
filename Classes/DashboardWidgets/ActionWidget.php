@@ -16,8 +16,9 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
-class ActionWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
+class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
 
     /**
@@ -29,7 +30,7 @@ class ActionWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
 
     /**
      * Renders content
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
     public function render($dashboardWidgetSetting = null)
@@ -41,12 +42,12 @@ class ActionWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = \TYPO3\CMS\Extbase\Service\FlexFormService::convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
+        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
         $this->limit = (int)$flexformSettings['settings']['limit'];
         $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
     }

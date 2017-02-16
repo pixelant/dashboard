@@ -65,7 +65,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         /** @var $pageRenderer PageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/SortPanels');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/GridList');
 
         $this->view->assignMultiple([
             'includeCssFiles' => $this->getIncludeCssFilesFromSettings(),

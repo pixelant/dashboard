@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
-class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
+class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
 {
 
     /**
@@ -45,7 +46,7 @@ class SysNewsWidget implements \TYPO3\CMS\Dashboard\DashboardWidgetInterface
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = \TYPO3\CMS\Extbase\Service\FlexFormService::convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
+        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
         $this->limit = (int)$flexformSettings['settings']['limit'];
         $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
     }
