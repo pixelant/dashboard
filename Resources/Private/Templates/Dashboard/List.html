@@ -6,7 +6,7 @@
 <f:flashMessages />
 
 <div class="content dashboard-content gridster grid-container">
-    <ul class="container-fluid grid">
+    <ul class="container-fluid grid-items">
         <f:for each="{dashboardCurrent.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
            <li {d:be.dashboardWidget.gridAttributes(widgetSetting: dashboardWidgetSetting, index: dashboardWidgetIteration.index)}>
                 <div class="inner">

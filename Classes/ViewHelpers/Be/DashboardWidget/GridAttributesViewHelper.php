@@ -44,18 +44,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
         $width = $this->getItemWidth((int)$width, $numberOfCols);
         $height = $this->getItemHeight((int)$height);
 
-        $attributes = sprintf(
-            'class="%s col-md-%d height-%d" data-id="%s-%d" data-width="%d" data-height="%d"',
-            $className,
-            ($width * 4),
-            $height,
-            $widgetIdentifier,
-            $widgetSetting->getUid(),
-            $width,
-            $height
-        );
-
-        // NOTE: x=column, y=row (e.g 2x2 grid = 0x0,0x1,1x0,1x1)
+        // NOTE: e.g 2x2 row-column grid = 0x0,0x1,1x0,1x1
         if ($index < $numberOfCols) {
             $col = $index;
             $row = 0;
@@ -63,7 +52,21 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
             $col = $index % $numberOfCols;
             $row = intval($index / $numberOfCols);
         }
-        $attributes .= ' data-x="' . $col . '" data-y="' . $row . '"';
+
+        $attributes = 'class="%s col-md-%d height-%d"' .
+            ' data-id="%s-%d" data-width="%d" data-height="%d" data-row="%d" data-column="%d"';
+        $attributes = sprintf(
+            $attributes,
+            $className,
+            ($width * 4),
+            $height,
+            $widgetIdentifier,
+            $widgetSetting->getUid(),
+            $width,
+            $height,
+            $row,
+            $col
+        );
         return $attributes;
     }
 

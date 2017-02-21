@@ -9,14 +9,19 @@ define(['jquery', 'draggableGridList', 'jquery-ui/draggable'], function ($) {
 	};
 
 	GridList.initialize = function() {
-		$(".gridster ul").gridList({
+		var grid = $('.gridster ul');
+		grid.gridList({
 			direction: 'vertical',
 			lanes: 3,
 			cellHeight: 250
 		},
 		{
-			handle: '.panel-heading'
+			handle: '.panel-heading',
+			create: function(event, ui) {
+				grid.addClass('grid');
+			}
 		});
+
 	};
 
 	/**
