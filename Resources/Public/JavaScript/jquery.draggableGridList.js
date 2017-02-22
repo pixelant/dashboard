@@ -7,12 +7,15 @@
 define('draggableGridList', ['jquery', 'gridList'], function($, GridList) {
 	var DraggableGridList = function(element, options, draggableOptions) {
 		this.options = $.extend({}, this.defaults, options);
-		this.draggableOptions = $.extend(
-			{}, this.draggableDefaults, draggableOptions);
+		this.draggableOptions = $.extend({}, this.draggableDefaults, draggableOptions);
 
 		this.$element = $(element);
 		this._init();
 		this._bindEvents();
+
+		// resize to fix collisions
+		this.gridList.resizeGrid(this.options.lanes);
+		this._applyPositionToItems();
 	};
 
 	DraggableGridList.prototype = {
@@ -192,8 +195,8 @@ define('draggableGridList', ['jquery', 'gridList'], function($, GridList) {
 			this.$items.each(function(i, element) {
 				items.push({
 					$element: $(element),
-					x: Number($(element).attr('data-x')),
-					y: Number($(element).attr('data-y')),
+					x: Number($(element).attr('data-column')),
+					y: Number($(element).attr('data-row')),
 					w: Number($(element).attr('data-width')),
 					h: Number($(element).attr('data-height')),
 					id: Number($(element).attr('data-id'))
@@ -218,7 +221,6 @@ define('draggableGridList', ['jquery', 'gridList'], function($, GridList) {
 				this._cellWidth = this._cellHeight * this.options.widthHeightRatio;
 			} else {
 				this._cellWidth = Math.floor(this.$element.width() / this.options.lanes);
-				// this._cellHeight = this._cellWidth / this.options.widthHeightRatio;
 
 				if ((!isNaN(this.options.cellHeight)) && this.options.cellHeight > 0) {
 					this._cellHeight = this.options.cellHeight;

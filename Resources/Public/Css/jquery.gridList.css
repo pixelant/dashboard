@@ -1,4 +1,8 @@
 
+ul.grid-items {
+    list-style-type: none;
+}
+
 .grid-container {
     position: absolute;
     top: 66px;
