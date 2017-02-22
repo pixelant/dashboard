@@ -106,6 +106,14 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\SysNewsWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/SysNewsWidget.html',
             'size' => '1x2',
+        ),
+        \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER => array(
+            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
+            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.description',
+            'icon' => 'EXT:dashboard/Resources/Public/Icons/frameWidget.png',
+            'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\IframeWidget',
+            'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/IframeWidget.html',
+            'size' => '3x3',
         )
     )
 );

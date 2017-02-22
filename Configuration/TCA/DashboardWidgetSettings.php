@@ -109,9 +109,11 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings'] = array(
     ),
 );
 ## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
+$iframeWidgetId = \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER;
 $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items']['41385600'] = array('Widget 41385600', 41385600);
 $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items']['1439441923'] = array('Widget 1439441923', 1439441923);
 $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items']['1439446997'] = array('Widget 1439446997', 1439446997);
+$GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items'][$iframeWidgetId] = array('Widget ' . $iframeWidgetId, $iframeWidgetId);
 
 $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['settings_flexform'] = array(
     'exclude' => 1,
@@ -123,6 +125,7 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns'][
             '41385600' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
             '1439441923' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
             '1439446997' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
+            $iframeWidgetId => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_iframewidget.xml',
             'default' => '<T3DataStructure><ROOT><type>array</type><el><empty><TCEforms><label>Please select Widget identifier first</label><config><type>none</type></config></TCEforms></empty></el></ROOT></T3DataStructure>',
         )
     )

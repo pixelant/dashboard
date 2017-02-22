@@ -87,6 +87,15 @@
 			<trans-unit id="1439441923_limit">
 				<source>Limit number of actions in list</source>
 			</trans-unit>
+			<trans-unit id="dashboardWidget.iframe.sheetTitle">
+				<source>Iframe settings</source>
+			</trans-unit>
+			<trans-unit id="dashboardWidget.iframe.url">
+				<source>Url</source>
+			</trans-unit>
+			<trans-unit id="dashboardWidget.iframe.scrolling">
+				<source>Show scrollBar</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
