@@ -8,7 +8,6 @@
     "dashboard": "self.version"
   },
   "require": {
-    "php": ">=5.5",
     "typo3/cms": "~8.7"
   },
   "autoload": {
