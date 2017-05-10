@@ -10,7 +10,7 @@
   },
   "require": {
     "php": ">=5.5",
-    "typo3/cms-core": ">=7.6.2, <8.7"
+    "typo3/cms-core": ">=7.6.2, <8.9"
   },
   "autoload": {
     "psr-4": {
