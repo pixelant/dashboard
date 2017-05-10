@@ -16,7 +16,7 @@ $EM_CONF[$_EXTKEY] = array(
     'category' => 'be',
     'author' => '',
     'author_email' => '',
-    'state' => 'alpha',
+    'state' => 'beta',
     'internal' => '',
     'uploadfolder' => '0',
     'createDirs' => '',
@@ -24,8 +24,7 @@ $EM_CONF[$_EXTKEY] = array(
     'version' => '0.1.0',
     'constraints' => array(
         'depends' => array(
-            'typo3' => '7.2.0-7.99.99',
-            'sys_action' => '7.6.0-7.6.99'
+            'typo3' => '8.7.0-8.7.99'
         ),
         'conflicts' => array(
         ),
