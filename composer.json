@@ -4,7 +4,6 @@
   "description": "Customizable dashboard which can display dashboard widgets.",
   "license": ["GPL-2.0+"],
   "keywords": ["TYPO3 CMS", "Dashboard"],
-  "version": "0.0.1",
   "replace": {
     "dashboard": "self.version"
   },
