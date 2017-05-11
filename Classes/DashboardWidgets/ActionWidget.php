@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+#use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
@@ -100,7 +100,10 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
                 $actions[] = array(
                     'title' => $actionRow['title'],
                     'action' => BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-                    'icon' => IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+                    'description' => $actionRow['description'],
+                    't3_tables' => $actionRow['t3_tables'],
+                    //'icon' => IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+                    'icon' => ''
                 );
             }
             $databaseConnection->sql_free_result($queryResource);

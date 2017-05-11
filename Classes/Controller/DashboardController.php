@@ -65,7 +65,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         /** @var $pageRenderer PageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/GridList');
+        // $pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/GridList');
 
         $this->view->assignMultiple([
             'includeCssFiles' => $this->getIncludeCssFilesFromSettings(),
@@ -79,17 +79,18 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
             if ($dashboards->count() == 0) {
                 // Create a new dashboard if none exists (use a "template" when first dashboard is created?)
-                $beUserRepository = $this->objectManager->get('TYPO3\\CMS\\Beuser\\Domain\\Repository\\BackendUserRepository');
+                $beUserRepository = $this->objectManager->get(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository::class);
                 $beUser = $beUserRepository->findByUid($beUserUid);
                 if ($beUser !== null) {
                     $defaultDashboardName = strlen(trim($beUser->getRealName())) > 0 ? $beUser->getRealName() : $beUser->getUserName();
-                    $newDashboard = $this->objectManager->get('TYPO3\\CMS\\Dashboard\\Domain\\Model\\Dashboard');
+                    $newDashboard = $this->objectManager->get(\TYPO3\CMS\Dashboard\Domain\Model\Dashboard::class);
                     $newDashboard->setTitle($defaultDashboardName . ' dashboard');
                     $newDashboard->setBeuser($beUser);
                     $newDashboard->addDashboardWidgetSetting($this->getExampleWidgetSettingObject());
                     $this->dashboardRepository->add($newDashboard);
-                    $persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-                    $persistenceManager->persistAll();
+                    $this->objectManager
+                         ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+                         ->persistAll();
                 }
             }
 
@@ -175,7 +176,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     private function getExampleWidgetSettingObject()
     {
         // Create "example" dashboard widget setting
-        $newDashboardWidgetSetting = $this->objectManager->get('TYPO3\\CMS\\Dashboard\\Domain\\Model\\DashboardWidgetSettings');
+        $newDashboardWidgetSetting = $this->objectManager->get(
+            \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings::class
+        );
         $newDashboardWidgetSetting->setTitle('TYPO3 News');
         $newDashboardWidgetSetting->setWidgetIdentifier(41385600);
         $newDashboardWidgetSetting->setState('new');

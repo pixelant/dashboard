@@ -8,7 +8,8 @@
 <div class="content dashboard-content gridster grid-container">
     <ul class="container-fluid grid-items">
         <f:for each="{dashboardCurrent.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
-           <li {d:be.dashboardWidget.gridAttributes(widgetSetting: dashboardWidgetSetting, index: dashboardWidgetIteration.index)}>
+            <f:variable name="li-attributes">{d:be.dashboardWidget.gridAttributes(widgetSetting: dashboardWidgetSetting, index: dashboardWidgetIteration.index)}</f:variable>
+            <li {li-attributes->f:format.raw()}>
                 <div class="inner">
                     <div class="info-item ">
                         <div class="panel panel-default">
@@ -25,7 +26,7 @@
                             </div>
                             <div id="collapse-{dashboardCurrent.uid}-{dashboardWidgetSetting.uid}" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    <d:be.dashboardWidget dashboardWidgetSetting="{dashboardWidgetSetting}"></d:be.dashboardWidget>
+                                    <f:format.raw><d:be.dashboardWidget dashboardWidgetSetting="{dashboardWidgetSetting}"></d:be.dashboardWidget></f:format.raw>
                                 </div>
                             </div>
                         </div>

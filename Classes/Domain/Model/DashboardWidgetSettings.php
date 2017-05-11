@@ -44,7 +44,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
      *
      * @var integer
      */
-    protected $widgetIdentifier = '';
+    protected $widgetIdentifier = 0;
 
     /**
      * State of widget (collapsed, expanded etc)

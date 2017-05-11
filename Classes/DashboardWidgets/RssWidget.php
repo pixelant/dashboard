@@ -107,18 +107,12 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
 		$feed = array();
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($this->feedUrl)) {
 			try {
-                /** @var \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 $request */
-			    $request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					\TYPO3\CMS\Core\Http\HttpRequest::class,
+				$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
 					$this->feedUrl,
-					\TYPO3\CMS\Core\Http\HttpRequest::METHOD_GET,
-					array(
-						'timeout' => $feedTimeout,
-						'follow_redirects' => true
-					)
+					0,
+					null,
+					$report
 				);
-				$result = $request->send();
-				$content = $result->getBody();
 				$simpleXmlElement = simplexml_load_string( $content ,'SimpleXMLElement');
 				$feed['channel'] = $this->rssToArray($simpleXmlElement);
 				if ((int)$this->feedLimit > 0) {

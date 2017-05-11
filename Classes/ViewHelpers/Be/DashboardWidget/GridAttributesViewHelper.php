@@ -29,7 +29,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns a widget drop and drop attributes
      *
-     * @param DashboardWidgetSettings $widgetSetting
+     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
      * @param integer $index
      * @param string $className
      *
