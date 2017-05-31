@@ -123,6 +123,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if (!empty($this->dashboardSettings['settings']['javaScriptTranslationFile'])) {
             $this->getPageRenderer()->addInlineLanguageLabelFile($this->dashboardSettings['settings']['javaScriptTranslationFile']);
         }
+
+        $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+        if ($this->request->hasArgument('uid')) {
+            $dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('uid'));
+        } else {
+            $dashboard = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
+        };
+        $this->view->assign('dashboard', $dashboard);
     }
 
     /**
@@ -146,8 +154,24 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $getVars = $this->request->getArguments();
 
-        // return 'Would create dashboard with name: ' . $getVars['dashboardName'];
-        return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => 1]);
+        if (isset($GLOBALS['BE_USER']->user['uid'])) {
+            $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+
+            $beUserRepository = $this->objectManager->get(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository::class);
+            $beUser = $beUserRepository->findByUid($beUserUid);
+            if ($beUser !== null) {
+                $newDashboard = $this->objectManager->get(\TYPO3\CMS\Dashboard\Domain\Model\Dashboard::class);
+                $newDashboard->setTitle($getVars['dashboardName']);
+                $newDashboard->setBeuser($beUser);
+                $this->dashboardRepository->add($newDashboard);
+                $this->objectManager
+                    ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+                    ->persistAll();
+            }
+            // return 'Would create dashboard with name: ' . $getVars['dashboardName'];
+            return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
+        }
+        return false; //$this->controllerContext->getUriBuilder()->uriFor('index');
     }
 
     /**
