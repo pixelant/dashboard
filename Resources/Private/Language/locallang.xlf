@@ -3,6 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2015-06-18T06:51:45Z" product-name="dashboard">
 		<header/>
 		<body>
+			<trans-unit id="dashboardManager.create_new_dashboard">
+				<source>New dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.selectablePrototypesConfiguration.standard.label">
+				<source>Standard dashboard</source>
+			</trans-unit>
+			
 			<trans-unit id="tx_dashboard_domain_model_dashboard">
 				<source>Dashboard</source>
 			</trans-unit>
