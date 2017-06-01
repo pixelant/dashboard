@@ -20,6 +20,7 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
+    const IDENTIFIER = '1439441923';
 
     /**
      * Limit, If set, it will limit the results in the list.

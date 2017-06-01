@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
         'dashboardmod1',    // Submodule key
         '',                        // Position
         array(
-            'Dashboard' => 'index, list, change, create',
+            'Dashboard' => 'index, list, change, create, createWidget',
         ),
         array(
             'access' => 'user,group',
@@ -36,25 +36,25 @@ $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['ctrl']['re
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
     'widgets' => array(
-        '41385600' => array(
-            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:41385600.name',
-            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:41385600.description',
+        \TYPO3\CMS\Dashboard\DashboardWidgets\RssWidget::IDENTIFIER => array(
+            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.name',
+            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.description',
             'icon' => 'EXT:dashboard/Resources/Public/Icons/RssWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\RssWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/RssWidget.html',
             'size' => '1x2',
         ),
-        '1439441923' => array(
-            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:1439441923.name',
-            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:1439441923.description',
+        \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER => array(
+            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
+            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.description',
             'icon' => 'EXT:dashboard/Resources/Public/Icons/ActionWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\ActionWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/ActionWidget.html',
             'size' => '1x1',
         ),
-        '1439446997' => array(
-            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:1439446997.name',
-            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:1439446997.description',
+        \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER => array(
+            'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
+            'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.description',
             'icon' => 'EXT:dashboard/Resources/Public/Icons/SysNewsWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\SysNewsWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/SysNewsWidget.html',

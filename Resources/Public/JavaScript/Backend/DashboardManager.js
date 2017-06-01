@@ -82,18 +82,18 @@ define(['jquery'], function($) {
              *
              * @return object
              */
-            function getPrototypes() {
-                var prototypes = [];
+            function getAvailableWidgetTypes() {
+                var widgetTypes = [];
 
-                if ('array' === $.type(_configuration['selectablePrototypesConfiguration'])) {
-                    for (var i = 0, len = _configuration['selectablePrototypesConfiguration'].length; i < len; ++i) {
-                        prototypes.push({
-                            label: _configuration['selectablePrototypesConfiguration'][i]['label'],
-                            value: _configuration['selectablePrototypesConfiguration'][i]['identifier'],
+                if ('array' === $.type(_configuration['selectableWidgetTypesConfiguration'])) {
+                    for (var i = 0, len = _configuration['selectableWidgetTypesConfiguration'].length; i < len; ++i) {
+                        widgetTypes.push({
+                            label: _configuration['selectableWidgetTypesConfiguration'][i]['0'],
+                            value: _configuration['selectableWidgetTypesConfiguration'][i]['1'],
                         });
                     }
                 }
-                return prototypes;
+                return widgetTypes;
             };
 
             /**
@@ -154,6 +154,7 @@ define(['jquery'], function($) {
              */
             return {
                 getAjaxEndpoint: getAjaxEndpoint,
+                getAvailableWidgetTypes: getAvailableWidgetTypes,
                 assert: assert,
                 run: run
             };

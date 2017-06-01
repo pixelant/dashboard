@@ -12,11 +12,24 @@
 			<trans-unit id="dashboardManager.newDashboardWizard.step2.message">
 				<source>A new dashboard will be created.</source>
 			</trans-unit>
-			
 			<trans-unit id="dashboardManager.dashboard_name">
 				<source>Name</source>
 			</trans-unit>
 			
+			<trans-unit id="dashboardManager.newWidgetWizard.step1.title">
+				<source>New dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.widget_type">
+				<source>Select widget</source>
+			</trans-unit>
+			
+			<trans-unit id="dashboardManager.label.dashboard">
+				<source>Dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.label.layout-saved">
+				<source>Layout is saved</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

@@ -10,6 +10,8 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
 class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
 
+	const IDENTIFIER = '41385600';
+
 	/**
 	 * Feed URL
 	 *

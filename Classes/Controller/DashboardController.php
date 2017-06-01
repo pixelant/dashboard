@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * DashboardController
@@ -64,6 +65,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * @inject
      */
     protected $dashboardRepository = null;
+
+    /**
+     * dashboardWidgetSettingsRepository
+     *
+     * @var \TYPO3\CMS\Dashboard\Domain\Repository\DashboardWidgetSettingsRepository
+     * @inject
+     */
+    protected $dashboardWidgetSettingsRepository = null;
 
     /**
      * Initialize action
@@ -130,6 +139,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         } else {
             $dashboard = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
         };
+        
         $this->view->assign('dashboard', $dashboard);
     }
 
@@ -141,8 +151,61 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function changeAction()
     {
         $getVars = $this->request->getArguments();
+        $items = $getVars['items'];
+        if (!empty($items) && is_array($items)) {
+            foreach ($items as $index => $item) {
+                $widget = $this->dashboardWidgetSettingsRepository->findByUid($item['uid']);
+                $widget->setX($item['x']);
+                $widget->setY($item['y']);
+                $widget->setWidth($item['width']);
+                $widget->setHeight($item['height']);
+                $this->dashboardWidgetSettingsRepository->update($widget);
+            }
+            $this->objectManager
+                ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+                ->persistAll();
+        }
+        return 'sent string was: ' . print_r($getVars['items'], true);
+    }
 
-        return 'sent string was: ' . $getVars['items'];
+    /**
+     * action createWidget
+     *
+     * @return string
+     */
+    public function createWidgetAction()
+    {
+        $getVars = $this->request->getArguments();
+
+        $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+        if ($this->request->hasArgument('uid')) {
+            $dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('uid'));
+        } else {
+            $dashboard = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
+        };
+        if (is_object($dashboard)) {
+            $storagePid = $this->dashboardSettings['persistence']['storagePid'];
+            $params = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $dashboard->getUid();
+            $params .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $getVars['widgetType'];
+            $params .= '&edit[tx_dashboard_domain_model_dashboardwidgetsettings]['.$storagePid.']=new' . $overrideVals;
+
+            $returnUrl = $this->controllerContext->getUriBuilder()->uriFor('index');
+            return BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
+       
+            /*
+            $widget = $this->getExampleWidgetSettingObject();
+            $widget->setWidgetIdentifier($getVars['widgetType']);
+
+            $dashboard->addDashboardWidgetSetting($widget);
+            $dashboard->setDescription(mktime());
+
+            $this->dashboardRepository->update($dashboard);
+            $this->objectManager
+                ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
+                ->persistAll();
+            */
+        }
+        return 'widgetType: ' . $getVars['widgetType'];
     }
 
     /**
@@ -216,6 +279,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.create_new_dashboard'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
             $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+            // New dashboard widget setting button
+            $addFormButton = $buttonBar->makeLinkButton()
+                ->setDataAttributes(['identifier' => 'newDashboardWidgetSetting'])
+                ->setHref('#')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.create_new_dashboard_widget_setting'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
+            $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
         }
     }
 
@@ -228,9 +299,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected function getDashboardAppInitialData(): string
     {
         $dashboardAppInitialData = [
+            'selectableWidgetTypesConfiguration' => $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items'],
             'selectablePrototypesConfiguration' => $this->dashboardSettings['settings']['selectablePrototypesConfiguration'],
             'endpoints' => [
                 'create' => $this->controllerContext->getUriBuilder()->uriFor('create'),
+                'createWidget' => $this->controllerContext->getUriBuilder()->uriFor('createWidget'),
                 'change' => $this->controllerContext->getUriBuilder()->uriFor('change'),
                 'index' => $this->controllerContext->getUriBuilder()->uriFor('index')
             ],
@@ -436,7 +509,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $newDashboardWidgetSetting->setTitle('TYPO3 News');
         $newDashboardWidgetSetting->setWidgetIdentifier('41385600');
         $newDashboardWidgetSetting->setState('new');
-        $newDashboardWidgetSetting->setPosition('1');
         $newDashboardWidgetSetting->setSettingsFlexform('<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
                 <T3FlexForms>
                     <data>

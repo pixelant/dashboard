@@ -20,6 +20,8 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
 {
 
+	const IDENTIFIER = '1439446997';
+
     /**
      * Limit, If set, it will limit the results in the list.
      *

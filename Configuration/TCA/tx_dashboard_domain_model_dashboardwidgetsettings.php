@@ -89,29 +89,29 @@ return [
                 'items' => [
                     [
                         '-- Label --',
-                        0
+                        '0'
                     ],
                     [
-                        'Widget 41385600',
-                        41385600
+                        'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.name',
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\RssWidget::IDENTIFIER
                     ],
                     [
-                        'Widget 1439441923',
-                        1439441923
+                        'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER
                     ],
                     [
-                        'Widget 1439446997',
-                        1439446997
+                        'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER
                     ],
                     [
-                        'Widget ' . \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER,
+                        'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
                         \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER
                     ],
                 ],
                 'size' => 1,
                 'maxitems' => 1,
-                'eval' => 'int',
-                'default' => 0,
+                'eval' => '',
+                'default' => '',
             ],
         ],
         'state' => [
@@ -123,13 +123,40 @@ return [
                 'eval' => 'trim'
             ],
         ],
-        'position' => [
+        'x' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.position',
+            'label' => 'x',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'int'
+            ],
+        ],
+        'y' => [
+            'exclude' => 1,
+            'label' => 'y',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'int'
+            ],
+        ],
+        'width' => [
+            'exclude' => 1,
+            'label' => 'width',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'int'
+            ],
+        ],
+        'height' => [
+            'exclude' => 1,
+            'label' => 'height',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'int'
             ],
         ],
         'settings_flexform' => [
@@ -139,9 +166,9 @@ return [
                 'type' => 'flex',
                 'ds_pointerField' => 'widget_identifier',
                 'ds' => [
-                    '41385600' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
-                    '1439441923' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
-                    '1439446997' => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
+                    \TYPO3\CMS\Dashboard\DashboardWidgets\RssWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
+                    \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
+                    \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
                     \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_iframewidget.xml',
                     'default' => '<T3DataStructure><ROOT><type>array</type><el><empty><TCEforms><label>Please select Widget identifier first</label><config><type>none</type></config></TCEforms></empty></el></ROOT></T3DataStructure>',
                 ],

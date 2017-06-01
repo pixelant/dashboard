@@ -2,9 +2,9 @@ module.tx_dashboard {
 	settings {
 		loadJQuery = 0
 		stylesheets {
-			default = EXT:dashboard/Resources/Public/Css/styles.css
-			gridster = EXT:dashboard/Resources/Public/Css/Backend/gridstack.css
+			default = EXT:dashboard/Resources/Public/Css/Backend/dashboard.css
 			gridstack = EXT:dashboard/Resources/Public/Css/Backend/gridstack.min.css
+			gridstack-custom = EXT:dashboard/Resources/Public/Css/Backend/gridstack.css
 		}
 		dynamicRequireJsModules {
 			app = TYPO3/CMS/Dashboard/Backend/DashboardManager
