@@ -1,18 +1,39 @@
-.panel-heading {
-    cursor: move;
-}
-.grid-stack {
-}
 .grid-stack-item .ui-resizable-handle {
     border: none;
 }
-.grid-stack>.grid-stack-item>.grid-stack-item-content {
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    box-shadow: 0 2px 0 rgba(0,0,0,.1);
-}
-
-.grid-stack-item-content .widget_header {
+    /*border-radius: 2px;*/
+.grid-stack>.grid-stack-item>.grid-stack-item-header {
+    color: #5a5a5a;
+    background-color: #ddd;
+    border-color: #ccc;
+    border: solid 1px #ccc;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    height: 40px;
     cursor: move;
-    height: 30px;
+    padding: 10px 15px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.grid-stack>.grid-stack-item>.grid-stack-item-header a {
+    text-decoration: none;
+}
+.grid-stack>.grid-stack-item>.grid-stack-item-header span {
+    display: inline;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    font-weight: bold;
+    /*font-size: 15px;*/
+}
+.grid-stack>.grid-stack-item>.grid-stack-item-content {
+    top: 40px;
+    padding-top: 10px;
+    border: solid 1px #ccc;
+    border-top: 1px solid transparent;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
 }

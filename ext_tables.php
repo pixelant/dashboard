@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
         'dashboardmod1',    // Submodule key
         '',                        // Position
         array(
-            'Dashboard' => 'index, list, change, create, createWidget',
+            'Dashboard' => 'index, list, change, create, createWidget, renderWidget',
         ),
         array(
             'access' => 'user,group',

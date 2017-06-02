@@ -49,6 +49,7 @@ define(['jquery',
         function _domElementIdentifierCacheSetup() {
             _domElementIdentifierCache = {
                 gridStack: { identifier: '[data-identifier="grid-stack"]'},
+                gridStackItemContent: { identifier: '[data-identifier="grid-stack"].grid-stack-item-content'},
                 newDashboardModalTrigger: {identifier: '[data-identifier="newDashboard"]' },
                 newDashboardName: { identifier: '[data-identifier="newDashboardName"]' },
 
@@ -266,9 +267,27 @@ define(['jquery',
             $(getDomElementIdentifier('gridStack')).gridstack({
                 width: 12,
                 alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                handleClass: 'grid-stack-item-header',
                 resizable: {
                     handles: 'se, sw'
                 }
+            });
+            $(getDomElementIdentifier('gridStack')).children('.grid-stack-item').each(function() {
+                $(this).fadeIn('slow');
+                var widgetId = $(this).data('gs-id');
+                var targetElement = $(this).children('.grid-stack-item-content');
+                Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
+                    $(targetElement).html($('<div />', {class: 'text-center'}).append(markup));
+                });
+                $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
+                    tx_dashboard_system_dashboarddashboardmod1: {
+                        widgetId: widgetId
+                    }
+                }, function(data, textStatus, jqXHR) {
+                    $(targetElement).html(data);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    Notification.error(textStatus, errorThrown, 2);
+                });
             });
             $(getDomElementIdentifier('gridStack')).on('change', function(event, items) {
                 var itemsData = [];

@@ -115,10 +115,13 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
 					null,
 					$report
 				);
-				$simpleXmlElement = simplexml_load_string( $content ,'SimpleXMLElement');
-				$feed['channel'] = $this->rssToArray($simpleXmlElement);
-				if ((int)$this->feedLimit > 0) {
-					$feed['channel']['item'] = array_splice($feed['channel']['item'], 0, $this->feedLimit);
+
+				if (!empty($content)) {
+					$simpleXmlElement = simplexml_load_string( $content ,'SimpleXMLElement');
+					$feed['channel'] = $this->rssToArray($simpleXmlElement);
+					if ((int)$this->feedLimit > 0) {
+						$feed['channel']['item'] = array_splice($feed['channel']['item'], 0, $this->feedLimit);
+					}
 				}
 			} catch (\HTTP_Request2_MessageException $e) {
 				// If we timeout, just move on

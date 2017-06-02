@@ -238,6 +238,33 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     }
 
     /**
+     * action renderWidget
+     *
+     * @return string
+     */
+    public function renderWidgetAction()
+    {
+        $getVars = $this->request->getArguments();
+        $widgetId = $getVars['widgetId'];
+        if (!empty($widgetId) && (int)$widgetId > 0) {
+            $widget = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
+            if ($widget) {
+                $widgetConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widget->getWidgetIdentifier()];
+                $widgetClassName = $widgetConfiguration['class'];
+                if (class_exists($widgetClassName)) {
+                    $widgetClass = $this->objectManager->get($widgetClassName);
+                    return $widgetClass->render($widget);
+                } else {
+                    return 'Class : ' . $widgetClassName .' could not be found!';
+                }
+            } else {
+                return 'Widget [' . $widgetId . '] was not found..';
+            }
+        }
+        return '';
+    }
+
+    /**
      * Registers the Icons into the docheader
      *
      * @throws \InvalidArgumentException
@@ -305,7 +332,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 'create' => $this->controllerContext->getUriBuilder()->uriFor('create'),
                 'createWidget' => $this->controllerContext->getUriBuilder()->uriFor('createWidget'),
                 'change' => $this->controllerContext->getUriBuilder()->uriFor('change'),
-                'index' => $this->controllerContext->getUriBuilder()->uriFor('index')
+                'index' => $this->controllerContext->getUriBuilder()->uriFor('index'),
+                'renderWidget' => $this->controllerContext->getUriBuilder()->uriFor('renderWidget')
             ],
         ];
 

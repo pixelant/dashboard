@@ -18,32 +18,38 @@
 
 <f:if condition="{dashboard}">
 	<f:then>
-		<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
-			<f:for each="{dashboard.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
-				<div class="grid-stack-item"
-					data-gs-x="{dashboardWidgetSetting.x}"
-		 			data-gs-y="{dashboardWidgetSetting.y}"
-		 			data-gs-width="{dashboardWidgetSetting.width}"
-		 			data-gs-height="{dashboardWidgetSetting.height}"
-					data-gs-id="{dashboardWidgetSetting.uid}">
-
-					<div class="grid-stack-item-content">
-						<div class="clearfix">
-							<h5 class="pull-left">
-								<f:image src="{d:be.dashboardWidget.IconSrc(widgetIdentifier: dashboardWidgetSetting.widgetIdentifier)}" width="20" height="20"></f:image>
-								{dashboardWidgetSetting.title}
-							</h5>
-							<div class="btn-toolbar pull-right">
-								<div class="btn-group btn-group-sm" role="group">
-									<a class="btn btn-default" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil"> </span></a>
+		<f:if condition="{dashboard.dashboardWidgetSettings}">
+			<f:then>
+				<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
+					<f:for each="{dashboard.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
+						<div class="grid-stack-item"
+							data-gs-x="{dashboardWidgetSetting.x}"
+							data-gs-y="{dashboardWidgetSetting.y}"
+							data-gs-width="{dashboardWidgetSetting.width}"
+							data-gs-height="{dashboardWidgetSetting.height}"
+							data-gs-id="{dashboardWidgetSetting.uid}"
+							style="display: none;">
+							<div class="grid-stack-item-header clearfix">
+								<div class="pull-left">
+									<f:image src="{d:be.dashboardWidget.IconSrc(widgetIdentifier: dashboardWidgetSetting.widgetIdentifier)}" width="20" height="20"></f:image>
+									<span>{dashboardWidgetSetting.title}</span>
+								</div>
+								<div class="pull-right">
+									<a href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil icon-size-small"> </span></a>
 								</div>
 							</div>
+							<div class="grid-stack-item-content"></div>
+							<div class="grid-stack-item-footer clearfix"></div>
 						</div>
-						<f:format.raw><d:be.dashboardWidget dashboardWidgetSetting="{dashboardWidgetSetting}"></d:be.dashboardWidget></f:format.raw>
-					</div>
+					</f:for>
 				</div>
-			</f:for>
-		</div>
+			</f:then>
+			<f:else>
+				<f:be.infobox title="Message title">
+					There are no dashboards widgets created, <a href="#" data-identifier="newDashboardWidgetSetting">click here to create your first dashboard</a>
+				</f:be.infobox>
+			</f:else>
+		</f:if>
 	</f:then>
 	<f:else>	
 		<f:be.infobox title="Message title">
@@ -52,32 +58,8 @@
 	</f:else>
 </f:if>
 
-
 <f:comment>
-<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
-	<div class="grid-stack-item"
-		 data-gs-x="0"
-		 data-gs-y="0"
-		 data-gs-width="4"
-		 data-gs-height="2"
-		 >
-		<div class="grid-stack-item-content">
-			<h3>1</h3>
-			<p>Testing testing testing testing testing testing testing testing testing testing testing </p>
-		</div>
-	</div>
-	<div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4"><div class="grid-stack-item-content">2</div></div>
-	<div class="grid-stack-item" data-gs-x="8" data-gs-y="0" data-gs-width="2" data-gs-height="2" data-gs-min-width="2" data-gs-no-resize="yes"><div class="grid-stack-item-content"> <span class="fa fa-hand-o-up"></span> Drag me! </div></div>
-	<div class="grid-stack-item" data-gs-x="10" data-gs-y="0" data-gs-width="2" data-gs-height="2"><div class="grid-stack-item-content">4</div></div>
-	<div class="grid-stack-item" data-gs-x="0" data-gs-y="2" data-gs-width="2" data-gs-height="2"><div class="grid-stack-item-content">5</div></div>
-	<div class="grid-stack-item" data-gs-x="2" data-gs-y="2" data-gs-width="2" data-gs-height="4"><div class="grid-stack-item-content">6</div></div>
-	<div class="grid-stack-item" data-gs-x="8" data-gs-y="2" data-gs-width="4" data-gs-height="2"><div class="grid-stack-item-content">7</div></div>
-	<div class="grid-stack-item" data-gs-x="0" data-gs-y="4" data-gs-width="2" data-gs-height="2"><div class="grid-stack-item-content">8</div></div>
-	<div class="grid-stack-item" data-gs-x="4" data-gs-y="4" data-gs-width="4" data-gs-height="2"><div class="grid-stack-item-content">9</div></div>
-	<div class="grid-stack-item" data-gs-x="8" data-gs-y="4" data-gs-width="2" data-gs-height="2"><div class="grid-stack-item-content">10</div></div>
-	<div class="grid-stack-item" data-gs-x="10" data-gs-y="4" data-gs-width="2" data-gs-height="2"><div class="grid-stack-item-content">11</div></div>
-</div>
-</f:comment>
 <div data-toggle="tooltip">Tooltip</div>
+</f:comment>
 
 </f:section>
