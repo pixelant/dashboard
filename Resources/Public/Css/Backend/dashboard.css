@@ -9,6 +9,10 @@
 	line-height: 1.3em;
 }
 */
+.media-list {
+	padding-top: 10px;
+}
+
 .rss-widget .media-heading,
 .rss-widget .media-heading a {
 	color: #FF8700;

@@ -125,7 +125,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             ]
         );
 
-        // $this->view->assign('forms', $this->getAvailableFormDefinitions());
         $this->view->assign('stylesheets', $this->resolveResourcePaths($this->dashboardSettings['settings']['stylesheets']));
         $this->view->assign('dynamicRequireJsModules', $this->dashboardSettings['settings']['dynamicRequireJsModules']);
         $this->view->assign('dashboardAppInitialData', $this->getDashboardAppInitialData());
@@ -134,8 +133,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
 
         $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
-        if ($this->request->hasArgument('uid')) {
-            $dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('uid'));
+        if ($this->request->hasArgument('id')) {
+            $dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
         } else {
             $dashboard = $this->dashboardRepository->findByBeuser($beUserUid)->getFirst();
         };
@@ -314,6 +313,21 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.create_new_dashboard_widget_setting'))
                 ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
             $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
+
+            // Dashboards
+            $dashboards = $this->dashboardRepository->findByBeuser((int)$GLOBALS['BE_USER']->user['uid']);
+            if (!empty($dashboards)) {
+                foreach ($dashboards as $index => $dashboard) {
+                    $addFormButton = $buttonBar->makeLinkButton()
+                        ->setHref(
+                            $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $dashboard->getUid()])
+                        )
+                        ->setTitle($dashboard->getTitle())
+                        ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL))
+                        ->setShowLabelText(true);
+                    $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
+                }
+            }
         }
     }
 

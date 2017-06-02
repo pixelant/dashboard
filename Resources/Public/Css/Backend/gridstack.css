@@ -31,9 +31,12 @@
 }
 .grid-stack>.grid-stack-item>.grid-stack-item-content {
     top: 40px;
-    padding-top: 10px;
     border: solid 1px #ccc;
     border-top: 1px solid transparent;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
+}
+.grid-stack>.grid-stack-item>.grid-stack-item-content iframe {
+    border-width: 0px;
+    border-style: none;
 }
