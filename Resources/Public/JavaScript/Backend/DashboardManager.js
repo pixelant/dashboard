@@ -99,6 +99,19 @@ define(['jquery'], function($) {
             /**
              * @public
              *
+             * @return object
+             */
+            function getDashboard() {
+                var dashboard = [];
+                if ('object' === $.type(_configuration['dashboard'])) {
+                    dashboard = _configuration['dashboard'];
+                }
+                return dashboard;
+            };
+
+            /**
+             * @public
+             *
              * @param string prototypeName
              * @return object
              * @throws 1477506508
@@ -155,6 +168,7 @@ define(['jquery'], function($) {
             return {
                 getAjaxEndpoint: getAjaxEndpoint,
                 getAvailableWidgetTypes: getAvailableWidgetTypes,
+                getDashboard: getDashboard,
                 assert: assert,
                 run: run
             };

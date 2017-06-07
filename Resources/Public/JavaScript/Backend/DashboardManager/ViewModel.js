@@ -52,7 +52,7 @@ define(['jquery',
                 gridStackItemContent: { identifier: '[data-identifier="grid-stack"].grid-stack-item-content'},
                 newDashboardModalTrigger: {identifier: '[data-identifier="newDashboard"]' },
                 newDashboardName: { identifier: '[data-identifier="newDashboardName"]' },
-
+                editDashboardTrigger: { identifier: '[data-identifier="editDashboard"]' },
                 newWidgetModalTrigger: {identifier: '[data-identifier="newDashboardWidgetSetting"]' },
                 newWidgetType: { identifier: '[data-identifier="newWidgetType"]'},
 
@@ -87,10 +87,25 @@ define(['jquery',
          * @throws 1477506501
          * @throws 1477506502
          */
+        function _editDashboardSetup() {
+            $(getDomElementIdentifier('editDashboardTrigger')).on('click', function(e) {
+                e.preventDefault();
+                document.location = _dashboardManagerApp.getAjaxEndpoint('editDashboard');
+            });
+        }
+
+        /**
+         * @private
+         *
+         * @return void
+         * @throws 1477506500
+         * @throws 1477506501
+         * @throws 1477506502
+         */
         function _newDashboardSetup() {
             $(getDomElementIdentifier('newDashboardModalTrigger')).on('click', function(e) {
                 e.preventDefault();
-
+         
                 /**
                  * Wizard step 1
                  */
@@ -170,6 +185,8 @@ define(['jquery',
             $(getDomElementIdentifier('newWidgetModalTrigger')).on('click', function(e) {
                 e.preventDefault();
 
+                var dashboard = _dashboardManagerApp.getDashboard();
+
                 /**
                  * Wizard step 1
                  */
@@ -226,12 +243,16 @@ define(['jquery',
                  * Wizard step 3
                  */
                 Wizard.addFinalProcessingSlide(function() {
+                    console.log('dashboard.id');
+                    console.log(dashboard.id);
                     $.post(_dashboardManagerApp.getAjaxEndpoint('createWidget'), {
                         tx_dashboard_system_dashboarddashboardmod1: {
-                            widgetType: Wizard.setup.settings['widgetType']
+                            widgetType: Wizard.setup.settings['widgetType'],
+                            id: dashboard.id
                         }
                     }, function(data, textStatus, jqXHR) {
                         document.location = data;
+                        // document.location = data + '&returnUrl=' + _dashboardManagerApp.getAjaxEndpoint('index');
                         // Notification.success(data, 'Ja', 2);
                         Wizard.dismiss();
                     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -326,6 +347,7 @@ define(['jquery',
         function bootstrap(dashboardManagerApp) {
             _dashboardManagerApp = dashboardManagerApp;
             _domElementIdentifierCacheSetup();
+            _editDashboardSetup();
             _newDashboardSetup();
             _newDashboardWidgetSetup();
             _gridStackSetup();

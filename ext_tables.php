@@ -42,7 +42,8 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'icon' => 'EXT:dashboard/Resources/Public/Icons/RssWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\RssWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/RssWidget.html',
-            'size' => '1x2',
+            'defaultWidth' => '3',
+            'defaultHeight' => '5',
         ),
         \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER => array(
             'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',

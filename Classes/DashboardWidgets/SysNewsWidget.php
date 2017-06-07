@@ -88,7 +88,7 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
         );
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = array(
-                'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
+                'date' => $systemNewsRecord['crdate'],
                 'header' => $systemNewsRecord['title'],
                 'content' => $systemNewsRecord['content']
             );

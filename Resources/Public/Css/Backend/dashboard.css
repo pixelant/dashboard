@@ -1,14 +1,4 @@
 /* rss2 feed widget */
-/*
-.rss-widget .media-body {
-	line-height: 1.8em;
-}
-
-.rss-widget .media-heading {
-	text-transform: uppercase;
-	line-height: 1.3em;
-}
-*/
 .media-list {
 	padding-top: 10px;
 }
@@ -34,6 +24,34 @@
 }
 
 .rss-widget .line {
+	height: 1px;
+	border: 1px solid;
+	border-color: #efefef;
+	border-width: 1.5px;
+}
+
+/* system news */
+.sysnews-widget .media-heading,
+.sysnews-widget .media-heading a {
+	color: #FF8700;
+}
+
+.sysnews-widget .date-badge {
+	width: 37px;
+	height: 37px;
+	margin-bottom: 15px;
+}
+
+.sysnews-widget .date-badge p:nth-child(1) {
+	font-size: 1.3em;
+}
+
+.sysnews-widget .date-badge p:nth-child(n + 2) {
+	margin-top: -12px;
+	font-size: 0.66em;
+}
+
+.sysnews-widget .line {
 	height: 1px;
 	border: 1px solid;
 	border-color: #efefef;

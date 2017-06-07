@@ -16,7 +16,10 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 #use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
@@ -56,12 +59,20 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
     /**
      * Generates the content
      * @return string
+     * @throws 1910010001
+               1477506500
      */
     private function generateContent()
     {
+        if (!ExtensionManagementUtility::isLoaded('sys_action')) {
+            throw new \Exception("Extension sys_actions is not enabled", 1910010001);
+        }
+        $actionEntries = [];
         $widgetTemplateName = $this->widget['template'];
-        $actionView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $template = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetTemplateName);
+        $actionView = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(StandaloneView::class);
+
+        $template = GeneralUtility::getFileAbsFileName($widgetTemplateName);
         $actionView->setTemplatePathAndFilename($template);
         $actionEntries = $this->getActionEntries();
         $actionView->assign('actionEntries', $actionEntries);
@@ -75,41 +86,77 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
      */
     protected function getActionEntries()
     {
+        $actionEntries = [];
         $backendUser = $this->getBackendUser();
-        $databaseConnection = $this->getDatabaseConnection();
-        $actions = array();
-        if ($backendUser->isAdmin()) {
-            $queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting', $this->getLimit());
-        } else {
-            $groupList = 0;
-            if ($backendUser->groupList) {
-                $groupList = $backendUser->groupList;
-            }
-            $queryResource = $databaseConnection->exec_SELECT_mm_query(
-                'sys_action.*',
-                'sys_action',
-                'sys_action_asgr_mm',
-                'be_groups',
-                ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
-                'sys_action.uid',
-                'sys_action.sorting'
-            );
+
+        $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_action');
+
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction::class))
+            ->add(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction::class, [
+                'sys_action'
+            ]));
+
+        $queryBuilder
+            ->select('sys_action.*')
+            ->from('sys_action');
+
+        if (!empty($GLOBALS['TCA']['sys_action']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
 
-        if ($queryResource) {
-            while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
-                $actions[] = array(
-                    'title' => $actionRow['title'],
-                    'action' => BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-                    'description' => $actionRow['description'],
-                    't3_tables' => $actionRow['t3_tables'],
-                    //'icon' => IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
-                    'icon' => ''
-                );
-            }
-            $databaseConnection->sql_free_result($queryResource);
+        if (!$backendUser->isAdmin()) {
+            $groupList = $backendUser->groupList ?: '0';
+
+            $queryBuilder
+                ->join(
+                    'sys_action',
+                    'sys_action_asgr_mm',
+                    'sys_action_asgr_mm',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_local',
+                        $queryBuilder->quoteIdentifier('sys_action.uid')
+                    )
+                )
+                ->join(
+                    'sys_action_asgr_mm',
+                    'be_groups',
+                    'be_groups',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_foreign',
+                        $queryBuilder->quoteIdentifier('be_groups.uid')
+                    )
+                )
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'be_groups.uid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $groupList, true),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                )
+                ->groupBy('sys_action.uid');
         }
-        return $actions;
+
+        $result = $queryBuilder->execute();
+        while ($actionRow = $result->fetch()) {
+            $actions = [
+                'title' => $actionRow['title'],
+                'action' => sprintf(
+                    '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
+                    BackendUtility::getModuleUrl('user_task'),
+                    ActionTask::class, // @todo: class name string is hand over as url parameter?!
+                    $actionRow['uid']
+                ),
+                'icon' => 'TODO' //IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+            ];
+            $actionEntries[] = $actions;
+        }
+
+        return $actionEntries;
     }
 
     /**

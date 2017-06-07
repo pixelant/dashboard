@@ -18,11 +18,11 @@ return [
 
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard, x, y, width, height',
     ],
     'types' => [
         '1' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard, '
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard, x, y, width, height, '
         ],
     ],
     'palettes' => [

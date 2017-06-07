@@ -6,6 +6,9 @@
 			<trans-unit id="dashboardManager.create_new_dashboard">
 				<source>New dashboard</source>
 			</trans-unit>
+			<trans-unit id="dashboardManager.edit_dashboard">
+				<source>Edit dashboard</source>
+			</trans-unit>
 			<trans-unit id="dashboardManager.selectablePrototypesConfiguration.standard.label">
 				<source>Standard dashboard</source>
 			</trans-unit>
@@ -91,6 +94,10 @@
 			<trans-unit id="tx_dashboard_domain_model_dashboardsettings">
 				<source>Dashboard Settings</source>
 			</trans-unit>
+			<trans-unit id="error.1910010001">
+				<source>Cannot render widget, the extension sys_actions must be enabled.</source>
+			</trans-unit>
+			
 		</body>
 	</file>
 </xliff>
