@@ -21,6 +21,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
     const IDENTIFIER = '1439441923';
@@ -60,7 +64,6 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
      * Generates the content
      * @return string
      * @throws 1910010001
-               1477506500
      */
     private function generateContent()
     {
@@ -74,41 +77,40 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 
         $template = GeneralUtility::getFileAbsFileName($widgetTemplateName);
         $actionView->setTemplatePathAndFilename($template);
-        $actionEntries = $this->getActionEntries();
-        $actionView->assign('actionEntries', $actionEntries);
+        $actionView->assign('actions', $this->getActions());
+        $actionView->assign('userTaskLink', BackendUtility::getModuleUrl('user_task'));
         return $actionView->render();
     }
 
     /**
-     * Gets the entries for the action list
+     * Get all actions of an user. Admins can see any action, all others only those
+     * which are allowed in sys_action record itself.
      *
-     * @return array Array of action menu entries
+     * @return array Array holding every needed information of a sys_action
      */
-    protected function getActionEntries()
+    protected function getActions()
     {
-        $actionEntries = [];
         $backendUser = $this->getBackendUser();
+        $actionList = [];
 
-        $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_action');
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction::class))
-            ->add(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction::class, [
-                'sys_action'
-            ]));
-
-        $queryBuilder
-            ->select('sys_action.*')
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+        $queryBuilder->select('sys_action.*')
             ->from('sys_action');
 
         if (!empty($GLOBALS['TCA']['sys_action']['ctrl']['sortby'])) {
             $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
 
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class, ['sys_action']));
+
+        // Editors can only see the actions which are assigned to a usergroup they belong to
         if (!$backendUser->isAdmin()) {
             $groupList = $backendUser->groupList ?: '0';
+
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
             $queryBuilder
                 ->join(
@@ -141,22 +143,22 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
                 ->groupBy('sys_action.uid');
         }
 
-        $result = $queryBuilder->execute();
-        while ($actionRow = $result->fetch()) {
-            $actions = [
+        $queryResult = $queryBuilder->execute();
+
+        while ($actionRow = $queryResult->fetch()) {
+            $actionList[] = [
+                'uid' => 'actiontask' . $actionRow['uid'],
                 'title' => $actionRow['title'],
-                'action' => sprintf(
-                    '%s&SET[mode]=tasks&SET[function]=sys_action.%s&show=%u',
-                    BackendUtility::getModuleUrl('user_task'),
-                    ActionTask::class, // @todo: class name string is hand over as url parameter?!
-                    $actionRow['uid']
-                ),
-                'icon' => 'TODO' //IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+                'description' => $actionRow['description'],
+                'link' => BackendUtility::getModuleUrl('user_task')
+                    . '&SET[function]=sys_action.'
+                    . \TYPO3\CMS\SysAction\ActionTask::class
+                    . '&show='
+                    . (int)$actionRow['uid']
             ];
-            $actionEntries[] = $actions;
         }
 
-        return $actionEntries;
+        return $actionList;
     }
 
     /**

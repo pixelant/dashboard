@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
         'dashboardmod1',    // Submodule key
         '',                        // Position
         array(
-            'Dashboard' => 'index, list, change, create, createWidget, renderWidget',
+            'Dashboard' => 'index, change, create, createWidget, renderWidget',
         ),
         array(
             'access' => 'user,group',
@@ -44,6 +44,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/RssWidget.html',
             'defaultWidth' => '3',
             'defaultHeight' => '5',
+            'minWidth' => '3',
         ),
         \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER => array(
             'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
@@ -51,7 +52,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'icon' => 'EXT:dashboard/Resources/Public/Icons/ActionWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\ActionWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/ActionWidget.html',
-            'size' => '1x1',
+            'defaultWidth' => '3',
+            'defaultHeight' => '5',
+            'minWidth' => '3',
         ),
         \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER => array(
             'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
@@ -59,7 +62,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'icon' => 'EXT:dashboard/Resources/Public/Icons/SysNewsWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\SysNewsWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/SysNewsWidget.html',
-            'size' => '1x2',
+            'defaultWidth' => '3',
+            'defaultHeight' => '5',
+            'minWidth' => '3',
         ),
         \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER => array(
             'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
@@ -67,7 +72,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = array(
             'icon' => 'EXT:dashboard/Resources/Public/Icons/frameWidget.png',
             'class' => 'TYPO3\\CMS\\Dashboard\\DashboardWidgets\\IframeWidget',
             'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/IframeWidget.html',
-            'size' => '3x3',
+            'defaultWidth' => '12',
+            'defaultHeight' => '6',
+            'minWidth' => '3',
         )
     )
 );

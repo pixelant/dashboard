@@ -15,7 +15,6 @@
 			<trans-unit id="dashboardManager.create_new_dashboard_widget_setting">
 				<source>New widget</source>
 			</trans-unit>
-			
 			<trans-unit id="tx_dashboard_domain_model_dashboard">
 				<source>Dashboard</source>
 			</trans-unit>
@@ -94,10 +93,42 @@
 			<trans-unit id="tx_dashboard_domain_model_dashboardsettings">
 				<source>Dashboard Settings</source>
 			</trans-unit>
+			<trans-unit id="action_widget.no_actions_label">
+				<source>No actions found</source>
+			</trans-unit>
+			<trans-unit id="action_widget.no_actions_message">
+				<source>Currently there are no actions yet defined!</source>
+			</trans-unit>
+			<trans-unit id="action_widget.no_actions_linktext">
+				<source>Goto task center to create a new action</source>
+			</trans-unit>
+			<trans-unit id="sysnews_widget.no_sysnews_label">
+				<source>No system news found</source>
+			</trans-unit>
+			<trans-unit id="sysnews_widget.no_sysnews_message">
+				<source>Currently there are no system news available!</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboards_label">
+				<source>No dashboards found</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboards_message">
+				<source>Currently there are no dashboards created yet!</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboards_linktext">
+				<source>Click here to create your first dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboardwidgets_label">
+				<source>No dashboard widgets found</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboardwidgets_message">
+				<source>Currently there are no dashboard widgets created for this dashboard!</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.no_dashboardwidgets_linktext">
+				<source>Click here to create your first dashboard widget</source>
+			</trans-unit>
 			<trans-unit id="error.1910010001">
 				<source>Cannot render widget, the extension sys_actions must be enabled.</source>
 			</trans-unit>
-			
 		</body>
 	</file>
 </xliff>

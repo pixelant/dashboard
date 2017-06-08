@@ -1,12 +1,32 @@
-<f:if condition="{actionEntries -> f:count()} > 0">
-  <ul class="list-unstyled">
-    <f:for each="{actionEntries}" as="entry">
-      <li>
-        <a class="dropdown-list-link dropdown-link-list-add-editdelete" href="{entry.action}" target="content">
-          <f:format.raw>{entry.icon}</f:format.raw>{entry.title}
-          {core:icon(identifier: entry.t3_tables, size: 'small', alternativeMarkupIdentifier: 'inline')}
-        </a>
-      </li>
-    </f:for>
-  </ul>
+<f:if condition="{actions -> f:count()} > 0">
+  <f:then>
+    <dl class="t3-overview-list action-widget">
+      <f:for each="{actions}" as="action">
+        <dt>
+          <f:spaceless>
+          <a href="{action.link}" title="{action.title}">
+            <core:icon identifier="actions-view-table-expand" />{action.title}
+          </a>
+          </f:spaceless>
+				</dt>
+				<dd>{action.description}</dd>
+      </f:for>
+  	</dl>
+  </f:then>
+  <f:else>
+    <div class="typo3-messages">
+      <div class="alert alert-info">
+        <div class="media">
+          <div class="media-left">
+            <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+          </div>
+          <div class="media-body">
+            <h4 class="alert-title"><f:translate key="action_widget.no_actions_label" extensionName="Dashboard" /></h4>
+            <p class="alert-message"><f:translate key="action_widget.no_actions_message" extensionName="Dashboard" /></p>
+            <a class="" href="{userTaskLink}"><f:translate key="action_widget.no_actions_linktext" extensionName="Dashboard" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </f:else>
 </f:if>

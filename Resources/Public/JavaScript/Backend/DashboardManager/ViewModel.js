@@ -49,33 +49,13 @@ define(['jquery',
         function _domElementIdentifierCacheSetup() {
             _domElementIdentifierCache = {
                 gridStack: { identifier: '[data-identifier="grid-stack"]'},
-                gridStackItemContent: { identifier: '[data-identifier="grid-stack"].grid-stack-item-content'},
+                widgetContent: { identifier: '[data-identifier="widgetContent"]'},
                 newDashboardModalTrigger: {identifier: '[data-identifier="newDashboard"]' },
                 newDashboardName: { identifier: '[data-identifier="newDashboardName"]' },
                 editDashboardTrigger: { identifier: '[data-identifier="editDashboard"]' },
                 newWidgetModalTrigger: {identifier: '[data-identifier="newDashboardWidgetSetting"]' },
                 newWidgetType: { identifier: '[data-identifier="newWidgetType"]'},
-
-                // prev
-                /*
-                newFormModalTrigger: { identifier: '[data-identifier="newForm"]' },
-                duplicateFormModalTrigger: { identifier: '[data-identifier="duplicateForm"]' },
-                removeFormModalTrigger: { identifier: '[data-identifier="removeForm"]' },
-
-                
-                newFormSavePath: { identifier: '[data-identifier="newFormSavePath"]' },
-                advancedWizard: { identifier: '[data-identifier="advancedWizard"]' },
-                newFormPrototypeName: { identifier: '[data-identifier="newFormPrototypeName"]' },
-                newFormTemplate: { identifier: '[data-identifier="newFormTemplate"]' },
-
-                duplicateFormName: { identifier: '[data-identifier="duplicateFormName"]' },
-                duplicateFormSavePath: { identifier: '[data-identifier="duplicateFormSavePath"]' },
-
-                showReferences: { identifier: '[data-identifier="showReferences"]' },
-                referenceLink: { identifier: '[data-identifier="referenceLink"]' },
-                */
-
-                tooltip: { identifier: '[data-toggle="tooltip"]' }
+                refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'},
             }
         };
 
@@ -83,9 +63,6 @@ define(['jquery',
          * @private
          *
          * @return void
-         * @throws 1477506500
-         * @throws 1477506501
-         * @throws 1477506502
          */
         function _editDashboardSetup() {
             $(getDomElementIdentifier('editDashboardTrigger')).on('click', function(e) {
@@ -98,9 +75,6 @@ define(['jquery',
          * @private
          *
          * @return void
-         * @throws 1477506500
-         * @throws 1477506501
-         * @throws 1477506502
          */
         function _newDashboardSetup() {
             $(getDomElementIdentifier('newDashboardModalTrigger')).on('click', function(e) {
@@ -177,9 +151,6 @@ define(['jquery',
          * @private
          *
          * @return void
-         * @throws 1477506500
-         * @throws 1477506501
-         * @throws 1477506502
          */
         function _newDashboardWidgetSetup() {
             $(getDomElementIdentifier('newWidgetModalTrigger')).on('click', function(e) {
@@ -243,8 +214,6 @@ define(['jquery',
                  * Wizard step 3
                  */
                 Wizard.addFinalProcessingSlide(function() {
-                    console.log('dashboard.id');
-                    console.log(dashboard.id);
                     $.post(_dashboardManagerApp.getAjaxEndpoint('createWidget'), {
                         tx_dashboard_system_dashboarddashboardmod1: {
                             widgetType: Wizard.setup.settings['widgetType'],
@@ -252,8 +221,6 @@ define(['jquery',
                         }
                     }, function(data, textStatus, jqXHR) {
                         document.location = data;
-                        // document.location = data + '&returnUrl=' + _dashboardManagerApp.getAjaxEndpoint('index');
-                        // Notification.success(data, 'Ja', 2);
                         Wizard.dismiss();
                     }).fail(function(jqXHR, textStatus, errorThrown) {
                         Notification.error(textStatus, errorThrown, 2);
@@ -271,8 +238,6 @@ define(['jquery',
          * @param string elementIdentifier
          * @param string type
          * @return mixed|undefined
-         * @throws 1477506413
-         * @throws 1477506414
          */
         function getDomElementIdentifier(elementIdentifier, type) {
             _dashboardManagerApp.assert(elementIdentifier.length > 0, 'Invalid parameter "elementIdentifier"', 1477506413);
@@ -295,20 +260,6 @@ define(['jquery',
             });
             $(getDomElementIdentifier('gridStack')).children('.grid-stack-item').each(function() {
                 $(this).fadeIn('slow');
-                var widgetId = $(this).data('gs-id');
-                var targetElement = $(this).children('.grid-stack-item-content');
-                Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
-                    $(targetElement).html($('<div />', {class: 'text-center'}).append(markup));
-                });
-                $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
-                    tx_dashboard_system_dashboarddashboardmod1: {
-                        widgetId: widgetId
-                    }
-                }, function(data, textStatus, jqXHR) {
-                    $(targetElement).html(data);
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    Notification.error(textStatus, errorThrown, 2);
-                });
             });
             $(getDomElementIdentifier('gridStack')).on('change', function(event, items) {
                 var itemsData = [];
@@ -330,12 +281,60 @@ define(['jquery',
                         TYPO3.lang['dashboardManager.label.dashboard'],
                         TYPO3.lang['dashboardManager.label.layout-saved'],
                         1
-                    );
+                    );console.log('widget');
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     log('change failed');
                     Notification.error(textStatus, errorThrown, 2);
                 });
             });
+        }
+
+        /**
+         * @private
+         *
+         * @return void
+         */
+        function _setupWidgetContent() {
+            $(getDomElementIdentifier('widgetContent')).each(function() {                
+                var widgetId = $(this).data('widgetid');
+                updateWidgetContent(widgetId);
+            });
+        }
+
+        /**
+         * @private
+         *
+         * @return void
+         */
+        function _refreshWidgetSetup() {
+            $(getDomElementIdentifier('refreshWidgetTrigger')).on('click', function(e) {
+                e.preventDefault();
+                var widgetId = $(this).data('widgetid');
+                updateWidgetContent(widgetId);
+            });
+        }
+
+        /**
+         * @private
+         *
+         * @return void
+         */
+        function updateWidgetContent(widgetId) {
+            var target = $('[data-identifier="widgetContent"][data-widgetid="' + widgetId + '"]');
+            if ('object' === $.type(target)) {
+                Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
+                    $(target).html($('<div />', {class: 'text-center'}).append(markup));
+                    $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
+                        tx_dashboard_system_dashboarddashboardmod1: {
+                            widgetId: widgetId
+                        }
+                    }, function(data, textStatus, jqXHR) {
+                        $(target).html(data);
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        Notification.error(textStatus, errorThrown, 2);
+                    });
+                });
+            }
         }
 
         /**
@@ -350,8 +349,9 @@ define(['jquery',
             _editDashboardSetup();
             _newDashboardSetup();
             _newDashboardWidgetSetup();
+            _refreshWidgetSetup();
             _gridStackSetup();
-            $(getDomElementIdentifier('tooltip')).tooltip();
+            _setupWidgetContent();
         };
 
         /**

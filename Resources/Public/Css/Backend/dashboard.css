@@ -57,3 +57,10 @@
 	border-color: #efefef;
 	border-width: 1.5px;
 }
+/* action-task */
+dl.action-widget {
+	margin-top: 10px;
+}
+dl.action-widget .t3js-icon {
+	margin-right: 5px;
+}

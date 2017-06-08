@@ -13,21 +13,17 @@
     right: 10px;
     height: 40px;
     cursor: move;
-    padding: 10px 15px;
+    padding: 5px 10px;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
 }
-.grid-stack>.grid-stack-item>.grid-stack-item-header a {
-    text-decoration: none;
-}
-.grid-stack>.grid-stack-item>.grid-stack-item-header span {
+.grid-stack>.grid-stack-item>.grid-stack-item-header span.title {
     display: inline;
-    line-height: 20px;
+    line-height: 26px;
     margin: 0;
     padding: 0;
-    vertical-align: top;
+    vertical-align: middle;
     font-weight: bold;
-    /*font-size: 15px;*/
 }
 .grid-stack>.grid-stack-item>.grid-stack-item-content {
     top: 40px;

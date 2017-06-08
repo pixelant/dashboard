@@ -21,6 +21,18 @@
     </ul>
   </f:then>
   <f:else>
-    <div class="alert alert-warning">TRANSLATE: No news available</div>
+    <div class="typo3-messages">
+      <div class="alert alert-info">
+        <div class="media">
+          <div class="media-left">
+            <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+          </div>
+          <div class="media-body">
+            <h4 class="alert-title"><f:translate key="sysnews_widget.no_sysnews_label" extensionName="Dashboard" /></h4>
+            <p class="alert-message"><f:translate key="sysnews_widget.no_sysnews_message" extensionName="Dashboard" /></p>
+          </div>
+        </div>
+      </div>
+    </div>
   </f:else>
 </f:if>

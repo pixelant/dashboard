@@ -4,17 +4,14 @@
 
 <f:flashMessages />
 
-	<script type="text/javascript">
-		require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (dashboardApp, viewModel) {
-			var DASHBOARD_APP = dashboardApp.getInstance(
-				<f:format.htmlentitiesDecode>{dashboardAppInitialData}</f:format.htmlentitiesDecode>,
-				viewModel
-			).run();
-		});
-	</script>
-
-<f:comment></f:comment>
-
+<script type="text/javascript">
+	require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (dashboardApp, viewModel) {
+		var DASHBOARD_APP = dashboardApp.getInstance(
+			<f:format.htmlentitiesDecode>{dashboardAppInitialData}</f:format.htmlentitiesDecode>,
+			viewModel
+		).run();
+	});
+</script>
 
 <f:if condition="{dashboard}">
 	<f:then>
@@ -32,34 +29,60 @@
 							<div class="grid-stack-item-header clearfix">
 								<div class="pull-left">
 									<f:image src="{d:be.dashboardWidget.IconSrc(widgetIdentifier: dashboardWidgetSetting.widgetIdentifier)}" width="20" height="20"></f:image>
-									<span>{dashboardWidgetSetting.title}</span>
+									<span class="title">{dashboardWidgetSetting.title}</span>
 								</div>
+								<f:comment>
 								<div class="pull-right">
 									<a href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil icon-size-small"> </span></a>
 								</div>
+								</f:comment>
+								<div class="btn-toolbar pull-right">
+									<div class="btn-group btn-group-sm" role="group">
+										<a class="btn" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><core:icon identifier="actions-open" /></a>
+										<a class="btn" href="#" data-identifier="refreshWidget" data-widgetid="{dashboardWidgetSetting.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
+									</div>
+								</div>
 							</div>
-							<div class="grid-stack-item-content"></div>
+							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{dashboardWidgetSetting.uid}"></div>
 							<div class="grid-stack-item-footer clearfix"></div>
 						</div>
 					</f:for>
 				</div>
 			</f:then>
 			<f:else>
-				<f:be.infobox title="Message title">
-					There are no dashboards widgets created, <a href="#" data-identifier="newDashboardWidgetSetting">click here to create your first dashboard</a>
-				</f:be.infobox>
+				<div class="typo3-messages">
+					<div class="alert alert-info">
+						<div class="media">
+							<div class="media-left">
+								<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+							</div>
+							<div class="media-body">
+								<h4 class="alert-title"><f:translate key="dashboardManager.no_dashboardwidgets_label" extensionName="Dashboard" /></h4>
+								<p class="alert-message"><f:translate key="dashboardManager.no_dashboardwidgets_message" extensionName="Dashboard" /></p>
+								<a href="#" data-identifier="newDashboardWidgetSetting"><f:translate key="dashboardManager.no_dashboardwidgets_linktext" extensionName="Dashboard" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</f:else>
 		</f:if>
 	</f:then>
-	<f:else>	
-		<f:be.infobox title="Message title">
-			There are no dashboards created, <a href="#" data-identifier="newDashboard">click here to create your first dashboard</a>
-		</f:be.infobox>
+	<f:else>
+		<div class="typo3-messages">
+			<div class="alert alert-info">
+				<div class="media">
+					<div class="media-left">
+						<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+					</div>
+					<div class="media-body">
+						<h4 class="alert-title"><f:translate key="dashboardManager.no_dashboards_label" extensionName="Dashboard" /></h4>
+						<p class="alert-message"><f:translate key="dashboardManager.no_dashboards_message" extensionName="Dashboard" /></p>
+						<a href="#" data-identifier="newDashboard"><f:translate key="dashboardManager.no_dashboards_linktext" extensionName="Dashboard" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</f:else>
 </f:if>
-
-<f:comment>
-<div data-toggle="tooltip">Tooltip</div>
-</f:comment>
 
 </f:section>
