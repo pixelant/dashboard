@@ -67,10 +67,10 @@
 				<source>RSS2 Feed Settings</source>
 			</trans-unit>
 			<trans-unit id="41385600_feedUrl">
-				<source>Url</source>
+				<source>Full URL, protocol included (https://example.com/rss.xml)</source>
 			</trans-unit>
 			<trans-unit id="41385600_feedLimit">
-				<source>Limit</source>
+				<source>Limit, the maximum number of items to fetch from feed</source>
 			</trans-unit>
 			<trans-unit id="41385600_cache">
 				<source>Cache (minutes)</source>

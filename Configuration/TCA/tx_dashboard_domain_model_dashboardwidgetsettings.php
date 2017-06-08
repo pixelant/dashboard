@@ -13,16 +13,16 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => [],
-        'searchFields' => 'title,widget_identifier,state,position,settings_flexform,',
+        'searchFields' => 'title,widget_identifier,position,settings_flexform,',
         'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif'
 
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard, x, y, width, height',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height',
     ],
     'types' => [
         '1' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, state, position, settings_flexform, dashboard, x, y, width, height, '
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height, '
         ],
     ],
     'palettes' => [
@@ -35,20 +35,7 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
-                        -1
-                    ],
-                    [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-                        0
-                    ],
-                ],
+                'type' => 'passthrough',
             ],
         ],
         'l10n_parent' => [
@@ -85,6 +72,7 @@ return [
             'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.widget_identifier',
             'config' => [
                 'type' => 'select',
+                'readOnly' => 1,
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
@@ -114,20 +102,12 @@ return [
                 'default' => '',
             ],
         ],
-        'state' => [
-            'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.state',
-            'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim'
-            ],
-        ],
         'x' => [
             'exclude' => 1,
             'label' => 'x',
             'config' => [
                 'type' => 'input',
+                'readOnly' => 1,
                 'size' => 30,
                 'eval' => 'int'
             ],
@@ -137,6 +117,7 @@ return [
             'label' => 'y',
             'config' => [
                 'type' => 'input',
+                'readOnly' => 1,                
                 'size' => 30,
                 'eval' => 'int'
             ],
@@ -146,6 +127,7 @@ return [
             'label' => 'width',
             'config' => [
                 'type' => 'input',
+                'readOnly' => 1,                
                 'size' => 30,
                 'eval' => 'int'
             ],
@@ -155,6 +137,7 @@ return [
             'label' => 'height',
             'config' => [
                 'type' => 'input',
+                'readOnly' => 1,                
                 'size' => 30,
                 'eval' => 'int'
             ],
@@ -178,6 +161,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'readOnly' => 1,
                 'foreign_table' => 'tx_dashboard_domain_model_dashboard',
                 'minitems' => 0,
                 'maxitems' => 1,

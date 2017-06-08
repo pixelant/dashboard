@@ -208,7 +208,12 @@ define(['jquery',
                 /**
                  * Wizard step 2
                  */
-                Wizard.addSlide('new-widget-step-2', TYPO3.lang['dashboardManager.newDashboardWizard.step2.title'], TYPO3.lang['dashboardManager.newDashboardWizard.step2.message'], Severity.info);
+                Wizard.addSlide(
+                    'new-widget-step-2',
+                    TYPO3.lang['dashboardManager.newWidgetWizard.step2.title'],
+                    TYPO3.lang['dashboardManager.newWidgetWizard.step2.message'],
+                    Severity.info
+                );
 
                 /**
                  * Wizard step 3

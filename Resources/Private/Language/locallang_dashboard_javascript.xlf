@@ -7,10 +7,10 @@
 				<source>New dashboard</source>
 			</trans-unit>
 			<trans-unit id="dashboardManager.newDashboardWizard.step2.title">
-				<source>Step 2</source>
+				<source>New dashboard</source>
 			</trans-unit>
 			<trans-unit id="dashboardManager.newDashboardWizard.step2.message">
-				<source>A new dashboard will be created.</source>
+				<source>Clicking next will create a new dashboard.</source>
 			</trans-unit>
 			<trans-unit id="dashboardManager.dashboard_name">
 				<source>Name</source>
@@ -18,6 +18,12 @@
 			
 			<trans-unit id="dashboardManager.newWidgetWizard.step1.title">
 				<source>New dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newWidgetWizard.step2.title">
+				<source>New dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newWidgetWizard.step2.message">
+				<source>Clicking next will create a new widget of the selected type.</source>
 			</trans-unit>
 			<trans-unit id="dashboardManager.widget_type">
 				<source>Select widget</source>

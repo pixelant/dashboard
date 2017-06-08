@@ -35,20 +35,7 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingleBox',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
-                        -1
-                    ],
-                    [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
-                        0
-                    ]
-                ],
+                'type' => 'passthrough',
             ],
         ],
         'l10n_parent' => [
@@ -79,6 +66,7 @@ return [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
+                
             ],
         ],
         'starttime' => [

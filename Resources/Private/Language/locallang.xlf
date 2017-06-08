@@ -100,7 +100,7 @@
 				<source>Currently there are no actions yet defined!</source>
 			</trans-unit>
 			<trans-unit id="action_widget.no_actions_linktext">
-				<source>Goto task center to create a new action</source>
+				<source>Go to task center to create a new action</source>
 			</trans-unit>
 			<trans-unit id="sysnews_widget.no_sysnews_label">
 				<source>No system news found</source>
@@ -126,8 +126,23 @@
 			<trans-unit id="dashboardManager.no_dashboardwidgets_linktext">
 				<source>Click here to create your first dashboard widget</source>
 			</trans-unit>
+			<trans-unit id="error.title">
+				<source>Couldn't render widget content!</source>
+			</trans-unit>
 			<trans-unit id="error.1910010001">
 				<source>Cannot render widget, the extension sys_actions must be enabled.</source>
+			</trans-unit>
+			<trans-unit id="error.1910020001">
+				<source>The response was empty.</source>
+			</trans-unit>
+			<trans-unit id="error.1910020002">
+				<source>An error occured when processing RSS feed.</source>
+			</trans-unit>
+			<trans-unit id="error.1910020003">
+				<source>The response is not a valid XML string.</source>
+			</trans-unit>
+			<trans-unit id="error.1910020004">
+				<source>The provided url is not valid.</source>
 			</trans-unit>
 		</body>
 	</file>

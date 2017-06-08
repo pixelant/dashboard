@@ -43,7 +43,6 @@ CREATE TABLE tx_dashboard_domain_model_dashboardwidgetsettings (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	widget_identifier varchar(50) DEFAULT '' NOT NULL,
-	state varchar(255) DEFAULT '' NOT NULL,
 	x int(11) unsigned DEFAULT '0' NOT NULL,
 	y int(11) unsigned DEFAULT '0' NOT NULL,
 	width int(11) unsigned DEFAULT '0' NOT NULL,

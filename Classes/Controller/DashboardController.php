@@ -98,7 +98,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if ($this->request->hasArgument('id')) {
             $this->dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
             if ($this->dashboard->getBeUser()->getuid() != $this->getBackendUser()->user['uid']) {
-                throw new Exception("Access denied to selected dashboard", 1);
+                throw new \Exception("Access denied to selected dashboard", 1);
             }
         } else {
             $this->dashboard = $this->dashboardRepository->findByBeuser($this->getBackendUser()->user['uid'])->getFirst();
@@ -242,8 +242,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function renderWidgetAction()
     {
+        $content = '';
         $getVars = $this->request->getArguments();
         $widgetId = $getVars['widgetId'];
+        $errorTitle = $this
+            ->getLanguageService()
+            ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.title');
+
         if (!empty($widgetId) && (int)$widgetId > 0) {
             $widget = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
             if ($widget) {
@@ -257,17 +262,19 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                         $localizedError = $this
                             ->getLanguageService()
                             ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.' . $e->getCode());
+
                         $localizedError = strlen($localizedError) > 0 ? $localizedError : $e->getMessage();
-                        return '<div class="alert alert-danger">' . $localizedError . '</div>';
+
+                        $content = $this->getHtmlErrorMessage($errorTitle, $localizedError);
                     }
                 } else {
-                    return 'Class : ' . $widgetClassName .' could not be found!';
+                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetClassName .' could not be found!');
                 }
             } else {
-                return 'Widget [' . $widgetId . '] was not found..';
+                $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId .'] could not be found!');
             }
         }
-        return 'hmm, nothing catched returnstring';
+        return $content;
     }
 
     /**
@@ -282,7 +289,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if (!empty($dashboards)) {
             $dashboardMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $dashboardMenu->setIdentifier('_dsahboardSelector');
-            // $dashboardMenu->setLabel('Select dashboard');
             foreach ($dashboards as $index => $dashboard) {
                 $menuItem = $dashboardMenu->makeMenuItem()
                     ->setTitle($dashboard->getTitle())
@@ -314,19 +320,21 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             ->setDataAttributes(['identifier' => 'newDashboard'])
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.create_new_dashboard'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL));
+            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-new', Icon::SIZE_SMALL))
+            ->setShowLabelText(true);
         $buttonBar->addButton($newDashboardButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
-        // Edit dashboard button
-        $newDashboardButton = $buttonBar->makeLinkButton()
-            ->setDataAttributes(['identifier' => 'editDashboard'])
-            ->setHref('#')
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.edit_dashboard'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL));
-        $buttonBar->addButton($newDashboardButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
-
-        // New dashboard widget setting button
         if (is_object($this->dashboard)) {
+            // Edit dashboard button
+            $newDashboardButton = $buttonBar->makeLinkButton()
+                ->setDataAttributes(['identifier' => 'editDashboard'])
+                ->setHref('#')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardManager.edit_dashboard'))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-open', Icon::SIZE_SMALL))
+                ->setShowLabelText(true);
+            $buttonBar->addButton($newDashboardButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
+            // new widget button
             $newWidgetButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(
                     [
@@ -345,7 +353,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                         'actions-document-new',
                         Icon::SIZE_SMALL
                     )
-                );
+                )
+                ->setShowLabelText(true);
             $buttonBar->addButton($newWidgetButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
     }
@@ -364,7 +373,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 'create' => $this->controllerContext->getUriBuilder()->uriFor('create'),
                 'createWidget' => $this->controllerContext->getUriBuilder()->uriFor('createWidget'),
                 'change' => $this->controllerContext->getUriBuilder()->uriFor('change'),
-                'index' => $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]),
+                'index' => $this->controllerContext->getUriBuilder()->uriFor('index'),
                 'renderWidget' => $this->controllerContext->getUriBuilder()->uriFor('renderWidget'),
                 'editDashboard' => $this->getEditDashboardEndpoint(),
             ],
@@ -375,6 +384,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 'id' => $this->dashboard->getUid(),
                 'title' => $this->dashboard->getTitle(),
             ];
+            $dashboardAppInitialData['endpoints']['index'] =
+                $this->controllerContext->getUriBuilder()->uriFor(
+                    'index', ['id' => $this->dashboard->getUid()]
+                );
         }
 
         $dashboardAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($dashboardAppInitialData);
@@ -461,9 +474,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     protected function getEditDashboardEndpoint()
     {
-        $params = '&edit[tx_dashboard_domain_model_dashboard][' . $this->dashboard->getUid() . ']=edit';
-        $returnUrl = urlencode($this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]));
-        return BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
+        $editDashboardEndpoint = '';
+        if (is_object($this->dashboard)) {
+            $params = '&edit[tx_dashboard_domain_model_dashboard][' . $this->dashboard->getUid() . ']=edit';
+            $returnUrl = urlencode($this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]));
+            $editDashboardEndpoint = BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
+        }
+        return $editDashboardEndpoint;
     }
 
     /**
@@ -496,6 +513,32 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
 
         return $return;
+    }
+
+    /**
+     * Returns html "template" for a error message
+     *
+     * @param string $title
+     * @param string $message
+     *
+     * @return string
+     */
+    protected function getHtmlErrorMessage($title, $message)
+    {
+        $content = '<div class="typo3-messages">';
+        $content .= '   <div class="alert alert-danger">';
+        $content .= '       <div class="media">';
+        $content .= '           <div class="media-left">';
+        $content .= '               <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>';
+        $content .= '           </div>';
+        $content .= '           <div class="media-body">';
+        $content .= '               <h4 class="alert-title">' . $title . '</h4>';
+        $content .= '               <p class="alert-message">' . $message . '</p>';
+        $content .= '           </div>';
+        $content .= '       </div>';
+        $content .= '   </div>';
+        $content .= '</div>';
+        return $content;
     }
 
     /**

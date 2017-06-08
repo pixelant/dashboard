@@ -25,6 +25,8 @@
 							data-gs-width="{dashboardWidgetSetting.width}"
 							data-gs-height="{dashboardWidgetSetting.height}"
 							data-gs-id="{dashboardWidgetSetting.uid}"
+							data-gs-min-width="2"
+							data-gs-min-height="3"
 							style="display: none;">
 							<div class="grid-stack-item-header clearfix">
 								<div class="pull-left">
@@ -38,8 +40,8 @@
 								</f:comment>
 								<div class="btn-toolbar pull-right">
 									<div class="btn-group btn-group-sm" role="group">
-										<a class="btn" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><core:icon identifier="actions-open" /></a>
-										<a class="btn" href="#" data-identifier="refreshWidget" data-widgetid="{dashboardWidgetSetting.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
+										<a class="btn btn-default" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><core:icon identifier="actions-open" /></a>
+										<a class="btn btn-default" href="#" data-identifier="refreshWidget" data-widgetid="{dashboardWidgetSetting.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
 									</div>
 								</div>
 							</div>
