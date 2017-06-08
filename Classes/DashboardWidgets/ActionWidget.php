@@ -15,11 +15,19 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+#use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
+    const IDENTIFIER = '1439441923';
 
     /**
      * Limit, If set, it will limit the results in the list.
@@ -55,57 +63,102 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
     /**
      * Generates the content
      * @return string
+     * @throws 1910010001
      */
     private function generateContent()
     {
+        if (!ExtensionManagementUtility::isLoaded('sys_action')) {
+            throw new \Exception("Extension sys_actions is not enabled", 1910010001);
+        }
+        $actionEntries = [];
         $widgetTemplateName = $this->widget['template'];
-        $actionView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $template = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetTemplateName);
+        $actionView = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(StandaloneView::class);
+
+        $template = GeneralUtility::getFileAbsFileName($widgetTemplateName);
         $actionView->setTemplatePathAndFilename($template);
-        $actionEntries = $this->getActionEntries();
-        $actionView->assign('actionEntries', $actionEntries);
+        $actionView->assign('actions', $this->getActions());
+        $actionView->assign('userTaskLink', BackendUtility::getModuleUrl('user_task'));
         return $actionView->render();
     }
 
     /**
-     * Gets the entries for the action list
+     * Get all actions of an user. Admins can see any action, all others only those
+     * which are allowed in sys_action record itself.
      *
-     * @return array Array of action menu entries
+     * @return array Array holding every needed information of a sys_action
      */
-    protected function getActionEntries()
+    protected function getActions()
     {
         $backendUser = $this->getBackendUser();
-        $databaseConnection = $this->getDatabaseConnection();
-        $actions = array();
-        if ($backendUser->isAdmin()) {
-            $queryResource = $databaseConnection->exec_SELECTquery('*', 'sys_action', 'pid = 0 AND hidden=0', '', 'sys_action.sorting', $this->getLimit());
-        } else {
-            $groupList = 0;
-            if ($backendUser->groupList) {
-                $groupList = $backendUser->groupList;
-            }
-            $queryResource = $databaseConnection->exec_SELECT_mm_query(
-                'sys_action.*',
-                'sys_action',
-                'sys_action_asgr_mm',
-                'be_groups',
-                ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
-                'sys_action.uid',
-                'sys_action.sorting'
-            );
+        $actionList = [];
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_action');
+        $queryBuilder->select('sys_action.*')
+            ->from('sys_action');
+
+        if (!empty($GLOBALS['TCA']['sys_action']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy('sys_action.' . $GLOBALS['TCA']['sys_action']['ctrl']['sortby']);
         }
 
-        if ($queryResource) {
-            while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
-                $actions[] = array(
-                    'title' => $actionRow['title'],
-                    'action' => BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-                    'icon' => IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
-                );
-            }
-            $databaseConnection->sql_free_result($queryResource);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class, ['sys_action']));
+
+        // Editors can only see the actions which are assigned to a usergroup they belong to
+        if (!$backendUser->isAdmin()) {
+            $groupList = $backendUser->groupList ?: '0';
+
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
+
+            $queryBuilder
+                ->join(
+                    'sys_action',
+                    'sys_action_asgr_mm',
+                    'sys_action_asgr_mm',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_local',
+                        $queryBuilder->quoteIdentifier('sys_action.uid')
+                    )
+                )
+                ->join(
+                    'sys_action_asgr_mm',
+                    'be_groups',
+                    'be_groups',
+                    $queryBuilder->expr()->eq(
+                        'sys_action_asgr_mm.uid_foreign',
+                        $queryBuilder->quoteIdentifier('be_groups.uid')
+                    )
+                )
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'be_groups.uid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $groupList, true),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                )
+                ->groupBy('sys_action.uid');
         }
-        return $actions;
+
+        $queryResult = $queryBuilder->execute();
+
+        while ($actionRow = $queryResult->fetch()) {
+            $actionList[] = [
+                'uid' => 'actiontask' . $actionRow['uid'],
+                'title' => $actionRow['title'],
+                'description' => $actionRow['description'],
+                'link' => BackendUtility::getModuleUrl('user_task')
+                    . '&SET[function]=sys_action.'
+                    . \TYPO3\CMS\SysAction\ActionTask::class
+                    . '&show='
+                    . (int)$actionRow['uid']
+            ];
+        }
+
+        return $actionList;
     }
 
     /**

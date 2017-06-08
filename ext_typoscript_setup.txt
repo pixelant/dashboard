@@ -1,10 +1,23 @@
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder
 module.tx_dashboard {
 	settings {
 		loadJQuery = 0
-		includeCssFiles {
-			default = EXT:dashboard/Resources/Public/Css/styles.css
+		stylesheets {
+			default = EXT:dashboard/Resources/Public/Css/Backend/dashboard.css
+			gridstack = EXT:dashboard/Resources/Public/Css/Backend/gridstack.min.css
+			gridstack-custom = EXT:dashboard/Resources/Public/Css/Backend/gridstack.css
 		}
+		dynamicRequireJsModules {
+			app = TYPO3/CMS/Dashboard/Backend/DashboardManager
+			viewModel = TYPO3/CMS/Dashboard/Backend/DashboardManager/ViewModel
+		}
+		selectablePrototypesConfiguration {
+        	100 {
+            	identifier = standard
+            	label = dashboardManager.selectablePrototypesConfiguration.standard.label
+			}
+		}
+		translationFile = EXT:dashboard/Resources/Private/Language/locallang.xlf
+		javaScriptTranslationFile = EXT:dashboard/Resources/Private/Language/locallang_dashboard_javascript.xlf
 		includeJsFiles {
 			# default = EXT:dashboard/Resources/Public/Js/dashboard.js
 		}

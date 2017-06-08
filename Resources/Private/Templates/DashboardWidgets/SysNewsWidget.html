@@ -1,21 +1,38 @@
 <f:if condition="{systemNews -> f:count()} > 0">
-  <ul class="media-list">
-    <f:for each="{systemNews}" as="item">
-      <li class="media sysnews-widget">
-        <div class="media-left">
-          <div class="bgColor2 text-center text-uppercase date-badge">
-            <p><strong><f:format.date format="d">{item.date}</f:format.date></strong></p>
-            <p><strong><f:format.date format="M">{item.date}</f:format.date></strong></p>
+  <f:then>
+    <ul class="media-list">
+      <f:for each="{systemNews}" as="item">
+        <li class="media sysnews-widget">
+          <div class="media-left">
+            <div class="bgColor2 text-center text-uppercase date-badge">
+              <p><strong><f:format.date format="d">{item.date}</f:format.date></strong></p>
+              <p><strong><f:format.date format="M">{item.date}</f:format.date></strong></p>
+            </div>
+          </div>
+          <div class="media-body">
+            <h5 class="media-heading"><strong>{item.header}</strong></h5>
+            <f:if condition="{item.content}">
+              <p><f:format.raw>{item.content}</f:format.raw></p>
+            </f:if>
+          </div>
+          <div class="line"></div>
+        </li>
+      </f:for>
+    </ul>
+  </f:then>
+  <f:else>
+    <div class="typo3-messages">
+      <div class="alert alert-info">
+        <div class="media">
+          <div class="media-left">
+            <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+          </div>
+          <div class="media-body">
+            <h4 class="alert-title"><f:translate key="sysnews_widget.no_sysnews_label" extensionName="Dashboard" /></h4>
+            <p class="alert-message"><f:translate key="sysnews_widget.no_sysnews_message" extensionName="Dashboard" /></p>
           </div>
         </div>
-        <div class="media-body">
-          <h5 class="media-heading"><strong>{item.header}</strong></h5>
-          <f:if condition="{item.content}">
-            <p><f:format.raw>{item.content}</f:format.raw></p>
-          </f:if>
-        </div>
-        <div class="line"></div>
-      </li>
-    </f:for>
-  </ul>
+      </div>
+    </div>
+  </f:else>
 </f:if>

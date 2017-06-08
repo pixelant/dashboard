@@ -30,6 +30,7 @@
 								<type>input</type>
 								<size>10</size>
 								<eval>int</eval>
+								<default>10</default>
 							</config>
 						</TCEforms>
 					</settings.feedLimit>
@@ -41,6 +42,7 @@
 								<type>input</type>
 								<size>10</size>
 								<eval>int</eval>
+								<default>15</default>
 							</config>
 						</TCEforms>
 					</settings.cacheLifetime>

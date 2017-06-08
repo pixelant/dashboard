@@ -1,0 +1,90 @@
+{namespace d=TYPO3\CMS\Dashboard\ViewHelpers}
+<f:layout name="Dashboard" />
+<f:section name="MainContent">
+
+<f:flashMessages />
+
+<script type="text/javascript">
+	require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (dashboardApp, viewModel) {
+		var DASHBOARD_APP = dashboardApp.getInstance(
+			<f:format.htmlentitiesDecode>{dashboardAppInitialData}</f:format.htmlentitiesDecode>,
+			viewModel
+		).run();
+	});
+</script>
+
+<f:if condition="{dashboard}">
+	<f:then>
+		<f:if condition="{dashboard.dashboardWidgetSettings}">
+			<f:then>
+				<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
+					<f:for each="{dashboard.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
+						<div class="grid-stack-item"
+							data-gs-x="{dashboardWidgetSetting.x}"
+							data-gs-y="{dashboardWidgetSetting.y}"
+							data-gs-width="{dashboardWidgetSetting.width}"
+							data-gs-height="{dashboardWidgetSetting.height}"
+							data-gs-id="{dashboardWidgetSetting.uid}"
+							data-gs-min-width="2"
+							data-gs-min-height="3"
+							style="display: none;">
+							<div class="grid-stack-item-header clearfix">
+								<div class="pull-left">
+									<f:image src="{d:be.dashboardWidget.IconSrc(widgetIdentifier: dashboardWidgetSetting.widgetIdentifier)}" width="20" height="20"></f:image>
+									<span class="title">{dashboardWidgetSetting.title}</span>
+								</div>
+								<f:comment>
+								<div class="pull-right">
+									<a href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil icon-size-small"> </span></a>
+								</div>
+								</f:comment>
+								<div class="btn-toolbar pull-right">
+									<div class="btn-group btn-group-sm" role="group">
+										<a class="btn btn-default" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><core:icon identifier="actions-open" /></a>
+										<a class="btn btn-default" href="#" data-identifier="refreshWidget" data-widgetid="{dashboardWidgetSetting.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
+									</div>
+								</div>
+							</div>
+							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{dashboardWidgetSetting.uid}"></div>
+							<div class="grid-stack-item-footer clearfix"></div>
+						</div>
+					</f:for>
+				</div>
+			</f:then>
+			<f:else>
+				<div class="typo3-messages">
+					<div class="alert alert-info">
+						<div class="media">
+							<div class="media-left">
+								<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+							</div>
+							<div class="media-body">
+								<h4 class="alert-title"><f:translate key="dashboardManager.no_dashboardwidgets_label" extensionName="Dashboard" /></h4>
+								<p class="alert-message"><f:translate key="dashboardManager.no_dashboardwidgets_message" extensionName="Dashboard" /></p>
+								<a href="#" data-identifier="newDashboardWidgetSetting"><f:translate key="dashboardManager.no_dashboardwidgets_linktext" extensionName="Dashboard" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</f:else>
+		</f:if>
+	</f:then>
+	<f:else>
+		<div class="typo3-messages">
+			<div class="alert alert-info">
+				<div class="media">
+					<div class="media-left">
+						<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span>
+					</div>
+					<div class="media-body">
+						<h4 class="alert-title"><f:translate key="dashboardManager.no_dashboards_label" extensionName="Dashboard" /></h4>
+						<p class="alert-message"><f:translate key="dashboardManager.no_dashboards_message" extensionName="Dashboard" /></p>
+						<a href="#" data-identifier="newDashboard"><f:translate key="dashboardManager.no_dashboards_linktext" extensionName="Dashboard" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</f:else>
+</f:if>
+
+</f:section>

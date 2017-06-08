@@ -10,6 +10,8 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
 class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
 
+	const IDENTIFIER = '41385600';
+
 	/**
 	 * Feed URL
 	 *
@@ -103,30 +105,37 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface {
 	 * @return array Array from xml
 	 */
 	private function getFeed() {
-		$feedTimeout = 10;
-		$feed = array();
+		$feed = [];
+		$report = [];
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($this->feedUrl)) {
-			try {
-                /** @var \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 $request */
-			    $request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					\TYPO3\CMS\Core\Http\HttpRequest::class,
-					$this->feedUrl,
-					\TYPO3\CMS\Core\Http\HttpRequest::METHOD_GET,
-					array(
-						'timeout' => $feedTimeout,
-						'follow_redirects' => true
-					)
-				);
-				$result = $request->send();
-				$content = $result->getBody();
+			
+			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
+				$this->feedUrl,
+				0,
+				null,
+				$report
+			);
+			if (!$content) {
+				if (isset($report['message'])) {
+					throw new \Exception($report['message'], $report['error']);
+				} else {
+					throw new \Exception("The response was empty", 1910020001);
+				}
+			}
+			if (!empty($content)) {
 				$simpleXmlElement = simplexml_load_string( $content ,'SimpleXMLElement');
+				if (!$simpleXmlElement) {
+					throw new \Exception('The response is not valid XML', 1910020003);
+				}
 				$feed['channel'] = $this->rssToArray($simpleXmlElement);
 				if ((int)$this->feedLimit > 0) {
 					$feed['channel']['item'] = array_splice($feed['channel']['item'], 0, $this->feedLimit);
 				}
-			} catch (\HTTP_Request2_MessageException $e) {
-				// If we timeout, just move on
+			} else {
+				throw new \Exception('An error occured', 1910020002);
 			}
+		} else {
+			throw new \Exception('The provided url is not valid', 1910020004);
 		}
 		return $feed;
 	}

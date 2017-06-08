@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
 {
 
-    const IDENTIFIER = 1487642496;
+    const IDENTIFIER = '1487642496';
 
     /**
      * Iframe Url

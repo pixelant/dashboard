@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-06-18T06:51:45Z" product-name="dashboard">
+		<header/>
+		<body>
+			<trans-unit id="dashboardManager.newDashboardWizard.step1.title">
+				<source>New dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newDashboardWizard.step2.title">
+				<source>New dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newDashboardWizard.step2.message">
+				<source>Clicking next will create a new dashboard.</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.dashboard_name">
+				<source>Name</source>
+			</trans-unit>
+			
+			<trans-unit id="dashboardManager.newWidgetWizard.step1.title">
+				<source>New dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newWidgetWizard.step2.title">
+				<source>New dashboard widget</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.newWidgetWizard.step2.message">
+				<source>Clicking next will create a new widget of the selected type.</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.widget_type">
+				<source>Select widget</source>
+			</trans-unit>
+			
+			<trans-unit id="dashboardManager.label.dashboard">
+				<source>Dashboard</source>
+			</trans-unit>
+			<trans-unit id="dashboardManager.label.layout-saved">
+				<source>Layout is saved</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

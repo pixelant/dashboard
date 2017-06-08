@@ -42,7 +42,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Widget Indetifier
      *
-     * @var integer
+     * @var string
      */
     protected $widgetIdentifier = '';
 
@@ -54,11 +54,32 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     protected $state = '';
 
     /**
-     * The position of the widget
+     * x
      *
-     * @var string
+     * @var integer
      */
-    protected $position = '';
+    protected $x = 0;
+
+    /**
+     * y
+     *
+     * @var integer
+     */
+    protected $y = 0;
+
+    /**
+     * width
+     *
+     * @var integer
+     */
+    protected $width = 0;
+
+    /**
+     * height
+     *
+     * @var integer
+     */
+    protected $height = 0;
 
     /**
      * Widget settings
@@ -110,24 +131,87 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     }
 
     /**
-     * Returns the position
+     * Returns the x
      *
-     * @return string $position
+     * @return integer $x
      */
-    public function getPosition()
+    public function getX()
     {
-        return $this->position;
+        return $this->x;
     }
 
     /**
-     * Sets the position
+     * Sets the x
      *
-     * @param string $position
+     * @param integer $x
      * @return void
      */
-    public function setPosition($position)
+    public function setX($x)
     {
-        $this->position = $position;
+        $this->x = $x;
+    }
+
+    /**
+     * Returns the y
+     *
+     * @return integer $y
+     */
+    public function getY()
+    {
+        return $this->y;
+    }
+
+    /**
+     * Sets the y
+     *
+     * @param integer $y
+     * @return void
+     */
+    public function setY($y)
+    {
+        $this->y = $y;
+    }
+
+    /**
+     * Returns the width
+     *
+     * @return integer $width
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * Sets the width
+     *
+     * @param integer $width
+     * @return void
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * Returns the height
+     *
+     * @return integer $height
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * Sets the height
+     *
+     * @param integer $height
+     * @return void
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
     }
 
     /**
@@ -154,7 +238,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the widgetIdentifier
      *
-     * @return integer widgetIdentifier
+     * @return string widgetIdentifier
      */
     public function getWidgetIdentifier()
     {
@@ -165,7 +249,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
      * Sets the widgetIdentifier
      *
      * @param string $widgetIdentifier
-     * @return integer widgetIdentifier
+     * @return string widgetIdentifier
      */
     public function setWidgetIdentifier($widgetIdentifier)
     {

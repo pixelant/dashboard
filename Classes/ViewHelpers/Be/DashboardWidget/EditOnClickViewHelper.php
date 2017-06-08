@@ -51,7 +51,7 @@ class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBack
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSetting $dashboardWidgetSetting
+     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */
