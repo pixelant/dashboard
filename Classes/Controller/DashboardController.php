@@ -35,8 +35,10 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -155,29 +157,28 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $this->view->assign('dashboard', $this->dashboard);
     }
 
+    public function initializeChangeAction()
+    {
+        $configuration = $this->arguments->getArgument('items')
+            ->getPropertyMappingConfiguration();
+
+        $configuration->allowAllProperties();
+        $configuration->forProperty('*')->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+        $configuration->forProperty('*.*')->allowAllProperties();
+    }
+
     /**
      * action change
      *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> $items
      * @return string
      */
-    public function changeAction()
+    public function changeAction($items)
     {
-        $getVars = $this->request->getArguments();
-        $items = $getVars['items'];
-        if (!empty($items) && is_array($items)) {
-            foreach ($items as $index => $item) {
-                $widget = $this->dashboardWidgetSettingsRepository->findByUid($item['uid']);
-                $widget->setX($item['x']);
-                $widget->setY($item['y']);
-                $widget->setWidth($item['width']);
-                $widget->setHeight($item['height']);
-                $this->dashboardWidgetSettingsRepository->update($widget);
-            }
-            $this->objectManager
-                ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
-                ->persistAll();
+        foreach ($items as $widgetSettings) {
+            $this->dashboardWidgetSettingsRepository->update($widgetSettings);
         }
-        return 'sent string was: ' . print_r($getVars['items'], true);
+        return 'Updated widget positions';
     }
 
     /**
@@ -192,8 +193,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $storagePid = $this->dashboardSettings['persistence']['storagePid'];
             $widgetType = $getVars['widgetType'];
             $widgetSettings = $this->getWidgetSettings($widgetType);
-            $width = (isset($widgetSettings['defaultWidth'])) ? $widgetSettings['defaultWidth'] : 3;
-            $height = (isset($widgetSettings['defaultHeight'])) ? $widgetSettings['defaultHeight'] : 5;
+            $width = $widgetSettings['defaultWidth'] ?? 3;
+            $height = $widgetSettings['defaultHeight'] ?? 5;
             $overrideVals = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $this->dashboard->getUid();
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $getVars['widgetType'];
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][width]=' . $width;
@@ -254,14 +255,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.title');
 
         if (!empty($widgetId) && (int)$widgetId > 0) {
-            $widget = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
-            if ($widget) {
-                $widgetConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widget->getWidgetIdentifier()];
+            $widgetSettings = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
+            if ($widgetSettings) {
+                $widgetConfiguration = $widgetSettings->getSettings();
                 $widgetClassName = $widgetConfiguration['class'];
                 if (class_exists($widgetClassName)) {
                     $widgetClass = $this->objectManager->get($widgetClassName);
                     try {
-                        return $widgetClass->render($widget);
+                        return $widgetClass->render($widgetSettings);
                     } catch (\Exception $e) {
                         $localizedError = $this
                             ->getLanguageService()
@@ -423,19 +424,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * Returns array of item configured for widget_identifier
      *
-     * @param string widgetIdentifier
+     * @param string $widgetIdentifier
      *
      * @return array
      */
     protected function getWidgetSettings(string $widgetIdentifier): array
     {
-        $widgetSettings = [];
-
-        $selectableWidgets = $this->getSelectableWidgets();
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier])) {
-            $widgetSettings = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
-        }
-        return $widgetSettings;
+        $widgetSettings = new DashboardWidgetSettings($widgetIdentifier);
+        return $widgetSettings->getSettings();
     }
 
     /**

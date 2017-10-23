@@ -18,7 +18,7 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
+class IframeWidget implements DashboardWidgetInterface
 {
     const IDENTIFIER = '1487642496';
 
@@ -62,10 +62,10 @@ class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->url = $flexformSettings['settings']['url'];
-        $this->scrolling = $flexformSettings['settings']['scrolling'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $dashboardWidgetSetting->getSettings();
+        $this->url = $settings['url'];
+        $this->scrolling = $settings['scrolling'];
+        $this->widget = $settings;
     }
 
     /**

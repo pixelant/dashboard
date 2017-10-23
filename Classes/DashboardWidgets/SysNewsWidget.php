@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
-class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
+class SysNewsWidget implements DashboardWidgetInterface
 {
     const IDENTIFIER = '1439446997';
 
@@ -29,6 +29,13 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
     protected $limit = 0;
 
     /**
+     * Widget settings
+     *
+     * @var array
+     */
+    protected $widget = null;
+
+    /**
      * Renders content
      * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
@@ -36,8 +43,7 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
     public function render($dashboardWidgetSetting = null)
     {
         $this->initialize($dashboardWidgetSetting);
-        $content = $this->generateContent();
-        return $content;
+        return $this->generateContent();
     }
 
     /**
@@ -47,9 +53,9 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->limit = (int)$flexformSettings['settings']['limit'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $dashboardWidgetSetting->getSettings();
+        $this->limit = (int)$settings['limit'];
+        $this->widget = $settings;
     }
 
     /**

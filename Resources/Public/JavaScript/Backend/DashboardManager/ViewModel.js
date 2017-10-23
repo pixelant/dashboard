@@ -270,7 +270,7 @@ define(['jquery',
                 var itemsData = [];
                 $(items).each(function(index, item) {
                     itemsData.push({
-                        uid: item.id,
+                        __identity: item.id,
                         x: item.x,
                         y: item.y,
                         width: item.width,

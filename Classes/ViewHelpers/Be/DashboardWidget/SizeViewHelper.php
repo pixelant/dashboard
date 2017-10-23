@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+
 class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
     /**
@@ -30,7 +32,8 @@ class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
      */
     public function render($widgetIdentifier)
     {
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widgetSetting = new DashboardWidgetSettings($widgetIdentifier);
+        $widget = $widgetSetting->getSettings();
         list($width, $height) = explode('x', $widget['size']);
         return $this->getColumnClassName((int)$width) . ' ' . $this->getHeightClassName((int)$height);
     }

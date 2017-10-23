@@ -6,7 +6,7 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  */
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
-class RssWidget extends AbstractWidget implements DashboardWidgetInterface
+class RssWidget implements DashboardWidgetInterface
 {
     const IDENTIFIER = '41385600';
 
@@ -30,7 +30,7 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface
      *
      * @var int
      */
-    protected $cacheLifetime = null;
+    protected $cacheLifetime = 0;
 
     /**
      * Widget settings
@@ -47,9 +47,7 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface
     public function render($dashboardWidgetSetting = null)
     {
         $this->initialize($dashboardWidgetSetting);
-
-        $content = false;
-        if ($this->cacheLifetime == null) {
+        if ($this->cacheLifetime > 0) {
             $content = $this->generateContent();
         } else {
             /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
@@ -74,11 +72,11 @@ class RssWidget extends AbstractWidget implements DashboardWidgetInterface
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->feedUrl = $flexformSettings['settings']['feedUrl'];
-        $this->feedLimit = (int)$flexformSettings['settings']['feedLimit'];
-        $this->cacheLifetime = (int)$flexformSettings['settings']['cacheLifetime'] * 60;
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $dashboardWidgetSetting->getSettings();
+        $this->feedUrl = $settings['feedUrl'];
+        $this->feedLimit = (int)$settings['feedLimit'];
+        $this->cacheLifetime = (int)$settings['cacheLifetime'] * 60;
+        $this->widget = $settings;
     }
 
     /**

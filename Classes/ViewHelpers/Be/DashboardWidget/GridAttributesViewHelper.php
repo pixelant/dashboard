@@ -28,7 +28,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns a widget drop and drop attributes
      *
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
+     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
      * @param int $index
      * @param string $className
      *
@@ -37,8 +37,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     public function render($widgetSetting, $index, $className = 'grid-item')
     {
         $numberOfCols = 3;
-        $widgetIdentifier = $widgetSetting->getWidgetIdentifier();
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widget = $widgetSetting->getSettings();
         list($width, $height) = explode('x', $widget['size']);
         $width = $this->getItemWidth((int)$width, $numberOfCols);
         $height = $this->getItemHeight((int)$height);

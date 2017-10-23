@@ -39,21 +39,6 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
      */
     private $flexFormService;
 
-    public function __construct(FlexFormService $flexFormService = null)
-    {
-        $this->flexFormService = $flexFormService ?: GeneralUtility::makeInstance(FlexFormService::class);
-    }
-
-    /**
-     * Make sure a thawed object also gets this dependency injected
-     *
-     * @param FlexFormService $flexFormService
-     */
-    public function injectFlexFormService(FlexFormService $flexFormService)
-    {
-        $this->flexFormService = $flexFormService;
-    }
-
     /**
      * Title
      *
@@ -111,6 +96,31 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     protected $settingsFlexform = '';
 
     /**
+     * @param string $widgetIdentifier
+     * @param string $title
+     * @param string $settingsFlexform
+     * @param FlexFormService|null $flexFormService
+     */
+    public function __construct(
+        $widgetIdentifier,
+        $title = '',
+        $settingsFlexform = '',
+        FlexFormService $flexFormService = null
+    ) {
+        $this->flexFormService = $flexFormService ?: GeneralUtility::makeInstance(FlexFormService::class);
+    }
+
+    /**
+     * Make sure a thawed object also gets this dependency injected
+     *
+     * @param FlexFormService $flexFormService
+     */
+    public function injectFlexFormService(FlexFormService $flexFormService)
+    {
+        $this->flexFormService = $flexFormService;
+    }
+
+    /**
      * Returns the title
      *
      * @return string $title
@@ -121,17 +131,6 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     }
 
     /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
      * Returns the state
      *
      * @return string $state
@@ -139,17 +138,6 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     public function getState()
     {
         return $this->state;
-    }
-
-    /**
-     * Sets the state
-     *
-     * @param string $state
-     * @return void
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
     }
 
     /**
@@ -236,34 +224,16 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
         $this->height = $height;
     }
 
-    /**
-     * Returns the settingsFlexform
-     *
-     * @return string $settingsFlexform
-     * @deprecated
-     */
-    public function getSettingsFlexform()
-    {
-        return $this->settingsFlexform;
-    }
-
     public function getSettings(): array
     {
-        if (empty($this->settingsFlexform)) {
-            return [];
+        $widgetSettings = [];
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$this->widgetIdentifier])) {
+            $widgetSettings = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$this->widgetIdentifier];
         }
-        return $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? [];
-    }
-
-    /**
-     * Sets the settingsFlexform
-     *
-     * @param string $settingsFlexform
-     * @return void
-     */
-    public function setSettingsFlexform($settingsFlexform)
-    {
-        $this->settingsFlexform = $settingsFlexform;
+        if (empty($this->settingsFlexform)) {
+            return $widgetSettings;
+        }
+        return array_replace($widgetSettings, $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? []);
     }
 
     /**
@@ -274,16 +244,5 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     public function getWidgetIdentifier()
     {
         return $this->widgetIdentifier;
-    }
-
-    /**
-     * Sets the widgetIdentifier
-     *
-     * @param string $widgetIdentifier
-     * @return string widgetIdentifier
-     */
-    public function setWidgetIdentifier($widgetIdentifier)
-    {
-        $this->widgetIdentifier = $widgetIdentifier;
     }
 }

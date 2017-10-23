@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
+class ActionWidget implements DashboardWidgetInterface
 {
     const IDENTIFIER = '1439441923';
 
@@ -55,9 +55,9 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
      */
     private function initialize($dashboardWidgetSetting = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->limit = (int)$flexformSettings['settings']['limit'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $dashboardWidgetSetting->getSettings();
+        $this->limit = (int)$settings['limit'];
+        $this->widget = $settings;
     }
 
     /**

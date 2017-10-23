@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+
 class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
     /**
@@ -31,7 +33,8 @@ class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
     public function render($widgetIdentifier)
     {
         $fileName = 'EXT:dashboard/Resources/Public/Icons/dashboardWidget.png';
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widgetSetting = new DashboardWidgetSettings($widgetIdentifier);
+        $widget = $widgetSetting->getSettings();
         $widgetIconName = $widget['icon'];
         $absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetIconName, true);
         if (file_exists($absoluteFilename)) {
