@@ -131,7 +131,7 @@ define(['jquery',
                  */
                 Wizard.addFinalProcessingSlide(function() {
                     $.post(_dashboardManagerApp.getAjaxEndpoint('create'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
+                        tx_dashboard_user_dashboarddashboardmod1: {
                             dashboardName: Wizard.setup.settings['dashboardName']
                         }
                     }, function(data, textStatus, jqXHR) {
@@ -220,7 +220,7 @@ define(['jquery',
                  */
                 Wizard.addFinalProcessingSlide(function() {
                     $.post(_dashboardManagerApp.getAjaxEndpoint('createWidget'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
+                        tx_dashboard_user_dashboarddashboardmod1: {
                             widgetType: Wizard.setup.settings['widgetType'],
                             id: dashboard.id
                         }
@@ -278,7 +278,7 @@ define(['jquery',
                     });
                 });
                 $.post(_dashboardManagerApp.getAjaxEndpoint('change'), {
-                    tx_dashboard_system_dashboarddashboardmod1: {
+                    tx_dashboard_user_dashboarddashboardmod1: {
                         items: itemsData
                     }
                 }, function(data, textStatus, jqXHR) {
@@ -330,7 +330,7 @@ define(['jquery',
                 Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
                     $(target).html($('<div />', {class: 'text-center'}).append(markup));
                     $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
+                        tx_dashboard_user_dashboarddashboardmod1: {
                             widgetId: widgetId
                         }
                     }, function(data, textStatus, jqXHR) {
