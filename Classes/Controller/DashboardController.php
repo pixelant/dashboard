@@ -531,8 +531,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $content .= '               <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>';
         $content .= '           </div>';
         $content .= '           <div class="media-body">';
-        $content .= '               <h4 class="alert-title">' . $title . '</h4>';
-        $content .= '               <p class="alert-message">' . $message . '</p>';
+        $content .= '               <h4 class="alert-title">' . htmlspecialchars($title) . '</h4>';
+        $content .= '               <p class="alert-message">' . htmlspecialchars($message) . '</p>';
         $content .= '           </div>';
         $content .= '       </div>';
         $content .= '   </div>';
