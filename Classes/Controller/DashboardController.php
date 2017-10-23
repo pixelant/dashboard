@@ -52,6 +52,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected $dashboardSettings;
 
     /**
+     * @var BackendTemplateView
+     */
+    protected $view;
+
+    /**
      * Default View Container
      *
      * @var BackendTemplateView
@@ -97,11 +102,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         if ($this->request->hasArgument('id')) {
             $this->dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
-            if ($this->dashboard->getBeUser()->getuid() != $this->getBackendUser()->user['uid']) {
+            if ($this->dashboard->getBeUser()->getUid() !== (int)$this->getBackendUser()->user['uid']) {
                 throw new \Exception("Access denied to selected dashboard", 1);
             }
         } else {
-            $this->dashboard = $this->dashboardRepository->findByBeuser($this->getBackendUser()->user['uid'])->getFirst();
+            $this->dashboard = $this->dashboardRepository->findOneByBeuser($this->getBackendUser()->user['uid']);
         };
     }
 
@@ -445,7 +450,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $retval = 0;
 
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder =
             GeneralUtility::makeInstance(
                 \TYPO3\CMS\Core\Database\ConnectionPool::class
