@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
+namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -50,7 +50,7 @@ class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBack
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */

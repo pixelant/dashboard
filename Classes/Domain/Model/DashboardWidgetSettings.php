@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Domain\Model;
+namespace Pixelant\Dashboard\Domain\Model;
 
 /***************************************************************
  *

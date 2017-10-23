@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be;
+namespace Pixelant\Dashboard\ViewHelpers\Be;
 
 class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
@@ -7,7 +7,7 @@ class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstract
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Domain\Model;
+namespace Pixelant\Dashboard\Domain\Model;
 
 /***************************************************************
  *
@@ -49,7 +49,7 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Widgets Settings
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings>
      */
     protected $dashboardWidgetSettings = null;
 
@@ -127,10 +127,10 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a DashboardWidget
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
      */
-    public function addDashboardWidgetSetting(\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting)
+    public function addDashboardWidgetSetting(\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting)
     {
         $this->dashboardWidgetSettings->attach($dashboardWidgetSetting);
     }
@@ -138,10 +138,10 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Removes a DashboardWidget
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove The DashboardWidgetSettings to be removed
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove The DashboardWidgetSettings to be removed
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
      */
-    public function removeDashboardWidgetSetting(\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove)
+    public function removeDashboardWidgetSetting(\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove)
     {
         $this->dashboardWidgetSettings->detach($dashboardWidgetSettingToRemove);
     }
@@ -149,7 +149,7 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the dashboardWidgetSettings
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
      */
     public function getDashboardWidgetSettings()
     {
@@ -159,8 +159,8 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the dashboardWidgetSettings
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> $dashboardWidgetSettings
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> $dashboardWidgetSettings
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
      */
     public function setDashboardWidgetSettings(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $dashboardWidgetSettings)
     {

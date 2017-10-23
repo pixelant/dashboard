@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\DashboardWidgets;
 
 /**
  * Class RssWidget
  */
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\DashboardWidgetInterface;
 
 class RssWidget implements DashboardWidgetInterface
 {
@@ -41,7 +41,7 @@ class RssWidget implements DashboardWidgetInterface
 
     /**
      * Renders content
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
     public function render($dashboardWidgetSetting = null)
@@ -67,7 +67,7 @@ class RssWidget implements DashboardWidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)

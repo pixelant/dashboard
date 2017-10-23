@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
+namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -28,7 +28,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns a widget drop and drop attributes
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
      * @param int $index
      * @param string $className
      *

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Controller;
+namespace Pixelant\Dashboard\Controller;
 
 /***************************************************************
  *
@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
@@ -67,7 +67,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * dashboardRepository
      *
-     * @var \TYPO3\CMS\Dashboard\Domain\Repository\DashboardRepository
+     * @var \Pixelant\Dashboard\Domain\Repository\DashboardRepository
      * @inject
      */
     protected $dashboardRepository = null;
@@ -75,7 +75,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * dashboardWidgetSettingsRepository
      *
-     * @var \TYPO3\CMS\Dashboard\Domain\Repository\DashboardWidgetSettingsRepository
+     * @var \Pixelant\Dashboard\Domain\Repository\DashboardWidgetSettingsRepository
      * @inject
      */
     protected $dashboardWidgetSettingsRepository = null;
@@ -83,7 +83,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * dashboard
      *
-     * @var \TYPO3\CMS\Dashboard\Domain\Model\Dashboard
+     * @var \Pixelant\Dashboard\Domain\Model\Dashboard
      */
     protected $dashboard = null;
 
@@ -170,7 +170,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * action change
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> $items
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> $items
      * @return string
      */
     public function changeAction($items)
@@ -226,7 +226,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             );
             $beUser = $beUserRepository->findByUid($beUserUid);
             if ($beUser !== null) {
-                $newDashboard = $this->objectManager->get(\TYPO3\CMS\Dashboard\Domain\Model\Dashboard::class);
+                $newDashboard = $this->objectManager->get(\Pixelant\Dashboard\Domain\Model\Dashboard::class);
                 $newDashboard->setTitle($getVars['dashboardName']);
                 $newDashboard->setBeuser($beUser);
                 $this->dashboardRepository->add($newDashboard);

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\DashboardWidgets;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 
 /**
  * @deprecated

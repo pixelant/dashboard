@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\DashboardWidgets;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\DashboardWidgetInterface;
 
 class SysNewsWidget implements DashboardWidgetInterface
 {
@@ -37,7 +37,7 @@ class SysNewsWidget implements DashboardWidgetInterface
 
     /**
      * Renders content
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
     public function render($dashboardWidgetSetting = null)
@@ -48,7 +48,7 @@ class SysNewsWidget implements DashboardWidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)

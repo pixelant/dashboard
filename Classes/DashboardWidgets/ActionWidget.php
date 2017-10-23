@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\DashboardWidgets;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\DashboardWidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class ActionWidget implements DashboardWidgetInterface
@@ -38,7 +38,7 @@ class ActionWidget implements DashboardWidgetInterface
 
     /**
      * Renders content
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
     public function render($dashboardWidgetSetting = null)
@@ -50,7 +50,7 @@ class ActionWidget implements DashboardWidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)
