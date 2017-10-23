@@ -14,11 +14,11 @@ namespace Pixelant\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
-use Pixelant\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\Widget\WidgetInterface;
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class IframeWidget implements DashboardWidgetInterface
+class IframeWidget implements WidgetInterface
 {
     const IDENTIFIER = '1487642496';
 
@@ -48,7 +48,7 @@ class IframeWidget implements DashboardWidgetInterface
      * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render($dashboardWidgetSetting = null): string
     {
         $this->initialize($dashboardWidgetSetting);
         $content = $this->generateContent();

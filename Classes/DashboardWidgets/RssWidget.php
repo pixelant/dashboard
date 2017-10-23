@@ -1,12 +1,9 @@
 <?php
 namespace Pixelant\Dashboard\DashboardWidgets;
 
-/**
- * Class RssWidget
- */
-use Pixelant\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\Widget\WidgetInterface;
 
-class RssWidget implements DashboardWidgetInterface
+class RssWidget implements WidgetInterface
 {
     const IDENTIFIER = '41385600';
 
@@ -44,7 +41,7 @@ class RssWidget implements DashboardWidgetInterface
      * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render($dashboardWidgetSetting = null): string
     {
         $this->initialize($dashboardWidgetSetting);
         if ($this->cacheLifetime > 0) {

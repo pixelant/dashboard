@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Pixelant\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\Widget\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class ActionWidget implements DashboardWidgetInterface
+class ActionWidget implements WidgetInterface
 {
     const IDENTIFIER = '1439441923';
 
@@ -41,11 +41,10 @@ class ActionWidget implements DashboardWidgetInterface
      * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render($dashboardWidgetSetting = null): string
     {
         $this->initialize($dashboardWidgetSetting);
-        $content = $this->generateContent();
-        return $content;
+        return $this->generateContent();
     }
 
     /**

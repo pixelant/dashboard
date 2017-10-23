@@ -15,9 +15,9 @@ namespace Pixelant\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use Pixelant\Dashboard\DashboardWidgetInterface;
+use Pixelant\Dashboard\Widget\WidgetInterface;
 
-class SysNewsWidget implements DashboardWidgetInterface
+class SysNewsWidget implements WidgetInterface
 {
     const IDENTIFIER = '1439446997';
 
@@ -40,7 +40,7 @@ class SysNewsWidget implements DashboardWidgetInterface
      * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render($dashboardWidgetSetting = null): string
     {
         $this->initialize($dashboardWidgetSetting);
         return $this->generateContent();
