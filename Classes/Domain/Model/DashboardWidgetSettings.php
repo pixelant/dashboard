@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
  */
 class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * Title
      *
@@ -56,28 +55,28 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * x
      *
-     * @var integer
+     * @var int
      */
     protected $x = 0;
 
     /**
      * y
      *
-     * @var integer
+     * @var int
      */
     protected $y = 0;
 
     /**
      * width
      *
-     * @var integer
+     * @var int
      */
     protected $width = 0;
 
     /**
      * height
      *
-     * @var integer
+     * @var int
      */
     protected $height = 0;
 
@@ -133,7 +132,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the x
      *
-     * @return integer $x
+     * @return int $x
      */
     public function getX()
     {
@@ -143,7 +142,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the x
      *
-     * @param integer $x
+     * @param int $x
      * @return void
      */
     public function setX($x)
@@ -154,7 +153,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the y
      *
-     * @return integer $y
+     * @return int $y
      */
     public function getY()
     {
@@ -164,7 +163,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the y
      *
-     * @param integer $y
+     * @param int $y
      * @return void
      */
     public function setY($y)
@@ -175,7 +174,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the width
      *
-     * @return integer $width
+     * @return int $width
      */
     public function getWidth()
     {
@@ -185,7 +184,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the width
      *
-     * @param integer $width
+     * @param int $width
      * @return void
      */
     public function setWidth($width)
@@ -196,7 +195,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the height
      *
-     * @return integer $height
+     * @return int $height
      */
     public function getHeight()
     {
@@ -206,7 +205,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the height
      *
-     * @param integer $height
+     * @param int $height
      * @return void
      */
     public function setHeight($height)

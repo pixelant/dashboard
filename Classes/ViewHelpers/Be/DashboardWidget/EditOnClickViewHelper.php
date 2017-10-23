@@ -46,7 +46,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  */
 class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
-
     /**
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!

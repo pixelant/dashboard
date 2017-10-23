@@ -1,5 +1,4 @@
 <?php
-
 namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
 
 /***************************************************************
@@ -135,7 +134,7 @@ class DashboardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function addDashboardWidgetSettingToObjectStorageHoldingDashboardWidgetSettings()
     {
         $dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
-        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('attach'), array(), '', false);
+        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', ['attach'], [], '', false);
         $dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('attach')->with($this->equalTo($dashboardWidgetSetting));
         $this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
 
@@ -148,7 +147,7 @@ class DashboardTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function removeDashboardWidgetSettingFromObjectStorageHoldingDashboardWidgetSettings()
     {
         $dashboardWidgetSetting = new \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings();
-        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('detach'), array(), '', false);
+        $dashboardWidgetSettingsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', ['detach'], [], '', false);
         $dashboardWidgetSettingsObjectStorageMock->expects($this->once())->method('detach')->with($this->equalTo($dashboardWidgetSetting));
         $this->inject($this->subject, 'dashboardWidgetSettings', $dashboardWidgetSettingsObjectStorageMock);
 

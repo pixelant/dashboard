@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title'    => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings',
+        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -14,20 +14,19 @@ return [
         'delete' => 'deleted',
         'enablecolumns' => [],
         'searchFields' => 'title,widget_identifier,position,settings_flexform,',
-        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif'
-
+        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif',
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height',
     ],
     'types' => [
         '1' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height, '
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height, ',
         ],
     ],
     'palettes' => [
         '1' => [
-            'showitem' => ''
+            'showitem' => '',
         ],
     ],
     'columns' => [
@@ -64,7 +63,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'widget_identifier' => [
@@ -77,23 +76,23 @@ return [
                 'items' => [
                     [
                         '-- Label --',
-                        '0'
+                        '0',
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.name',
-                        \TYPO3\CMS\Dashboard\DashboardWidgets\RssWidget::IDENTIFIER
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\RssWidget::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
-                        \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\ActionWidget::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
-                        \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\SysNewsWidget::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
-                        \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER
+                        \TYPO3\CMS\Dashboard\DashboardWidgets\IframeWidget::IDENTIFIER,
                     ],
                 ],
                 'size' => 1,
@@ -109,7 +108,7 @@ return [
                 'type' => 'input',
                 'readOnly' => 1,
                 'size' => 30,
-                'eval' => 'int'
+                'eval' => 'int',
             ],
         ],
         'y' => [
@@ -117,9 +116,9 @@ return [
             'label' => 'y',
             'config' => [
                 'type' => 'input',
-                'readOnly' => 1,                
+                'readOnly' => 1,
                 'size' => 30,
-                'eval' => 'int'
+                'eval' => 'int',
             ],
         ],
         'width' => [
@@ -127,9 +126,9 @@ return [
             'label' => 'width',
             'config' => [
                 'type' => 'input',
-                'readOnly' => 1,                
+                'readOnly' => 1,
                 'size' => 30,
-                'eval' => 'int'
+                'eval' => 'int',
             ],
         ],
         'height' => [
@@ -137,9 +136,9 @@ return [
             'label' => 'height',
             'config' => [
                 'type' => 'input',
-                'readOnly' => 1,                
+                'readOnly' => 1,
                 'size' => 30,
-                'eval' => 'int'
+                'eval' => 'int',
             ],
         ],
         'settings_flexform' => [

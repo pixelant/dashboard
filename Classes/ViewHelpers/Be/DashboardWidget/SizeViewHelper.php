@@ -22,7 +22,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        */
 class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
-
     /**
      * Returns path to widget icon
      *
@@ -33,7 +32,7 @@ class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
     {
         $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
         list($width, $height) = explode('x', $widget['size']);
-        return $this->getColumnClassName((int)$width) . " " . $this->getHeightClassName((int)$height);
+        return $this->getColumnClassName((int)$width) . ' ' . $this->getHeightClassName((int)$height);
     }
 
     /**

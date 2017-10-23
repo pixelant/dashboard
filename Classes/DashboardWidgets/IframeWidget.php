@@ -20,7 +20,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
 {
-
     const IDENTIFIER = '1487642496';
 
     /**
@@ -42,7 +41,7 @@ class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
      *
      * @var array
      */
-    protected $widget = array();
+    protected $widget = [];
 
     /**
      * Renders content
@@ -80,10 +79,10 @@ class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
         $actionView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $template = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetTemplateName);
         $actionView->setTemplatePathAndFilename($template);
-        $actionView->assignMultiple(array(
+        $actionView->assignMultiple([
             'url' => $this->url,
-            'scrolling' => $this->scrolling
-        ));
+            'scrolling' => $this->scrolling,
+        ]);
         return $actionView->render();
     }
 }

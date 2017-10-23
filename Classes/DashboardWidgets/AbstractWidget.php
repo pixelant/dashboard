@@ -15,16 +15,17 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
 
-class AbstractWidget {
-
+class AbstractWidget
+{
     /**
      * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return array
      */
-    public function getFlexFormSettings($dashboardWidgetSetting) {
+    public function getFlexFormSettings($dashboardWidgetSetting)
+    {
         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var FlexFormService  $flexFormService */
         $flexFormService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\FlexFormService');

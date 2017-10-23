@@ -46,7 +46,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be;
  */
 class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      * @inject
@@ -73,8 +72,7 @@ class DashboardWidgetViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstract
         if (class_exists($widgetClassName)) {
             $widgetClass = $this->objectManager->get($widgetClassName);
             return $widgetClass->render($dashboardWidgetSetting);
-        } else {
-            return 'Class : ' . $widgetClassName .' could not be found!';
         }
+        return 'Class : ' . $widgetClassName . ' could not be found!';
     }
 }

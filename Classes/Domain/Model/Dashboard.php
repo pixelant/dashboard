@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
  */
 class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * Title
      *

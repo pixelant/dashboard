@@ -19,13 +19,12 @@ use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
 class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
 {
-
-	const IDENTIFIER = '1439446997';
+    const IDENTIFIER = '1439446997';
 
     /**
      * Limit, If set, it will limit the results in the list.
      *
-     * @var integer
+     * @var int
      */
     protected $limit = 0;
 
@@ -77,7 +76,7 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
     protected function getSystemNews()
     {
         $systemNewsTable = 'sys_news';
-        $systemNews = array();
+        $systemNews = [];
         $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'title, content, crdate',
             $systemNewsTable,
@@ -87,11 +86,11 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
             $this->getLimit()
         );
         foreach ($systemNewsRecords as $systemNewsRecord) {
-            $systemNews[] = array(
+            $systemNews[] = [
                 'date' => $systemNewsRecord['crdate'],
                 'header' => $systemNewsRecord['title'],
-                'content' => $systemNewsRecord['content']
-            );
+                'content' => $systemNewsRecord['content'],
+            ];
         }
         return $systemNews;
     }

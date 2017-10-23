@@ -1,5 +1,4 @@
 <?php
-
 namespace TYPO3\CMS\Dashboard\Tests\Unit\Domain\Model;
 
 /***************************************************************

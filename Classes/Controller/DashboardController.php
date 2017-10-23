@@ -26,26 +26,25 @@ namespace TYPO3\CMS\Dashboard\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * DashboardController
  */
 class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * @var array
      */
@@ -103,11 +102,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if ($this->request->hasArgument('id')) {
             $this->dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
             if ($this->dashboard->getBeUser()->getUid() !== (int)$this->getBackendUser()->user['uid']) {
-                throw new \Exception("Access denied to selected dashboard", 1);
+                throw new \Exception('Access denied to selected dashboard', 1);
             }
         } else {
             $this->dashboard = $this->dashboardRepository->findOneByBeuser($this->getBackendUser()->user['uid']);
-        };
+        }
     }
 
     /**
@@ -273,10 +272,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                         $content = $this->getHtmlErrorMessage($errorTitle, $localizedError);
                     }
                 } else {
-                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetClassName .' could not be found!');
+                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetClassName . ' could not be found!');
                 }
             } else {
-                $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId .'] could not be found!');
+                $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId . '] could not be found!');
             }
         }
         return $content;
@@ -344,7 +343,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 ->setDataAttributes(
                     [
                         'identifier' => 'newDashboardWidgetSetting',
-                        'dashboardid' => $this->dashboard->getUid()
+                        'dashboardid' => $this->dashboard->getUid(),
                     ]
                 )
                 ->setHref('#')
@@ -442,9 +441,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * Returns next available "row"
      *
-     * @param integer $dasboardId
+     * @param int $dasboardId
      *
-     * @return integer
+     * @return int
      */
     protected function getNextRow(int $dasboardId): int
     {

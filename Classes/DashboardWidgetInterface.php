@@ -6,7 +6,6 @@ namespace TYPO3\CMS\Dashboard;
  */
 interface DashboardWidgetInterface
 {
-
     /**
      * Render content
      *

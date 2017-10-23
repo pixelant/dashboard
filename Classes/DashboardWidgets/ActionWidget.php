@@ -15,15 +15,15 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-#use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
+//use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 {
@@ -32,7 +32,7 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
     /**
      * Limit, If set, it will limit the results in the list.
      *
-     * @var integer
+     * @var int
      */
     protected $limit = 0;
 
@@ -62,13 +62,13 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
 
     /**
      * Generates the content
-     * @return string
      * @throws 1910010001
+     * @return string
      */
     private function generateContent()
     {
         if (!ExtensionManagementUtility::isLoaded('sys_action')) {
-            throw new \Exception("Extension sys_actions is not enabled", 1910010001);
+            throw new \Exception('Extension sys_actions is not enabled', 1910010001);
         }
         $actionEntries = [];
         $widgetTemplateName = $this->widget['template'];
@@ -154,7 +154,7 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
                     . '&SET[function]=sys_action.'
                     . \TYPO3\CMS\SysAction\ActionTask::class
                     . '&show='
-                    . (int)$actionRow['uid']
+                    . (int)$actionRow['uid'],
             ];
         }
 

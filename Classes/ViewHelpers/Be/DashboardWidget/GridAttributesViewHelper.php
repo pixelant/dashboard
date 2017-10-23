@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 class GridAttributesViewHelper extends AbstractBackendViewHelper
@@ -30,7 +29,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
      * Returns a widget drop and drop attributes
      *
      * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
-     * @param integer $index
+     * @param int $index
      * @param string $className
      *
      * @return string element grid attributes
@@ -73,8 +72,8 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns the correct grid item width
      *
-     * @param integer $width
-     * @param integer $numberOfCols
+     * @param int $width
+     * @param int $numberOfCols
      * @return string css class name
      */
     protected function getItemWidth($width, $numberOfCols)
@@ -92,7 +91,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns the correct grid item height
      *
-     * @param integer $height
+     * @param int $height
      * @return string css class name
      */
     protected function getItemHeight($height)

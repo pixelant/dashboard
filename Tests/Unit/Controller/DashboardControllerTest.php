@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\Controller;
  */
 class DashboardControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-
     /**
      * @var \TYPO3\CMS\Dashboard\Controller\DashboardController
      */
@@ -38,7 +37,7 @@ class DashboardControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     protected function setUp()
     {
-        $this->subject = $this->getMock('TYPO3\\CMS\\Dashboard\\Controller\\DashboardController', array('redirect', 'forward', 'addFlashMessage'), array(), '', false);
+        $this->subject = $this->getMock('TYPO3\\CMS\\Dashboard\\Controller\\DashboardController', ['redirect', 'forward', 'addFlashMessage'], [], '', false);
     }
 
     protected function tearDown()
@@ -51,9 +50,9 @@ class DashboardControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function listActionFetchesAllDashboardsFromRepositoryAndAssignsThemToView()
     {
-        $allDashboards = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', false);
+        $allDashboards = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', [], [], '', false);
 
-        $dashboardRepository = $this->getMock('TYPO3\\CMS\\Dashboard\\Domain\\Repository\\DashboardRepository', array('findAll'), array(), '', false);
+        $dashboardRepository = $this->getMock('TYPO3\\CMS\\Dashboard\\Domain\\Repository\\DashboardRepository', ['findAll'], [], '', false);
         $dashboardRepository->expects($this->once())->method('findAll')->will($this->returnValue($allDashboards));
         $this->inject($this->subject, 'dashboardRepository', $dashboardRepository);
 
