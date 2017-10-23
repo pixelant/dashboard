@@ -199,7 +199,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $getVars['widgetType'];
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][width]=' . $width;
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][height]=' . $height;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][y]=' . $this->getNextRow($this->dashboard->getUid());
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][y]=' . $this->dashboardWidgetSettingsRepository->findNextAvailableVerticalPositionOnDashboard($this->dashboard->getUid());
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][x]=0';
             $params = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $storagePid . ']=new' . $overrideVals;
 
@@ -432,38 +432,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $widgetSettings = new DashboardWidgetSettings($widgetIdentifier);
         return $widgetSettings->getSettings();
-    }
-
-    /**
-     * Returns next available "row"
-     *
-     * @param int $dasboardId
-     *
-     * @return int
-     */
-    protected function getNextRow(int $dasboardId): int
-    {
-        $retval = 0;
-
-        $queryBuilder =
-            GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Database\ConnectionPool::class
-            )->getQueryBuilderForTable('tx_dashboard_domain_model_dashboardwidgetsettings');
-
-        $result = $queryBuilder
-            ->select('y', 'height')
-            ->from('tx_dashboard_domain_model_dashboardwidgetsettings')
-            ->where($queryBuilder->expr()->eq('dashboard', $dasboardId))
-            ->andWhere($queryBuilder->expr()->eq('deleted', 0))
-            ->orderBy('y', 'DESC')
-            ->addOrderBy('height', 'DESC')
-            ->execute()
-            ->fetch();
-
-        if ($result) {
-            $retval = $result['y'] + $result['height'];
-        }
-        return $retval;
     }
 
     /**

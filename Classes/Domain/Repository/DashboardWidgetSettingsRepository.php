@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Domain\Repository;
 
 /***************************************************************
@@ -26,9 +27,61 @@ namespace TYPO3\CMS\Dashboard\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * The repository for Dashboards
  */
-class DashboardWidgetSettingsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class DashboardWidgetSettingsRepository extends Repository
 {
+    const TABLE_NAME = 'tx_dashboard_domain_model_dashboardwidgetsettings';
+
+    /**
+     * @var ConnectionPool
+     */
+    private $connectionPool;
+
+    /**
+     * Constructs a new Repository
+     *
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function __construct(ObjectManagerInterface $objectManager, ConnectionPool $connectionPool)
+    {
+        parent::__construct($objectManager);
+        $this->connectionPool = $connectionPool;
+    }
+
+    /**
+     * @param int $dashBoardId
+     * @return int
+     */
+    public function findNextAvailableVerticalPositionOnDashboard(int $dashBoardId): int
+    {
+        $availablePosition = 0;
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
+
+        $result = $queryBuilder
+            ->select('y', 'height')
+            ->from(self::TABLE_NAME)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'dashboard',
+                    $queryBuilder->createNamedParameter($dashBoardId, \PDO::PARAM_INT)
+                )
+            )
+            ->orderBy('y', 'DESC')
+            ->addOrderBy('height', 'DESC')
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
+        if ($result) {
+            $availablePosition = $result['y'] + $result['height'];
+        }
+        return $availablePosition;
+    }
 }
