@@ -20,28 +20,21 @@ namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 
-class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
     /**
-     * Returns path to widget icon
+     * Returns widget icon name, either defined one or default
      *
-     * @param string $widgetIdentifier
-     * @return string Path to icon if ok, else fallback
+     * @param DashboardWidgetSettings $widgetSettings
+     * @return string
      */
-    public function render($widgetIdentifier)
+    public function render(DashboardWidgetSettings $widgetSettings)
     {
-        $fileName = 'EXT:dashboard/Resources/Public/Icons/dashboardWidget.png';
-        $widgetSetting = new DashboardWidgetSettings($widgetIdentifier);
-        $widget = $widgetSetting->getSettings();
-        $widgetIconName = $widget['icon'];
-        $absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetIconName, true);
-        if (file_exists($absoluteFilename)) {
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFilename)) {
-                $fileName = $widgetIconName;
-            }
-        }
-        return $fileName;
+        $defaultIcon = 'dashboard-widget-default';
+        $widget = $widgetSettings->getSettings();
+        return $widget['icon'] ?? $defaultIcon;
     }
 }
