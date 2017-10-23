@@ -14,21 +14,20 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
-use TYPO3\CMS\Extbase\Service\FlexFormService;
 
-class AbstractWidget
+/**
+ * @deprecated
+ */
+abstract class AbstractWidget
 {
     /**
      * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return array
+     * @deprecated
      */
-    public function getFlexFormSettings($dashboardWidgetSetting)
+    public function getFlexFormSettings(DashboardWidgetSettings $dashboardWidgetSetting)
     {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var FlexFormService  $flexFormService */
-        $flexFormService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\FlexFormService');
-        return $flexFormService->convertFlexFormContentToArray($dashboardWidgetSetting->getSettingsFlexform());
+        return ['settings' => $dashboardWidgetSetting->getSettings()];
     }
 }

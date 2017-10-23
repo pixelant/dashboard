@@ -26,11 +26,34 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
+
 /**
- * Dashboard Widget Settings
+ * Represents dashboard widget Settings
  */
 class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    /**
+     * @var FlexFormService
+     */
+    private $flexFormService;
+
+    public function __construct(FlexFormService $flexFormService = null)
+    {
+        $this->flexFormService = $flexFormService ?: GeneralUtility::makeInstance(FlexFormService::class);
+    }
+
+    /**
+     * Make sure a thawed object also gets this dependency injected
+     *
+     * @param FlexFormService $flexFormService
+     */
+    public function injectFlexFormService(FlexFormService $flexFormService)
+    {
+        $this->flexFormService = $flexFormService;
+    }
+
     /**
      * Title
      *
@@ -39,7 +62,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     protected $title = '';
 
     /**
-     * Widget Indetifier
+     * Widget Identifier
      *
      * @var string
      */
@@ -217,10 +240,19 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
      * Returns the settingsFlexform
      *
      * @return string $settingsFlexform
+     * @deprecated
      */
     public function getSettingsFlexform()
     {
         return $this->settingsFlexform;
+    }
+
+    public function getSettings(): array
+    {
+        if (empty($this->settingsFlexform)) {
+            return [];
+        }
+        return $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? [];
     }
 
     /**
