@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard;
+namespace Pixelant\Dashboard;
 
 /**
  * Interface for classes which provide a widget.
