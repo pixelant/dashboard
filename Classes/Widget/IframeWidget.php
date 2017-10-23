@@ -1,5 +1,5 @@
 <?php
-namespace Pixelant\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *

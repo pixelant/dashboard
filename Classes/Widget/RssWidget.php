@@ -1,5 +1,5 @@
 <?php
-namespace Pixelant\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 use Pixelant\Dashboard\Widget\WidgetInterface;
 

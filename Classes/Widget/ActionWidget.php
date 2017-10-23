@@ -1,5 +1,5 @@
 <?php
-namespace Pixelant\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -15,7 +15,6 @@ namespace Pixelant\Dashboard\DashboardWidgets;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-//use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
