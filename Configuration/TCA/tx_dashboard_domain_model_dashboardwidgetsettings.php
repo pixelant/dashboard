@@ -13,6 +13,7 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => [],
+        'requestUpdate' => 'widget_identifier',
         'searchFields' => 'title,widget_identifier,position,settings_flexform,',
         'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif',
     ],
