@@ -122,19 +122,12 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboard.widgets',
             'config' => [
-                'type' => 'inline',
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_dashboard_domain_model_widget',
                 'foreign_field' => 'dashboard',
                 'foreign_sortby' => 'sorting',
-                'MM_opposite_field' => 'dashboard',
                 'maxitems' => 9999,
-                'appearance' => [
-                    'collapseAll' => 1,
-                    'levelLinksPosition' => 'top',
-                    'showSynchronizationLink' => 1,
-                    'showPossibleLocalizationRecords' => 1,
-                    'showAllLocalizationLink' => 1,
-                ],
             ],
         ],
         'beuser' => [

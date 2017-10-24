@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Pixelant\Dashboard\Domain\Model;
 
 /***************************************************************
@@ -94,6 +95,29 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         });
 
         return $orderedWidgets[0]->getY() + $orderedWidgets[0]->getHeight();
+    }
+
+    public function updateWidget(Widget $updatedWidget)
+    {
+        $widget = $this->getWidgetById($updatedWidget->getUid());
+        if ($widget) {
+            $this->widgets->detach($widget);
+            $this->widgets->attach($updatedWidget);
+        }
+    }
+
+    /**
+     * @param int $uid
+     * @return Widget|null
+     */
+    public function getWidgetById(int $uid)
+    {
+        foreach ($this->widgets as $widget) {
+            if ($widget->getUid() === $uid) {
+                return $widget;
+            }
+        }
+        return null;
     }
 
     /**
