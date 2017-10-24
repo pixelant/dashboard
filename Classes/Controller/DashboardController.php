@@ -230,14 +230,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 $newDashboard->setTitle($getVars['dashboardName']);
                 $newDashboard->setBeuser($beUser);
                 $this->dashboardRepository->add($newDashboard);
-                $this->objectManager
-                    ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
-                    ->persistAll();
+                return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
             }
-            // return 'Would create dashboard with name: ' . $getVars['dashboardName'];
-            return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
         }
-        return false; //$this->controllerContext->getUriBuilder()->uriFor('index');
+        return false;
     }
 
     /**
@@ -252,7 +248,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $errorTitle = $this
             ->getLanguageService()
             ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.title');
-
+        $content = '';
         if (!empty($widgetId) && (int)$widgetId > 0) {
             $widgetSettings = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
             if ($widgetSettings) {
@@ -292,7 +288,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $dashboards = $this->dashboardRepository->findByBeuser((int)$GLOBALS['BE_USER']->user['uid']);
         if (!empty($dashboards)) {
             $dashboardMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-            $dashboardMenu->setIdentifier('_dsahboardSelector');
+            $dashboardMenu->setIdentifier('_dashboardSelector');
             foreach ($dashboards as $index => $dashboard) {
                 $menuItem = $dashboardMenu->makeMenuItem()
                     ->setTitle($dashboard->getTitle())
@@ -317,7 +313,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $getVars = $this->request->getArguments();
 
         // New dashboard button
         $newDashboardButton = $buttonBar->makeLinkButton()
