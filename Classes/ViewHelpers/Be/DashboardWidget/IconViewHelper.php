@@ -21,20 +21,20 @@ namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 
 class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
     /**
      * Returns widget icon name, either defined one or default
      *
-     * @param DashboardWidgetSettings $widgetSettings
+     * @param Widget $widget
      * @return string
      */
-    public function render(DashboardWidgetSettings $widgetSettings)
+    public function render(Widget $widget)
     {
         $defaultIcon = 'dashboard-widget-default';
-        $widget = $widgetSettings->getSettings();
-        return $widget['icon'] ?? $defaultIcon;
+        $widgetSettings = $widget->getSettings();
+        return $widgetSettings['icon'] ?? $defaultIcon;
     }
 }

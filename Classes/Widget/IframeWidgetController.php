@@ -14,7 +14,7 @@ namespace Pixelant\Dashboard\Widget;
  * Public License for more details.                                       *
  *                                                                        */
 
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class IframeWidgetController implements WidgetControllerInterface
@@ -44,23 +44,25 @@ class IframeWidgetController implements WidgetControllerInterface
 
     /**
      * Renders content
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return string the rendered content
      */
-    public function render(DashboardWidgetSettings $dashboardWidgetSetting): string
+    public function render(Widget $widget): string
     {
-        $this->initialize($dashboardWidgetSetting);
+        $this->initialize($widget);
         return $this->generateContent();
     }
 
     /**
      * Initializes settings from flexform
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return void
      */
-    private function initialize($dashboardWidgetSetting = null)
+    private function initialize($widget = null)
     {
-        $settings = $dashboardWidgetSetting->getSettings();
+        $settings = $widget->getSettings();
         $this->url = $settings['url'];
         $this->scrolling = $settings['scrolling'];
         $this->widget = $settings;

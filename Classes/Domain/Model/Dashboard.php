@@ -49,13 +49,11 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Widgets Settings
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget>
      */
-    protected $dashboardWidgetSettings = null;
+    protected $widgets;
 
     /**
-     * Widgets
-     *
      * @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser
      */
     protected $beuser = null;
@@ -79,7 +77,7 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->dashboardWidgetSettings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->widgets = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     /**
@@ -127,41 +125,41 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a DashboardWidget
      *
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widget
      */
-    public function addDashboardWidgetSetting(\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting)
+    public function addWidget(\Pixelant\Dashboard\Domain\Model\Widget $widget)
     {
-        $this->dashboardWidgetSettings->attach($dashboardWidgetSetting);
+        $this->widgets->attach($widget);
     }
 
     /**
      * Removes a DashboardWidget
      *
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove The DashboardWidgetSettings to be removed
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widget The Widget to be removed
      */
-    public function removeDashboardWidgetSetting(\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove)
+    public function removeWidget(\Pixelant\Dashboard\Domain\Model\Widget $widget)
     {
-        $this->dashboardWidgetSettings->detach($dashboardWidgetSettingToRemove);
+        $this->widgets->detach($widget);
     }
 
     /**
-     * Returns the dashboardWidgetSettings
+     * Returns the widget
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget>
      */
-    public function getDashboardWidgetSettings()
+    public function getWidgets()
     {
-        return $this->dashboardWidgetSettings;
+        return $this->widgets;
     }
 
     /**
-     * Sets the dashboardWidgetSettings
+     * Sets the widget
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> $dashboardWidgetSettings
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget> $widgets
      */
-    public function setDashboardWidgetSettings(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $dashboardWidgetSettings)
+    public function setWidgets(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $widgets)
     {
-        $this->dashboardWidgetSettings = $dashboardWidgetSettings;
+        $this->widgets = $widgets;
     }
 
     /**

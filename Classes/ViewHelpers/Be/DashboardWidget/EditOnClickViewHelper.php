@@ -50,13 +50,13 @@ class EditOnClickViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBack
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @param Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widget
      * @return string the rendered content
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */
-    public function render($dashboardWidgetSetting)
+    public function render(\Pixelant\Dashboard\Domain\Model\Widget $widget)
     {
-        $editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $dashboardWidgetSetting->getUid() . ']=edit');
+        $editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_dashboard_domain_model_widget][' . $widget->getUid() . ']=edit');
         return $editOnClick;
     }
 }

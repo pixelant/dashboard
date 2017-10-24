@@ -12,29 +12,29 @@
 			<trans-unit id="tx_dashboard_domain_model_dashboard.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboard.dashboard_widget_settings">
-				<source>Dashboard Widget Settings</source>
+			<trans-unit id="tx_dashboard_domain_model_dashboard.widgets">
+				<source>Widgets</source>
 			</trans-unit>
 			<trans-unit id="tx_dashboard_domain_model_dashboard.beuser">
 				<source>Beuser</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings">
-				<source>Dashboard Widget Settings</source>
+			<trans-unit id="tx_dashboard_domain_model_widget">
+				<source>Widget</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.title">
+			<trans-unit id="tx_dashboard_domain_model_widget.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.widget_identifier">
-				<source>Widget Identifier</source>
+			<trans-unit id="tx_dashboard_domain_model_widget.widget_identifier">
+				<source>Widget Type</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.state">
+			<trans-unit id="tx_dashboard_domain_model_widget.state">
 				<source>State</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.position">
+			<trans-unit id="tx_dashboard_domain_model_widget.position">
 				<source>Position</source>
 			</trans-unit>
-			<trans-unit id="tx_dashboard_domain_model_dashboardwidgetsettings.settings_flexform">
-				<source>Settings Flexform</source>
+			<trans-unit id="tx_dashboard_domain_model_widget.settings_flexform">
+				<source>Widget Settings</source>
 			</trans-unit>
 			<trans-unit id="tx_dashboard_domain_model_dashboard.dashboard_widgets">
 				<source>Dashboard Widgets</source>

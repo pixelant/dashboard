@@ -18,14 +18,14 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'title,description,dashboard_widget_settings,beuser,',
+        'searchFields' => 'title,description,widgets,beuser,',
         'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboard.gif',
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, description, dashboard_widget_settings, beuser',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, description, widgets, beuser',
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, description, dashboard_widget_settings, beuser, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, description, widgets, beuser, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
@@ -118,12 +118,12 @@ return [
                 'eval' => 'trim',
             ],
         ],
-        'dashboard_widget_settings' => [
+        'widgets' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboard.dashboard_widget_settings',
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboard.widgets',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_dashboard_domain_model_dashboardwidgetsettings',
+                'foreign_table' => 'tx_dashboard_domain_model_widget',
                 'foreign_field' => 'dashboard',
                 'foreign_sortby' => 'sorting',
                 'MM_opposite_field' => 'dashboard',

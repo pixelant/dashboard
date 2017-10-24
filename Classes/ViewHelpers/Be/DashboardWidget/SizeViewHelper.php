@@ -20,7 +20,7 @@ namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 
 class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
@@ -32,7 +32,7 @@ class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
      */
     public function render($widgetIdentifier)
     {
-        $widgetSetting = new DashboardWidgetSettings($widgetIdentifier);
+        $widgetSetting = new Widget($widgetIdentifier);
         $widget = $widgetSetting->getSettings();
         list($width, $height) = explode('x', $widget['size']);
         return $this->getColumnClassName((int)$width) . ' ' . $this->getHeightClassName((int)$height);

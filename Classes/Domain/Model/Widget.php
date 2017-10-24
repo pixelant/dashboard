@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Service\FlexFormService;
 /**
  * Represents dashboard widget Settings
  */
-class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Widget extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
      * @var FlexFormService

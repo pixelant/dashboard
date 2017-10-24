@@ -8,7 +8,7 @@ CREATE TABLE tx_dashboard_domain_model_dashboard (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	description varchar(255) DEFAULT '' NOT NULL,
-	dashboard_widget_settings int(11) unsigned DEFAULT '0' NOT NULL,
+	widgets int(11) unsigned DEFAULT '0' NOT NULL,
 	beuser int(11) unsigned DEFAULT '0',
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE tx_dashboard_domain_model_dashboard (
 );
 
 #
-# Table structure for table 'tx_dashboard_domain_model_dashboardwidgetsettings'
+# Table structure for table 'tx_dashboard_domain_model_widget'
 #
-CREATE TABLE tx_dashboard_domain_model_dashboardwidgetsettings (
+CREATE TABLE tx_dashboard_domain_model_widget (
 
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -61,18 +61,5 @@ CREATE TABLE tx_dashboard_domain_model_dashboardwidgetsettings (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-
- KEY language (l10n_parent,sys_language_uid)
-
+	KEY language (l10n_parent,sys_language_uid)
 );
-
-#
-# Table structure for table 'tx_dashboard_domain_model_dashboardwidgetsettings'
-#
-CREATE TABLE tx_dashboard_domain_model_dashboardwidgetsettings (
-
-	dashboard  int(11) unsigned DEFAULT '0' NOT NULL,
-
-);
-
-## EXTENSION BUILDER DEFAULTS END TOKEN - Everything BEFORE this line is overwritten with the defaults of the extension builder

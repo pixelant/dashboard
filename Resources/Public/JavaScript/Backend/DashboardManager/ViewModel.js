@@ -53,7 +53,7 @@ define(['jquery',
                 newDashboardModalTrigger: {identifier: '[data-identifier="newDashboard"]' },
                 newDashboardName: { identifier: '[data-identifier="newDashboardName"]' },
                 editDashboardTrigger: { identifier: '[data-identifier="editDashboard"]' },
-                newWidgetModalTrigger: {identifier: '[data-identifier="newDashboardWidgetSetting"]' },
+                newWidgetModalTrigger: {identifier: '[data-identifier="newWidget"]' },
                 newWidgetType: { identifier: '[data-identifier="newWidgetType"]'},
                 refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'},
             }

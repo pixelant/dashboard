@@ -1,7 +1,7 @@
 <?php
 namespace Pixelant\Dashboard\Widget;
 
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 
 class RssWidgetController implements WidgetControllerInterface
 {
@@ -38,18 +38,19 @@ class RssWidgetController implements WidgetControllerInterface
 
     /**
      * Renders content
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return string the rendered content
      */
-    public function render(DashboardWidgetSettings $dashboardWidgetSetting): string
+    public function render(Widget $widget): string
     {
-        $this->initialize($dashboardWidgetSetting);
+        $this->initialize($widget);
         if ($this->cacheLifetime > 0) {
             $content = $this->generateContent();
         } else {
             /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
             $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
-            $cacheIdentifier = 'dashboardWidget_' . (int)$dashboardWidgetSetting->getUid();
+            $cacheIdentifier = 'dashboardWidget_' . (int)$widget->getUid();
 
             if (true === $cacheManager->hasCache('dashboard') && true === $cacheManager->getCache('dashboard')->has($cacheIdentifier)) {
                 $content = $cacheManager->getCache('dashboard')->get($cacheIdentifier);
@@ -64,12 +65,12 @@ class RssWidgetController implements WidgetControllerInterface
 
     /**
      * Initializes settings from flexform
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     * @param Widget $widget
      * @return void
      */
-    private function initialize($dashboardWidgetSetting = null)
+    private function initialize($widget = null)
     {
-        $settings = $dashboardWidgetSetting->getSettings();
+        $settings = $widget->getSettings();
         $this->feedUrl = $settings['feedUrl'];
         $this->feedLimit = (int)$settings['feedLimit'];
         $this->cacheLifetime = (int)$settings['cacheLifetime'] * 60;

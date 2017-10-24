@@ -26,7 +26,7 @@ namespace Pixelant\Dashboard\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -73,12 +73,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected $dashboardRepository = null;
 
     /**
-     * dashboardWidgetSettingsRepository
-     *
-     * @var \Pixelant\Dashboard\Domain\Repository\DashboardWidgetSettingsRepository
+     * @var \Pixelant\Dashboard\Domain\Repository\WidgetRepository
      * @inject
      */
-    protected $dashboardWidgetSettingsRepository = null;
+    protected $widgetRepository = null;
 
     /**
      * dashboard
@@ -170,13 +168,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * action change
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings> $items
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget> $items
      * @return string
      */
     public function changeAction($items)
     {
-        foreach ($items as $widgetSettings) {
-            $this->dashboardWidgetSettingsRepository->update($widgetSettings);
+        foreach ($items as $widget) {
+            $this->widgetRepository->update($widget);
         }
         return 'Updated widget positions';
     }
@@ -195,13 +193,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $widgetSettings = $this->getWidgetSettings($widgetType);
             $width = $widgetSettings['defaultWidth'] ?? 3;
             $height = $widgetSettings['defaultHeight'] ?? 5;
-            $overrideVals = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $this->dashboard->getUid();
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $getVars['widgetType'];
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][width]=' . $width;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][height]=' . $height;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][y]=' . $this->dashboardWidgetSettingsRepository->findNextAvailableVerticalPositionOnDashboard($this->dashboard->getUid());
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][x]=0';
-            $params = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $storagePid . ']=new' . $overrideVals;
+            $overrideVals = '&overrideVals[tx_dashboard_domain_model_widget][dashboard]=' . $this->dashboard->getUid();
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][widget_identifier]=' . $getVars['widgetType'];
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][width]=' . $width;
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][height]=' . $height;
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][y]=' . $this->widgetRepository->findNextAvailableVerticalPositionOnDashboard($this->dashboard->getUid());
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][x]=0';
+            $params = '&edit[tx_dashboard_domain_model_widget][' . $storagePid . ']=new' . $overrideVals;
 
             $returnUrl = urlencode($this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]));
             return BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
@@ -250,14 +248,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.title');
         $content = '';
         if (!empty($widgetId) && (int)$widgetId > 0) {
-            $widgetSettings = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
-            if ($widgetSettings) {
-                $widgetConfiguration = $widgetSettings->getSettings();
-                $widgetClassName = $widgetConfiguration['class'];
-                if (class_exists($widgetClassName)) {
-                    $widget = $this->objectManager->get($widgetClassName);
+            $widget = $this->widgetRepository->findByUid($widgetId);
+            if ($widget) {
+                $widgetSettings = $widget->getSettings();
+                $widgetControllerClassName = $widgetSettings['class'];
+                if (class_exists($widgetControllerClassName)) {
+                    $widgetController = $this->objectManager->get($widgetControllerClassName);
                     try {
-                        return $widget->render($widgetSettings);
+                        return $widgetController->render($widget);
                     } catch (\Exception $e) {
                         $localizedError = $this
                             ->getLanguageService()
@@ -268,7 +266,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                         $content = $this->getHtmlErrorMessage($errorTitle, $localizedError);
                     }
                 } else {
-                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetClassName . ' could not be found!');
+                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetControllerClassName . ' could not be found!');
                 }
             } else {
                 $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId . '] could not be found!');
@@ -337,7 +335,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $newWidgetButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(
                     [
-                        'identifier' => 'newDashboardWidgetSetting',
+                        'identifier' => 'newWidget',
                         'dashboardid' => $this->dashboard->getUid(),
                     ]
                 )
@@ -405,7 +403,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     protected function getSelectableWidgets(): array
     {
-        $items = $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items'];
+        $items = $GLOBALS['TCA']['tx_dashboard_domain_model_widget']['columns']['widget_identifier']['config']['items'];
         unset($items['0']);
         if (!empty($items) && is_array($items)) {
             foreach ($items as $index => $values) {
@@ -424,8 +422,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     protected function getWidgetSettings(string $widgetIdentifier): array
     {
-        $widgetSettings = new DashboardWidgetSettings($widgetIdentifier);
-        return $widgetSettings->getSettings();
+        $widget = new Widget($widgetIdentifier);
+        return $widget->getSettings();
     }
 
     /**

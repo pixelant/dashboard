@@ -9,8 +9,8 @@
 			<trans-unit id="description.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="dashboard_widget_settings.description">
-				<source>Widgets Settings</source>
+			<trans-unit id="widgets.description">
+				<source>Widgets</source>
 			</trans-unit>
 			<trans-unit id="beuser.description">
 				<source>Widgets</source>

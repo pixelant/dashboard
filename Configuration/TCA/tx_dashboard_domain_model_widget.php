@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings',
+        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_widget',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -15,14 +15,14 @@ return [
         'enablecolumns' => [],
         'requestUpdate' => 'widget_identifier',
         'searchFields' => 'title,widget_identifier,position,settings_flexform,',
-        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_dashboardwidgetsettings.gif',
+        'iconfile' => 'EXT:dashboard/Resources/Public/Icons/tx_dashboard_domain_model_widget.gif',
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height',
     ],
     'types' => [
         '1' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, title, widget_identifier, position, settings_flexform, dashboard, x, y, width, height, ',
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, widget_identifier, title, position, settings_flexform, dashboard',
         ],
     ],
     'palettes' => [
@@ -48,8 +48,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_dashboard_domain_model_dashboardwidgetsettings',
-                'foreign_table_where' => 'AND tx_dashboard_domain_model_dashboardwidgetsettings.pid=###CURRENT_PID### AND tx_dashboard_domain_model_dashboardwidgetsettings.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_dashboard_domain_model_widget',
+                'foreign_table_where' => 'AND tx_dashboard_domain_model_widget.pid=###CURRENT_PID### AND tx_dashboard_domain_model_widget.sys_language_uid IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -60,7 +60,7 @@ return [
 
         'title' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.title',
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_widget.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -69,7 +69,7 @@ return [
         ],
         'widget_identifier' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.widget_identifier',
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_widget.widget_identifier',
             'config' => [
                 'type' => 'select',
                 'readOnly' => 1,
@@ -144,7 +144,7 @@ return [
         ],
         'settings_flexform' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboardwidgetsettings.settings_flexform',
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_widget.settings_flexform',
             'config' => [
                 'type' => 'flex',
                 'ds_pointerField' => 'widget_identifier',
@@ -158,6 +158,7 @@ return [
             ],
         ],
         'dashboard' => [
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_db.xlf:tx_dashboard_domain_model_dashboard',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

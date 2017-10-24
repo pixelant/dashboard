@@ -28,7 +28,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns a widget drop and drop attributes
      *
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widgetSetting
      * @param int $index
      * @param string $className
      *

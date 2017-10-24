@@ -15,37 +15,37 @@
 
 <f:if condition="{dashboard}">
 	<f:then>
-		<f:if condition="{dashboard.dashboardWidgetSettings}">
+		<f:if condition="{dashboard.widgets}">
 			<f:then>
 				<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
-					<f:for each="{dashboard.dashboardWidgetSettings}" as="dashboardWidgetSetting" iteration="dashboardWidgetIteration">
+					<f:for each="{dashboard.widgets}" as="widget" iteration="dashboardWidgetIteration">
 						<div class="grid-stack-item"
-							data-gs-x="{dashboardWidgetSetting.x}"
-							data-gs-y="{dashboardWidgetSetting.y}"
-							data-gs-width="{dashboardWidgetSetting.width}"
-							data-gs-height="{dashboardWidgetSetting.height}"
-							data-gs-id="{dashboardWidgetSetting.uid}"
+							data-gs-x="{widget.x}"
+							data-gs-y="{widget.y}"
+							data-gs-width="{widget.width}"
+							data-gs-height="{widget.height}"
+							data-gs-id="{widget.uid}"
 							data-gs-min-width="2"
 							data-gs-min-height="3"
 							style="display: none;">
 							<div class="grid-stack-item-header clearfix">
 								<div class="pull-left">
-									<core:icon identifier="{d:be.dashboardWidget.icon(widgetSettings: dashboardWidgetSetting)}" />
-									<span class="title">{dashboardWidgetSetting.title}</span>
+									<core:icon identifier="{d:be.dashboardWidget.icon(widget: widget)}" />
+									<span class="title">{widget.title}</span>
 								</div>
 								<f:comment>
 								<div class="pull-right">
-									<a href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil icon-size-small"> </span></a>
+									<a href="#" onclick="{d:be.dashboardWidget.editOnClick(widget: widget)}" title="Edit"><span class="t3-icon fa t3-icon fa fa-pencil icon-size-small"> </span></a>
 								</div>
 								</f:comment>
 								<div class="btn-toolbar pull-right">
 									<div class="btn-group btn-group-sm" role="group">
-										<a class="btn btn-default" href="#" onclick="{d:be.dashboardWidget.EditOnClick(dashboardWidgetSetting: dashboardWidgetSetting)}" title="Edit"><core:icon identifier="actions-open" /></a>
-										<a class="btn btn-default" href="#" data-identifier="refreshWidget" data-widgetid="{dashboardWidgetSetting.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
+										<a class="btn btn-default" href="#" onclick="{d:be.dashboardWidget.EditOnClick(widget: widget)}" title="Edit"><core:icon identifier="actions-open" /></a>
+										<a class="btn btn-default" href="#" data-identifier="refreshWidget" data-widgetid="{widget.uid}" title="refresh"><core:icon identifier="actions-refresh" /></a>
 									</div>
 								</div>
 							</div>
-							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{dashboardWidgetSetting.uid}"></div>
+							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{widget.uid}"></div>
 							<div class="grid-stack-item-footer clearfix"></div>
 						</div>
 					</f:for>
@@ -61,7 +61,7 @@
 							<div class="media-body">
 								<h4 class="alert-title"><f:translate key="dashboardManager.no_dashboardwidgets_label" extensionName="Dashboard" /></h4>
 								<p class="alert-message"><f:translate key="dashboardManager.no_dashboardwidgets_message" extensionName="Dashboard" /></p>
-								<a href="#" data-identifier="newDashboardWidgetSetting"><f:translate key="dashboardManager.no_dashboardwidgets_linktext" extensionName="Dashboard" /></a>
+								<a href="#" data-identifier="newWidget"><f:translate key="dashboardManager.no_dashboardwidgets_linktext" extensionName="Dashboard" /></a>
 							</div>
 						</div>
 					</div>

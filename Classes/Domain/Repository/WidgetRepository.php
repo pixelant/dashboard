@@ -27,7 +27,7 @@ namespace Pixelant\Dashboard\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -35,9 +35,9 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * The repository for Dashboards
  */
-class DashboardWidgetSettingsRepository extends Repository
+class WidgetRepository extends Repository
 {
-    const TABLE_NAME = 'tx_dashboard_domain_model_dashboardwidgetsettings';
+    const TABLE_NAME = 'tx_dashboard_domain_model_widget';
 
     /**
      * @var ConnectionPool
@@ -57,7 +57,7 @@ class DashboardWidgetSettingsRepository extends Repository
 
     /**
      * @param int $uid
-     * @return DashboardWidgetSettings
+     * @return Widget
      */
     public function findByUid($uid)
     {
