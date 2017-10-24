@@ -14,6 +14,7 @@ namespace Pixelant\Dashboard\Widget;
  * Public License for more details.                                       *
  *                                                                        */
 
+use Doctrine\DBAL\Connection;
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -66,7 +67,7 @@ class ActionWidget implements WidgetInterface
 
     /**
      * Generates the content
-     * @throws 1910010001
+     * @throws \Exception
      * @return string
      */
     private function generateContent()
