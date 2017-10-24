@@ -81,6 +81,22 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
+     * @return int
+     */
+    public function findNextAvailableWidgetPosition(): int
+    {
+        if (!$this->widgets || $this->widgets->count() === 0) {
+            return 0;
+        }
+        $orderedWidgets = iterator_to_array($this->widgets);
+        usort($orderedWidgets, function($widgetOne, $widgetTwo) {
+            return $widgetOne->getY() + $widgetOne->getHeight() < $widgetTwo->getY() + $widgetTwo->getHeight();
+        });
+
+        return $orderedWidgets[0]->getY() + $orderedWidgets[0]->getHeight();
+    }
+
+    /**
      * Returns the title
      *
      * @return string $title

@@ -63,35 +63,4 @@ class WidgetRepository extends Repository
     {
         return parent::findByUid($uid);
     }
-
-    /**
-     * @param int $dashBoardId
-     * @return int
-     */
-    public function findNextAvailableVerticalPositionOnDashboard(int $dashBoardId): int
-    {
-        $availablePosition = 0;
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
-
-        $result = $queryBuilder
-            ->select('y', 'height')
-            ->from(self::TABLE_NAME)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'dashboard',
-                    $queryBuilder->createNamedParameter($dashBoardId, \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('y', 'DESC')
-            ->addOrderBy('height', 'DESC')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        if ($result) {
-            $availablePosition = $result['y'] + $result['height'];
-        }
-        return $availablePosition;
-    }
 }

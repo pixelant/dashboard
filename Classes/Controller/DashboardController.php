@@ -197,7 +197,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][widget_identifier]=' . $getVars['widgetType'];
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][width]=' . $width;
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][height]=' . $height;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][y]=' . $this->widgetRepository->findNextAvailableVerticalPositionOnDashboard($this->dashboard->getUid());
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][y]=' . $this->dashboard->findNextAvailableWidgetPosition();
             $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][x]=0';
             $params = '&edit[tx_dashboard_domain_model_widget][' . $storagePid . ']=new' . $overrideVals;
 
