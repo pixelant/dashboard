@@ -74,7 +74,6 @@ class ActionWidget implements WidgetInterface
         if (!ExtensionManagementUtility::isLoaded('sys_action')) {
             throw new \Exception('Extension sys_actions is not enabled', 1910010001);
         }
-        $actionEntries = [];
         $widgetTemplateName = $this->widget['template'];
         $actionView = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
             ->get(StandaloneView::class);
