@@ -1,7 +1,7 @@
 <?php
 namespace Pixelant\Dashboard\Widget;
 
-use Pixelant\Dashboard\Widget\WidgetInterface;
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 
 class RssWidget implements WidgetInterface
 {
@@ -38,10 +38,10 @@ class RssWidget implements WidgetInterface
 
     /**
      * Renders content
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null): string
+    public function render(DashboardWidgetSettings $dashboardWidgetSetting): string
     {
         $this->initialize($dashboardWidgetSetting);
         if ($this->cacheLifetime > 0) {
@@ -64,7 +64,7 @@ class RssWidget implements WidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)

@@ -27,6 +27,7 @@ namespace Pixelant\Dashboard\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -52,6 +53,15 @@ class DashboardWidgetSettingsRepository extends Repository
     {
         parent::__construct($objectManager);
         $this->connectionPool = $connectionPool;
+    }
+
+    /**
+     * @param int $uid
+     * @return DashboardWidgetSettings
+     */
+    public function findByUid($uid)
+    {
+        return parent::findByUid($uid);
     }
 
     /**

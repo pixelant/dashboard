@@ -14,14 +14,13 @@ namespace Pixelant\Dashboard\Widget;
  * Public License for more details.                                       *
  *                                                                        */
 
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Pixelant\Dashboard\Widget\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class ActionWidget implements WidgetInterface
@@ -36,11 +35,18 @@ class ActionWidget implements WidgetInterface
     protected $limit = 0;
 
     /**
+     * Widget configuration
+     *
+     * @var array
+     */
+    protected $widget = [];
+
+    /**
      * Renders content
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null): string
+    public function render(DashboardWidgetSettings $dashboardWidgetSetting): string
     {
         $this->initialize($dashboardWidgetSetting);
         return $this->generateContent();
@@ -48,7 +54,7 @@ class ActionWidget implements WidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)

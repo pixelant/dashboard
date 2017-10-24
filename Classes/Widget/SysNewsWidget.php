@@ -14,8 +14,8 @@ namespace Pixelant\Dashboard\Widget;
  * Public License for more details.                                       *
  *                                                                        */
 
+use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use Pixelant\Dashboard\Widget\WidgetInterface;
 
 class SysNewsWidget implements WidgetInterface
 {
@@ -37,10 +37,10 @@ class SysNewsWidget implements WidgetInterface
 
     /**
      * Renders content
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null): string
+    public function render(DashboardWidgetSettings $dashboardWidgetSetting): string
     {
         $this->initialize($dashboardWidgetSetting);
         return $this->generateContent();
@@ -48,7 +48,7 @@ class SysNewsWidget implements WidgetInterface
 
     /**
      * Initializes settings from flexform
-     * @param \Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     * @param DashboardWidgetSettings $dashboardWidgetSetting
      * @return void
      */
     private function initialize($dashboardWidgetSetting = null)

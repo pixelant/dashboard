@@ -247,7 +247,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function renderWidgetAction()
     {
-        $content = '';
         $getVars = $this->request->getArguments();
         $widgetId = $getVars['widgetId'];
         $errorTitle = $this
@@ -260,9 +259,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 $widgetConfiguration = $widgetSettings->getSettings();
                 $widgetClassName = $widgetConfiguration['class'];
                 if (class_exists($widgetClassName)) {
-                    $widgetClass = $this->objectManager->get($widgetClassName);
+                    $widget = $this->objectManager->get($widgetClassName);
                     try {
-                        return $widgetClass->render($widgetSettings);
+                        return $widget->render($widgetSettings);
                     } catch (\Exception $e) {
                         $localizedError = $this
                             ->getLanguageService()
