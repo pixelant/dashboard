@@ -10,39 +10,39 @@ if (!defined('TYPO3_MODE')) {
 
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard'] = [
         'widgets' => [
-            \Pixelant\Dashboard\Widget\RssWidget::IDENTIFIER => [
+            \Pixelant\Dashboard\Widget\RssWidgetController::IDENTIFIER => [
                 'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.name',
                 'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.description',
                 'icon' => 'widget-rss',
-                'class' => \Pixelant\Dashboard\Widget\RssWidget::class,
                 'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/RssWidget.html',
+                'class' => \Pixelant\Dashboard\Widget\RssWidgetController::class,
                 'defaultWidth' => '3',
                 'defaultHeight' => '5',
                 'minWidth' => '3',
             ],
-            \Pixelant\Dashboard\Widget\ActionWidget::IDENTIFIER => [
+            \Pixelant\Dashboard\Widget\ActionWidgetController::IDENTIFIER => [
                 'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
                 'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.description',
-                'class' => \Pixelant\Dashboard\Widget\ActionWidget::class,
                 'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/ActionWidget.html',
+                'class' => \Pixelant\Dashboard\Widget\ActionWidgetController::class,
                 'defaultWidth' => '3',
                 'defaultHeight' => '5',
                 'minWidth' => '3',
             ],
-            \Pixelant\Dashboard\Widget\SysNewsWidget::IDENTIFIER => [
+            \Pixelant\Dashboard\Widget\SysNewsWidgetController::IDENTIFIER => [
                 'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
                 'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.description',
-                'class' => \Pixelant\Dashboard\Widget\SysNewsWidget::class,
                 'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/SysNewsWidget.html',
+                'class' => \Pixelant\Dashboard\Widget\SysNewsWidgetController::class,
                 'defaultWidth' => '3',
                 'defaultHeight' => '5',
                 'minWidth' => '3',
             ],
-            \Pixelant\Dashboard\Widget\IframeWidget::IDENTIFIER => [
+            \Pixelant\Dashboard\Widget\IframeWidgetController::IDENTIFIER => [
                 'name' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
                 'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.description',
-                'class' => \Pixelant\Dashboard\Widget\IframeWidget::class,
                 'template' => 'EXT:dashboard/Resources/Private/Templates/DashboardWidgets/IframeWidget.html',
+                'class' => \Pixelant\Dashboard\Widget\IframeWidgetController::class,
                 'defaultWidth' => '12',
                 'defaultHeight' => '6',
                 'minWidth' => '3',

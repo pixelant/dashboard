@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class ActionWidget implements WidgetInterface
+class ActionWidgetController implements WidgetControllerInterface
 {
     const IDENTIFIER = '1439441923';
 

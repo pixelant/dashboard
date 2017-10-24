@@ -81,19 +81,19 @@ return [
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.rsswidget.name',
-                        \Pixelant\Dashboard\Widget\RssWidget::IDENTIFIER,
+                        \Pixelant\Dashboard\Widget\RssWidgetController::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.actionwidget.name',
-                        \Pixelant\Dashboard\Widget\ActionWidget::IDENTIFIER,
+                        \Pixelant\Dashboard\Widget\ActionWidgetController::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.sysnewswidget.name',
-                        \Pixelant\Dashboard\Widget\SysNewsWidget::IDENTIFIER,
+                        \Pixelant\Dashboard\Widget\SysNewsWidgetController::IDENTIFIER,
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboardWidget.iframe.name',
-                        \Pixelant\Dashboard\Widget\IframeWidget::IDENTIFIER,
+                        \Pixelant\Dashboard\Widget\IframeWidgetController::IDENTIFIER,
                     ],
                 ],
                 'size' => 1,
@@ -149,10 +149,10 @@ return [
                 'type' => 'flex',
                 'ds_pointerField' => 'widget_identifier',
                 'ds' => [
-                    \Pixelant\Dashboard\Widget\RssWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
-                    \Pixelant\Dashboard\Widget\ActionWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
-                    \Pixelant\Dashboard\Widget\SysNewsWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
-                    \Pixelant\Dashboard\Widget\IframeWidget::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_iframewidget.xml',
+                    \Pixelant\Dashboard\Widget\RssWidgetController::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_rsswidget.xml',
+                    \Pixelant\Dashboard\Widget\ActionWidgetController::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_actionwidget.xml',
+                    \Pixelant\Dashboard\Widget\SysNewsWidgetController::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_sysnewswidget.xml',
+                    \Pixelant\Dashboard\Widget\IframeWidgetController::IDENTIFIER => 'FILE:EXT:dashboard/Configuration/FlexForms/flexform_iframewidget.xml',
                     'default' => '<T3DataStructure><ROOT><type>array</type><el><empty><TCEforms><label>Please select Widget identifier first</label><config><type>none</type></config></TCEforms></empty></el></ROOT></T3DataStructure>',
                 ],
             ],

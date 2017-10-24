@@ -3,10 +3,7 @@ namespace Pixelant\Dashboard\Widget;
 
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 
-/**
- * Interface for classes which provide a widget.
- */
-interface WidgetInterface
+interface WidgetControllerInterface
 {
     /**
      * Render widget content

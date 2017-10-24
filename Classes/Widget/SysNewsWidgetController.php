@@ -17,7 +17,7 @@ namespace Pixelant\Dashboard\Widget;
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-class SysNewsWidget implements WidgetInterface
+class SysNewsWidgetController implements WidgetControllerInterface
 {
     const IDENTIFIER = '1439446997';
 

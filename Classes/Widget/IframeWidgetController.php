@@ -17,7 +17,7 @@ namespace Pixelant\Dashboard\Widget;
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class IframeWidget implements WidgetInterface
+class IframeWidgetController implements WidgetControllerInterface
 {
     const IDENTIFIER = '1487642496';
 

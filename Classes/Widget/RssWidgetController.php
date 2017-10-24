@@ -3,7 +3,7 @@ namespace Pixelant\Dashboard\Widget;
 
 use Pixelant\Dashboard\Domain\Model\DashboardWidgetSettings;
 
-class RssWidget implements WidgetInterface
+class RssWidgetController implements WidgetControllerInterface
 {
     const IDENTIFIER = '41385600';
 
