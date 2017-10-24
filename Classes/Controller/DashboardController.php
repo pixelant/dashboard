@@ -356,9 +356,9 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * Returns the json encoded data which is used by the dashboard
      * JavaScript app.
      *
-     * @return string
+     * @return array
      */
-    protected function getDashboardAppInitialData(): string
+    protected function getDashboardAppInitialData(): array
     {
         $uriBuilder = $this->controllerContext->getUriBuilder();
         $uriBuilder->reset();
@@ -388,7 +388,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $this->dashboardSettings['settings']['translationFile']
         );
 
-        return json_encode($dashboardAppInitialData);
+        return $dashboardAppInitialData;
     }
 
     /**

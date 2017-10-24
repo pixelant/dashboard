@@ -3,11 +3,12 @@
 <f:section name="MainContent">
 
 <f:flashMessages />
-
+<div id="pixelant-dashboard" data-configuration="{dashboardAppInitialData -> f:format.json()}" data-app-module="{dynamicRequireJsModules.app}" data-view-model="{dynamicRequireJsModules.viewModel}">
 <script type="text/javascript">
-	require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (dashboardApp, viewModel) {
-		var DASHBOARD_APP = dashboardApp.getInstance(
-			<f:format.htmlentitiesDecode>{dashboardAppInitialData}</f:format.htmlentitiesDecode>,
+	var mainElement = $('#pixelant-dashboard');
+	require([mainElement.data('appModule'), mainElement.data('viewModel')], function (dashboardApp, viewModel) {
+		dashboardApp.getInstance(
+			mainElement.data('configuration'),
 			viewModel
 		).run();
 	});
@@ -86,5 +87,5 @@
 		</div>
 	</f:else>
 </f:if>
-
+</div>
 </f:section>
