@@ -184,7 +184,6 @@ define(['jquery',
                     if (widgetTypeSelect) {
                         html +=        '<label class="control-label">' + TYPO3.lang['dashboardManager.widget_type'] + '</label>' + $(widgetTypeSelect)[0].outerHTML;
                     }
-                    // console.log(widgetTypes);
                     html +=        '</div>'
                              + '</div>'
                          + '</div>';
@@ -286,7 +285,7 @@ define(['jquery',
                         TYPO3.lang['dashboardManager.label.dashboard'],
                         TYPO3.lang['dashboardManager.label.layout-saved'],
                         1
-                    );console.log('widget');
+                    );
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     log('change failed');
                     Notification.error(textStatus, errorThrown, 2);
