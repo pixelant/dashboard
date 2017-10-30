@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Lang\LanguageService;
@@ -93,8 +94,12 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $this->dashboardSettings = $configurationManager
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
 
+        $dashBoardUid = null;
         if ($this->request->hasArgument('id')) {
-            $this->dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
+            $dashBoardUid = (int)$this->request->getArgument('id');
+        }
+        if ($dashBoardUid) {
+            $this->dashboard = $this->dashboardRepository->findByUid($dashBoardUid);
             if ($this->dashboard->getBeUser()->getUid() !== (int)$this->getBackendUser()->user['uid']) {
                 throw new \Exception('Access denied to selected dashboard', 1);
             }
@@ -223,6 +228,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 $newDashboard->setTitle($getVars['dashboardName']);
                 $newDashboard->setBeuser($beUser);
                 $this->dashboardRepository->add($newDashboard);
+                // We need to call persistAll here to get the uid of the just created dashboard
+                $this->objectManager->get(PersistenceManagerInterface::class)->persistAll();
                 return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
             }
         }
