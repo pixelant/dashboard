@@ -14,7 +14,8 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/DashboardManager/ViewModel
  */
-define(['jquery',
+define(['require',
+        'jquery',
         'TYPO3/CMS/Backend/Modal',
         'TYPO3/CMS/Backend/Severity',
         'TYPO3/CMS/Backend/Wizard',
@@ -22,7 +23,7 @@ define(['jquery',
         'TYPO3/CMS/Backend/Notification',
         'gridstack',
         'gridstackjqueryui'
-        ], function($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
+        ], function(require, $, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
         'use strict';
 
     return (function($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
@@ -299,9 +300,23 @@ define(['jquery',
          * @return void
          */
         function _setupWidgetContent() {
-            $(getDomElementIdentifier('widgetContent')).each(function() {                
-                var widgetId = $(this).data('widgetid');
-                updateWidgetContent(widgetId);
+            var selector = getDomElementIdentifier('widgetContent');
+            $('.js-widget').find(selector).each(function() {
+                _bootWidget(this);
+                updateWidgetContent($(this));
+            });
+        }
+
+        function _bootWidget(widgetElement) {
+            var attribute= 'data-boot';
+            var moduleName = $(widgetElement).attr(attribute);
+            if (!moduleName) {
+                return;
+            }
+            require([moduleName], function(module) {
+                _dashboardManagerApp.assert('function' === $.type(module.bootstrapWidget), 'The widget module "' + moduleName + '" does not implement the method "bootstrapWidget"', 1509374171);
+                module.bootstrapWidget(widgetElement, _dashboardManagerApp);
+                $(widgetElement).removeAttr(attribute);
             });
         }
 
@@ -311,10 +326,13 @@ define(['jquery',
          * @return void
          */
         function _refreshWidgetSetup() {
-            $(getDomElementIdentifier('refreshWidgetTrigger')).on('click', function(e) {
+            var contentSelector = getDomElementIdentifier('widgetContent'),
+                reloadButtonSelector = getDomElementIdentifier('refreshWidgetTrigger'),
+                $widgetElement = $('.js-widget');
+
+            $widgetElement.find(reloadButtonSelector).on('click', function(e) {
                 e.preventDefault();
-                var widgetId = $(this).data('widgetid');
-                updateWidgetContent(widgetId);
+                updateWidgetContent($widgetElement.find(contentSelector));
             });
         }
 
@@ -323,22 +341,21 @@ define(['jquery',
          *
          * @return void
          */
-        function updateWidgetContent(widgetId) {
-            var target = $('[data-identifier="widgetContent"][data-widgetid="' + widgetId + '"]');
-            if ('object' === $.type(target)) {
-                Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
-                    $(target).html($('<div />', {class: 'text-center'}).append(markup));
-                    $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
-                        tx_dashboard_user_dashboarddashboardmod1: {
-                            widgetId: widgetId
-                        }
-                    }, function(data, textStatus, jqXHR) {
-                        $(target).html(data);
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        Notification.error(textStatus, errorThrown, 2);
-                    });
+        function updateWidgetContent($target) {
+            Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
+                $target.trigger('widget-will-update');
+                $target.html($('<div />', {class: 'text-center'}).append(markup));
+                $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
+                    tx_dashboard_user_dashboarddashboardmod1: {
+                        widgetId: $target.data('widgetid')
+                    }
+                }, function(data, textStatus, jqXHR) {
+                    $target.html(data);
+                    $target.trigger('widget-is-updated');
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    Notification.error(textStatus, errorThrown, 2);
                 });
-            }
+            });
         }
 
         /**

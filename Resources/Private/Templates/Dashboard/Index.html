@@ -20,7 +20,7 @@
 			<f:then>
 				<div data-identifier="grid-stack" class="grid-stack" data-gs-width="12" data-gs-animate="yes">
 					<f:for each="{dashboard.widgets}" as="widget" iteration="dashboardWidgetIteration">
-						<div class="grid-stack-item"
+						<div class="grid-stack-item js-widget"
 							data-gs-x="{widget.x}"
 							data-gs-y="{widget.y}"
 							data-gs-width="{widget.width}"
@@ -46,7 +46,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{widget.uid}"></div>
+							<div class="grid-stack-item-content" data-identifier="widgetContent" data-widgetid="{widget.uid}"{f:if(condition: 'widget.settings.jsModule', then: ' data-boot="{widget.settings.jsModule}"')}></div>
 							<div class="grid-stack-item-footer clearfix"></div>
 						</div>
 					</f:for>
