@@ -56,9 +56,9 @@ define(['require',
                 editDashboardTrigger: { identifier: '[data-identifier="editDashboard"]' },
                 newWidgetModalTrigger: {identifier: '[data-identifier="newWidget"]' },
                 newWidgetType: { identifier: '[data-identifier="newWidgetType"]'},
-                refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'},
+                refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'}
             }
-        };
+        }
 
         /**
          * @private
@@ -146,7 +146,7 @@ define(['require',
                     Wizard.show();
                 });
             });
-        };
+        }
 
         /**
          * @private
@@ -170,7 +170,7 @@ define(['require',
 
                     html = '<div class="new-form-modal">'
                              + '<div class="form-horizontal">'
-                                 + '<div>'
+                                 + '<div>';
 
                     // + '<input class="new-widget-type form-control has-error" data-identifier="newWidgetType" />';                                     
                     widgetTypes = _dashboardManagerApp.getAvailableWidgetTypes();
@@ -235,13 +235,13 @@ define(['require',
                     Wizard.show();
                 });
             });
-        };
+        }
 
         /**
          * @public
          *
-         * @param string elementIdentifier
-         * @param string type
+         * @param {string} elementIdentifier
+         * @param {string} type
          * @return mixed|undefined
          */
         function getDomElementIdentifier(elementIdentifier, type) {
@@ -252,7 +252,7 @@ define(['require',
             }
 
             return _domElementIdentifierCache[elementIdentifier][type] || undefined;
-        };
+        }
 
         function _gridStackSetup() {
             $(getDomElementIdentifier('gridStack')).gridstack({
@@ -373,14 +373,14 @@ define(['require',
             _refreshWidgetSetup();
             _gridStackSetup();
             _setupWidgetContent();
-        };
+        }
 
         /**
          * Publish the public methods.
          * Implements the "Revealing Module Pattern".
          */
         return {
-            bootstrap: bootstrap,
+            bootstrap: bootstrap
         };
     })($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui);
 });

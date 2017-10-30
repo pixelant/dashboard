@@ -33,8 +33,8 @@ define(['jquery'], function($) {
         /**
          * @public
          *
-         * @param object _configuration
-         * @param object _viewModel
+         * @param {object} _configuration
+         * @param {object} _viewModel
          * @return object
          */
         function DashboardManager(_configuration, _viewModel) {
@@ -49,9 +49,9 @@ define(['jquery'], function($) {
             /**
              * @public
              *
-             * @param mixed test
-             * @param string message
-             * @param int messageCode
+             * @param {mixed} test
+             * @param {string} message
+             * @param {int} messageCode
              * @return void
              */
             function assert(test, message, messageCode) {
@@ -68,14 +68,7 @@ define(['jquery'], function($) {
                     }
                     throw message;
                 }
-            };
-
-            /**
-             * @private
-             *
-             * @var bool
-             */
-            var _isRunning = false;
+            }
 
             /**
              * @public
@@ -89,12 +82,12 @@ define(['jquery'], function($) {
                     for (var i = 0, len = _configuration['selectableWidgetTypesConfiguration'].length; i < len; ++i) {
                         widgetTypes.push({
                             label: _configuration['selectableWidgetTypesConfiguration'][i]['0'],
-                            value: _configuration['selectableWidgetTypesConfiguration'][i]['1'],
+                            value: _configuration['selectableWidgetTypesConfiguration'][i]['1']
                         });
                     }
                 }
                 return widgetTypes;
-            };
+            }
 
             /**
              * @public
@@ -107,21 +100,20 @@ define(['jquery'], function($) {
                     dashboard = _configuration['dashboard'];
                 }
                 return dashboard;
-            };
+            }
 
             /**
              * @public
              *
-             * @param string prototypeName
+             * @param {string} endpointName
              * @return object
              * @throws 1477506508
              */
             function getAjaxEndpoint(endpointName) {
-                var templates = [];
                 assert(typeof _configuration['endpoints'][endpointName] !== 'undefined', 'Endpoint ' + endpointName + ' does not exist', 1477506508);
 
                 return _configuration['endpoints'][endpointName];
-            };
+            }
 
             /**
              * @private
@@ -132,7 +124,7 @@ define(['jquery'], function($) {
             function _viewSetup() {
                 assert('function' === $.type(_viewModel.bootstrap), 'The view model does not implement the method "bootstrap"', 1475942906);
                 _viewModel.bootstrap(_dashboardManagerInstance);
-            };
+            }
 
             /**
              * @private
