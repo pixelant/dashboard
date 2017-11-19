@@ -26,6 +26,7 @@ namespace Pixelant\Dashboard\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
@@ -96,18 +97,26 @@ class Widget extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $settingsFlexform = '';
 
     /**
+     * @var BackendUserAuthentication
+     */
+    private $backendUserAuthentication;
+
+    /**
      * @param string $widgetIdentifier
      * @param string $title
      * @param string $settingsFlexform
-     * @param FlexFormService|null $flexFormService
+     * @param FlexFormService $flexFormService
+     * @param BackendUserAuthentication $backendUserAuthentication
      */
     public function __construct(
         $widgetIdentifier,
         $title = '',
         $settingsFlexform = '',
-        FlexFormService $flexFormService = null
+        FlexFormService $flexFormService = null,
+        BackendUserAuthentication $backendUserAuthentication = null
     ) {
         $this->flexFormService = $flexFormService ?: GeneralUtility::makeInstance(FlexFormService::class);
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
     }
 
     /**
@@ -118,6 +127,7 @@ class Widget extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function injectFlexFormService(FlexFormService $flexFormService)
     {
         $this->flexFormService = $flexFormService;
+        $this->backendUserAuthentication = $GLOBALS['BE_USER'];
     }
 
     /**
@@ -233,7 +243,8 @@ class Widget extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if (empty($this->settingsFlexform)) {
             return $widgetSettings;
         }
-        return array_replace($widgetSettings, $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? []);
+        $userTsConfigSettings = GeneralUtility::removeDotsFromTS((array)$this->backendUserAuthentication->getTSConfigProp('tx_dashboard.widgets.' . $this->widgetIdentifier . '.settings'));
+        return array_replace($widgetSettings, $userTsConfigSettings, $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? []);
     }
 
     /**

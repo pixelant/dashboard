@@ -81,18 +81,34 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected $dashboard = null;
 
     /**
+     * @var BackendUserAuthentication
+     */
+    private $backendUserAuthentication;
+
+    public function __construct(BackendUserAuthentication $backendUserAuthentication = null)
+    {
+        parent::__construct();
+
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+    }
+
+    /**
      * Initialize action
      */
     public function initializeAction()
     {
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-        $querySettings->setRespectStoragePage(false);
-        $this->dashboardRepository->setDefaultQuerySettings($querySettings);
-
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class);
-        $this->dashboardSettings = $configurationManager
+        $dashboardSettings = $this->objectManager
+            ->get(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
+
+        $userTsConfigSettings = GeneralUtility::removeDotsFromTS((array)$this->backendUserAuthentication->getTSConfigProp('tx_dashboard.settings'));
+        $this->dashboardSettings = array_replace($dashboardSettings, $userTsConfigSettings);
+        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        if (empty($this->dashboardSettings['persistence']['storagePid']) || strpos($this->dashboardSettings['persistence']['storagePid'], ',') !== false) {
+            throw new \UnexpectedValueException('tx_dashboard.persistence.storagePid must be set in Dashboard settings or user tsconfig and must be a single page id', 1511102864);
+        }
+        $querySettings->setStoragePageIds([$this->dashboardSettings['persistence']['storagePid']]);
+        $this->dashboardRepository->setDefaultQuerySettings($querySettings);
 
         $dashBoardUid = null;
         if ($this->request->hasArgument('id')) {
@@ -100,11 +116,11 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
         if ($dashBoardUid) {
             $this->dashboard = $this->dashboardRepository->findByUid($dashBoardUid);
-            if ($this->dashboard->getBeUser()->getUid() !== (int)$this->getBackendUser()->user['uid']) {
+            if ($this->dashboard->getBeUser()->getUid() !== (int)$this->backendUserAuthentication->user['uid']) {
                 throw new \Exception('Access denied to selected dashboard', 1);
             }
         } else {
-            $this->dashboard = $this->dashboardRepository->findOneByBeuser($this->getBackendUser()->user['uid']);
+            $this->dashboard = $this->dashboardRepository->findOneByBeuser($this->backendUserAuthentication->user['uid']);
         }
     }
 
@@ -216,8 +232,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $getVars = $this->request->getArguments();
 
-        if (isset($GLOBALS['BE_USER']->user['uid'])) {
-            $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+        if (isset($this->backendUserAuthentication->user['uid'])) {
+            $beUserUid = (int)$this->backendUserAuthentication->user['uid'];
 
             $beUserRepository = $this->objectManager->get(
                 \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository::class
@@ -226,6 +242,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             if ($beUser !== null) {
                 $newDashboard = $this->objectManager->get(\Pixelant\Dashboard\Domain\Model\Dashboard::class);
                 $newDashboard->setTitle($getVars['dashboardName']);
+                $newDashboard->setPid($this->dashboardSettings['persistence']['storagePid']);
                 $newDashboard->setBeuser($beUser);
                 $this->dashboardRepository->add($newDashboard);
                 // We need to call persistAll here to get the uid of the just created dashboard
@@ -284,7 +301,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected function registerDocheaderMenu()
     {
         // Dashboards
-        $dashboards = $this->dashboardRepository->findByBeuser((int)$GLOBALS['BE_USER']->user['uid']);
+        $dashboards = $this->dashboardRepository->findByBeuser((int)$this->backendUserAuthentication->user['uid']);
         if (!empty($dashboards)) {
             $dashboardMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $dashboardMenu->setIdentifier('_dashboardSelector');
@@ -500,16 +517,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $content .= '   </div>';
         $content .= '</div>';
         return $content;
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**
