@@ -16,7 +16,7 @@ if (!defined('TYPO3_MODE')) {
     ],
     [
         'access' => 'user,group',
-        'icon' => 'EXT:dashboard/ext_icon.png',
+        'icon' => 'EXT:dashboard/Resources/Public/Icons/Extension.png',
         'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_dashboardmod1.xlf',
     ]
 );
