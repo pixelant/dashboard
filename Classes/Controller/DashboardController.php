@@ -40,7 +40,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\CMS\Form\Service\TranslationService;
+use Pixelant\Dashboard\Service\TranslationService;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
