@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
+namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -20,9 +20,10 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use Pixelant\Dashboard\Domain\Model\Widget;
+
 class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
-
     /**
      * Returns path to widget icon
      *
@@ -31,9 +32,10 @@ class SizeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
      */
     public function render($widgetIdentifier)
     {
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widgetSetting = new Widget($widgetIdentifier);
+        $widget = $widgetSetting->getSettings();
         list($width, $height) = explode('x', $widget['size']);
-        return $this->getColumnClassName((int)$width) . " " . $this->getHeightClassName((int)$height);
+        return $this->getColumnClassName((int)$width) . ' ' . $this->getHeightClassName((int)$height);
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -14,13 +14,11 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
-use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
+class IframeWidgetController implements WidgetControllerInterface
 {
-
     const IDENTIFIER = '1487642496';
 
     /**
@@ -42,31 +40,32 @@ class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
      *
      * @var array
      */
-    protected $widget = array();
+    protected $widget = [];
 
     /**
      * Renders content
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render(Widget $widget): string
     {
-        $this->initialize($dashboardWidgetSetting);
-        $content = $this->generateContent();
-        return $content;
+        $this->initialize($widget);
+        return $this->generateContent();
     }
 
     /**
      * Initializes settings from flexform
-     * @param DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return void
      */
-    private function initialize($dashboardWidgetSetting = null)
+    private function initialize($widget = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->url = $flexformSettings['settings']['url'];
-        $this->scrolling = $flexformSettings['settings']['scrolling'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $widget->getSettings();
+        $this->url = $settings['url'];
+        $this->scrolling = $settings['scrolling'];
+        $this->widget = $settings;
     }
 
     /**
@@ -80,10 +79,10 @@ class IframeWidget extends AbstractWidget implements DashboardWidgetInterface
         $actionView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $template = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetTemplateName);
         $actionView->setTemplatePathAndFilename($template);
-        $actionView->assignMultiple(array(
+        $actionView->assignMultiple([
             'url' => $this->url,
-            'scrolling' => $this->scrolling
-        ));
+            'scrolling' => $this->scrolling,
+        ]);
         return $actionView->render();
     }
 }

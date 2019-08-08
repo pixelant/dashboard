@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Domain\Repository;
+namespace Pixelant\Dashboard\Domain\Repository;
 
 /***************************************************************
  *

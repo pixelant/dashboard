@@ -14,7 +14,8 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/DashboardManager/ViewModel
  */
-define(['jquery',
+define(['require',
+        'jquery',
         'TYPO3/CMS/Backend/Modal',
         'TYPO3/CMS/Backend/Severity',
         'TYPO3/CMS/Backend/Wizard',
@@ -22,7 +23,7 @@ define(['jquery',
         'TYPO3/CMS/Backend/Notification',
         'gridstack',
         'gridstackjqueryui'
-        ], function($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
+        ], function(require, $, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
         'use strict';
 
     return (function($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui ) {
@@ -53,11 +54,11 @@ define(['jquery',
                 newDashboardModalTrigger: {identifier: '[data-identifier="newDashboard"]' },
                 newDashboardName: { identifier: '[data-identifier="newDashboardName"]' },
                 editDashboardTrigger: { identifier: '[data-identifier="editDashboard"]' },
-                newWidgetModalTrigger: {identifier: '[data-identifier="newDashboardWidgetSetting"]' },
+                newWidgetModalTrigger: {identifier: '[data-identifier="newWidget"]' },
                 newWidgetType: { identifier: '[data-identifier="newWidgetType"]'},
-                refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'},
+                refreshWidgetTrigger: { identifier: '[data-identifier="refreshWidget"]'}
             }
-        };
+        }
 
         /**
          * @private
@@ -131,7 +132,7 @@ define(['jquery',
                  */
                 Wizard.addFinalProcessingSlide(function() {
                     $.post(_dashboardManagerApp.getAjaxEndpoint('create'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
+                        tx_dashboard_user_dashboarddashboardmod1: {
                             dashboardName: Wizard.setup.settings['dashboardName']
                         }
                     }, function(data, textStatus, jqXHR) {
@@ -145,7 +146,7 @@ define(['jquery',
                     Wizard.show();
                 });
             });
-        };
+        }
 
         /**
          * @private
@@ -169,7 +170,7 @@ define(['jquery',
 
                     html = '<div class="new-form-modal">'
                              + '<div class="form-horizontal">'
-                                 + '<div>'
+                                 + '<div>';
 
                     // + '<input class="new-widget-type form-control has-error" data-identifier="newWidgetType" />';                                     
                     widgetTypes = _dashboardManagerApp.getAvailableWidgetTypes();
@@ -184,7 +185,6 @@ define(['jquery',
                     if (widgetTypeSelect) {
                         html +=        '<label class="control-label">' + TYPO3.lang['dashboardManager.widget_type'] + '</label>' + $(widgetTypeSelect)[0].outerHTML;
                     }
-                    // console.log(widgetTypes);
                     html +=        '</div>'
                              + '</div>'
                          + '</div>';
@@ -220,7 +220,7 @@ define(['jquery',
                  */
                 Wizard.addFinalProcessingSlide(function() {
                     $.post(_dashboardManagerApp.getAjaxEndpoint('createWidget'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
+                        tx_dashboard_user_dashboarddashboardmod1: {
                             widgetType: Wizard.setup.settings['widgetType'],
                             id: dashboard.id
                         }
@@ -235,13 +235,13 @@ define(['jquery',
                     Wizard.show();
                 });
             });
-        };
+        }
 
         /**
          * @public
          *
-         * @param string elementIdentifier
-         * @param string type
+         * @param {string} elementIdentifier
+         * @param {string} type
          * @return mixed|undefined
          */
         function getDomElementIdentifier(elementIdentifier, type) {
@@ -252,7 +252,7 @@ define(['jquery',
             }
 
             return _domElementIdentifierCache[elementIdentifier][type] || undefined;
-        };
+        }
 
         function _gridStackSetup() {
             $(getDomElementIdentifier('gridStack')).gridstack({
@@ -270,7 +270,7 @@ define(['jquery',
                 var itemsData = [];
                 $(items).each(function(index, item) {
                     itemsData.push({
-                        uid: item.id,
+                        __identity: item.id,
                         x: item.x,
                         y: item.y,
                         width: item.width,
@@ -278,7 +278,7 @@ define(['jquery',
                     });
                 });
                 $.post(_dashboardManagerApp.getAjaxEndpoint('change'), {
-                    tx_dashboard_system_dashboarddashboardmod1: {
+                    tx_dashboard_user_dashboarddashboardmod1: {
                         items: itemsData
                     }
                 }, function(data, textStatus, jqXHR) {
@@ -286,7 +286,7 @@ define(['jquery',
                         TYPO3.lang['dashboardManager.label.dashboard'],
                         TYPO3.lang['dashboardManager.label.layout-saved'],
                         1
-                    );console.log('widget');
+                    );
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     log('change failed');
                     Notification.error(textStatus, errorThrown, 2);
@@ -300,9 +300,23 @@ define(['jquery',
          * @return void
          */
         function _setupWidgetContent() {
-            $(getDomElementIdentifier('widgetContent')).each(function() {                
-                var widgetId = $(this).data('widgetid');
-                updateWidgetContent(widgetId);
+            var selector = getDomElementIdentifier('widgetContent');
+            $('.js-widget').find(selector).each(function() {
+                _bootWidget(this);
+                updateWidgetContent($(this));
+            });
+        }
+
+        function _bootWidget(widgetElement) {
+            var attribute= 'data-boot';
+            var moduleName = $(widgetElement).attr(attribute);
+            if (!moduleName) {
+                return;
+            }
+            require([moduleName], function(module) {
+                _dashboardManagerApp.assert('function' === $.type(module.bootstrapWidget), 'The widget module "' + moduleName + '" does not implement the method "bootstrapWidget"', 1509374171);
+                module.bootstrapWidget(widgetElement, _dashboardManagerApp);
+                $(widgetElement).removeAttr(attribute);
             });
         }
 
@@ -312,10 +326,16 @@ define(['jquery',
          * @return void
          */
         function _refreshWidgetSetup() {
-            $(getDomElementIdentifier('refreshWidgetTrigger')).on('click', function(e) {
-                e.preventDefault();
-                var widgetId = $(this).data('widgetid');
-                updateWidgetContent(widgetId);
+            var contentSelector = getDomElementIdentifier('widgetContent'),
+                reloadButtonSelector = getDomElementIdentifier('refreshWidgetTrigger'),
+                $widgetElement = $('.js-widget');
+
+            $widgetElement.each(function() {
+                var $currentWidget = $(this);
+                $currentWidget.find(reloadButtonSelector).on('click', function(e) {
+                    e.preventDefault();
+                    updateWidgetContent($currentWidget.find(contentSelector));
+                });
             });
         }
 
@@ -324,22 +344,21 @@ define(['jquery',
          *
          * @return void
          */
-        function updateWidgetContent(widgetId) {
-            var target = $('[data-identifier="widgetContent"][data-widgetid="' + widgetId + '"]');
-            if ('object' === $.type(target)) {
-                Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
-                    $(target).html($('<div />', {class: 'text-center'}).append(markup));
-                    $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
-                        tx_dashboard_system_dashboarddashboardmod1: {
-                            widgetId: widgetId
-                        }
-                    }, function(data, textStatus, jqXHR) {
-                        $(target).html(data);
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        Notification.error(textStatus, errorThrown, 2);
-                    });
+        function updateWidgetContent($target) {
+            Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done(function(markup) {
+                $target.trigger('widget-will-update');
+                $target.html($('<div />', {class: 'text-center'}).append(markup));
+                $.post(_dashboardManagerApp.getAjaxEndpoint('renderWidget'), {
+                    tx_dashboard_user_dashboarddashboardmod1: {
+                        widgetId: $target.data('widgetid')
+                    }
+                }, function(data, textStatus, jqXHR) {
+                    $target.html(data);
+                    $target.trigger('widget-is-updated');
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    Notification.error(textStatus, errorThrown, 2);
                 });
-            }
+            });
         }
 
         /**
@@ -357,14 +376,14 @@ define(['jquery',
             _refreshWidgetSetup();
             _gridStackSetup();
             _setupWidgetContent();
-        };
+        }
 
         /**
          * Publish the public methods.
          * Implements the "Revealing Module Pattern".
          */
         return {
-            bootstrap: bootstrap,
+            bootstrap: bootstrap
         };
     })($, Modal, Severity, Wizard, Icons, Notification, gridstack, gridstackjqueryui);
 });

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
+namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -21,7 +21,6 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 class GridAttributesViewHelper extends AbstractBackendViewHelper
@@ -29,8 +28,8 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns a widget drop and drop attributes
      *
-     * @param TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $widgetSetting
-     * @param integer $index
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widgetSetting
+     * @param int $index
      * @param string $className
      *
      * @return string element grid attributes
@@ -38,8 +37,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     public function render($widgetSetting, $index, $className = 'grid-item')
     {
         $numberOfCols = 3;
-        $widgetIdentifier = $widgetSetting->getWidgetIdentifier();
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
+        $widget = $widgetSetting->getSettings();
         list($width, $height) = explode('x', $widget['size']);
         $width = $this->getItemWidth((int)$width, $numberOfCols);
         $height = $this->getItemHeight((int)$height);
@@ -73,8 +71,8 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns the correct grid item width
      *
-     * @param integer $width
-     * @param integer $numberOfCols
+     * @param int $width
+     * @param int $numberOfCols
      * @return string css class name
      */
     protected function getItemWidth($width, $numberOfCols)
@@ -92,7 +90,7 @@ class GridAttributesViewHelper extends AbstractBackendViewHelper
     /**
      * Returns the correct grid item height
      *
-     * @param integer $height
+     * @param int $height
      * @return string css class name
      */
     protected function getItemHeight($height)

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -14,43 +14,50 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
 
-class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
+class SysNewsWidgetController implements WidgetControllerInterface
 {
-
-	const IDENTIFIER = '1439446997';
+    const IDENTIFIER = '1439446997';
 
     /**
      * Limit, If set, it will limit the results in the list.
      *
-     * @var integer
+     * @var int
      */
     protected $limit = 0;
 
     /**
+     * Widget settings
+     *
+     * @var array
+     */
+    protected $widget = null;
+
+    /**
      * Renders content
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render(Widget $widget): string
     {
-        $this->initialize($dashboardWidgetSetting);
-        $content = $this->generateContent();
-        return $content;
+        $this->initialize($widget);
+        return $this->generateContent();
     }
 
     /**
      * Initializes settings from flexform
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return void
      */
-    private function initialize($dashboardWidgetSetting = null)
+    private function initialize($widget = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->limit = (int)$flexformSettings['settings']['limit'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $widget->getSettings();
+        $this->limit = (int)$settings['limit'];
+        $this->widget = $settings;
     }
 
     /**
@@ -77,7 +84,7 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
     protected function getSystemNews()
     {
         $systemNewsTable = 'sys_news';
-        $systemNews = array();
+        $systemNews = [];
         $systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'title, content, crdate',
             $systemNewsTable,
@@ -87,11 +94,11 @@ class SysNewsWidget extends AbstractWidget implements DashboardWidgetInterface
             $this->getLimit()
         );
         foreach ($systemNewsRecords as $systemNewsRecord) {
-            $systemNews[] = array(
+            $systemNews[] = [
                 'date' => $systemNewsRecord['crdate'],
                 'header' => $systemNewsRecord['title'],
-                'content' => $systemNewsRecord['content']
-            );
+                'content' => $systemNewsRecord['content'],
+            ];
         }
         return $systemNews;
     }

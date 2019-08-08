@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\DashboardWidgets;
+namespace Pixelant\Dashboard\Widget;
 
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
@@ -14,63 +14,69 @@ namespace TYPO3\CMS\Dashboard\DashboardWidgets;
  * Public License for more details.                                       *
  *                                                                        */
 
+use Doctrine\DBAL\Connection;
+use Pixelant\Dashboard\Domain\Model\Widget;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-#use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Dashboard\DashboardWidgetInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
+class ActionWidgetController implements WidgetControllerInterface
 {
     const IDENTIFIER = '1439441923';
 
     /**
      * Limit, If set, it will limit the results in the list.
      *
-     * @var integer
+     * @var int
      */
     protected $limit = 0;
 
     /**
+     * Widget configuration
+     *
+     * @var array
+     */
+    protected $widget = [];
+
+    /**
      * Renders content
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return string the rendered content
      */
-    public function render($dashboardWidgetSetting = null)
+    public function render(Widget $widget): string
     {
-        $this->initialize($dashboardWidgetSetting);
-        $content = $this->generateContent();
-        return $content;
+        $this->initialize($widget);
+        return $this->generateContent();
     }
 
     /**
      * Initializes settings from flexform
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
+     *
+     * @param Widget $widget
      * @return void
      */
-    private function initialize($dashboardWidgetSetting = null)
+    private function initialize($widget = null)
     {
-        $flexformSettings = $this->getFlexFormSettings($dashboardWidgetSetting);
-        $this->limit = (int)$flexformSettings['settings']['limit'];
-        $this->widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$dashboardWidgetSetting->getWidgetIdentifier()];
+        $settings = $widget->getSettings();
+        $this->limit = (int)$settings['limit'];
+        $this->widget = $settings;
     }
 
     /**
      * Generates the content
+     * @throws \Exception
      * @return string
-     * @throws 1910010001
      */
     private function generateContent()
     {
         if (!ExtensionManagementUtility::isLoaded('sys_action')) {
-            throw new \Exception("Extension sys_actions is not enabled", 1910010001);
+            throw new \Exception('Extension sys_actions is not enabled', 1910010001);
         }
-        $actionEntries = [];
         $widgetTemplateName = $this->widget['template'];
         $actionView = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
             ->get(StandaloneView::class);
@@ -154,7 +160,7 @@ class ActionWidget extends AbstractWidget implements DashboardWidgetInterface
                     . '&SET[function]=sys_action.'
                     . \TYPO3\CMS\SysAction\ActionTask::class
                     . '&show='
-                    . (int)$actionRow['uid']
+                    . (int)$actionRow['uid'],
             ];
         }
 

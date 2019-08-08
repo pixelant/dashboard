@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Domain\Model;
+namespace Pixelant\Dashboard\Domain\Model;
 
 /***************************************************************
  *
@@ -26,11 +26,19 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
+
 /**
- * Dashboard Widget Settings
+ * Represents dashboard widget Settings
  */
-class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Widget extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    /**
+     * @var FlexFormService
+     */
+    private $flexFormService;
 
     /**
      * Title
@@ -40,7 +48,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     protected $title = '';
 
     /**
-     * Widget Indetifier
+     * Widget Identifier
      *
      * @var string
      */
@@ -56,28 +64,28 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * x
      *
-     * @var integer
+     * @var int
      */
     protected $x = 0;
 
     /**
      * y
      *
-     * @var integer
+     * @var int
      */
     protected $y = 0;
 
     /**
      * width
      *
-     * @var integer
+     * @var int
      */
     protected $width = 0;
 
     /**
      * height
      *
-     * @var integer
+     * @var int
      */
     protected $height = 0;
 
@@ -89,6 +97,40 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     protected $settingsFlexform = '';
 
     /**
+     * @var BackendUserAuthentication
+     */
+    private $backendUserAuthentication;
+
+    /**
+     * @param string $widgetIdentifier
+     * @param string $title
+     * @param string $settingsFlexform
+     * @param FlexFormService $flexFormService
+     * @param BackendUserAuthentication $backendUserAuthentication
+     */
+    public function __construct(
+        $widgetIdentifier,
+        $title = '',
+        $settingsFlexform = '',
+        FlexFormService $flexFormService = null,
+        BackendUserAuthentication $backendUserAuthentication = null
+    ) {
+        $this->flexFormService = $flexFormService ?: GeneralUtility::makeInstance(FlexFormService::class);
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Make sure a thawed object also gets this dependency injected
+     *
+     * @param FlexFormService $flexFormService
+     */
+    public function injectFlexFormService(FlexFormService $flexFormService)
+    {
+        $this->flexFormService = $flexFormService;
+        $this->backendUserAuthentication = $GLOBALS['BE_USER'];
+    }
+
+    /**
      * Returns the title
      *
      * @return string $title
@@ -96,17 +138,6 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
     }
 
     /**
@@ -120,20 +151,9 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     }
 
     /**
-     * Sets the state
-     *
-     * @param string $state
-     * @return void
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-    }
-
-    /**
      * Returns the x
      *
-     * @return integer $x
+     * @return int $x
      */
     public function getX()
     {
@@ -143,7 +163,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the x
      *
-     * @param integer $x
+     * @param int $x
      * @return void
      */
     public function setX($x)
@@ -154,7 +174,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the y
      *
-     * @return integer $y
+     * @return int $y
      */
     public function getY()
     {
@@ -164,7 +184,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the y
      *
-     * @param integer $y
+     * @param int $y
      * @return void
      */
     public function setY($y)
@@ -175,7 +195,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the width
      *
-     * @return integer $width
+     * @return int $width
      */
     public function getWidth()
     {
@@ -185,7 +205,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the width
      *
-     * @param integer $width
+     * @param int $width
      * @return void
      */
     public function setWidth($width)
@@ -196,7 +216,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Returns the height
      *
-     * @return integer $height
+     * @return int $height
      */
     public function getHeight()
     {
@@ -206,7 +226,7 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     /**
      * Sets the height
      *
-     * @param integer $height
+     * @param int $height
      * @return void
      */
     public function setHeight($height)
@@ -214,25 +234,17 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
         $this->height = $height;
     }
 
-    /**
-     * Returns the settingsFlexform
-     *
-     * @return string $settingsFlexform
-     */
-    public function getSettingsFlexform()
+    public function getSettings(): array
     {
-        return $this->settingsFlexform;
-    }
-
-    /**
-     * Sets the settingsFlexform
-     *
-     * @param string $settingsFlexform
-     * @return void
-     */
-    public function setSettingsFlexform($settingsFlexform)
-    {
-        $this->settingsFlexform = $settingsFlexform;
+        $widgetSettings = [];
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$this->widgetIdentifier])) {
+            $widgetSettings = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$this->widgetIdentifier];
+        }
+        if (empty($this->settingsFlexform)) {
+            return $widgetSettings;
+        }
+        $userTsConfigSettings = GeneralUtility::removeDotsFromTS((array)$this->backendUserAuthentication->getTSConfigProp('tx_dashboard.widgets.' . $this->widgetIdentifier . '.settings'));
+        return array_replace($widgetSettings, $userTsConfigSettings, $this->flexFormService->convertFlexFormContentToArray($this->settingsFlexform)['settings'] ?? []);
     }
 
     /**
@@ -243,16 +255,5 @@ class DashboardWidgetSettings extends \TYPO3\CMS\Extbase\DomainObject\AbstractEn
     public function getWidgetIdentifier()
     {
         return $this->widgetIdentifier;
-    }
-
-    /**
-     * Sets the widgetIdentifier
-     *
-     * @param string $widgetIdentifier
-     * @return string widgetIdentifier
-     */
-    public function setWidgetIdentifier($widgetIdentifier)
-    {
-        $this->widgetIdentifier = $widgetIdentifier;
     }
 }

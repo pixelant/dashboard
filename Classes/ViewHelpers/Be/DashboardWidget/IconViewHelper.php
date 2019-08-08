@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
+namespace Pixelant\Dashboard\ViewHelpers\Be\DashboardWidget;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -20,26 +20,21 @@ namespace TYPO3\CMS\Dashboard\ViewHelpers\Be\DashboardWidget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class IconSrcViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
-{
 
+use Pixelant\Dashboard\Domain\Model\Widget;
+
+class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
     /**
-     * Returns path to widget icon
+     * Returns widget icon name, either defined one or default
      *
-     * @param string $widgetIdentifier
-     * @return string Path to icon if ok, else fallback
+     * @param Widget $widget
+     * @return string
      */
-    public function render($widgetIdentifier)
+    public function render(Widget $widget)
     {
-        $fileName = 'EXT:dashboard/Resources/Public/Icons/dashboardWidget.png';
-        $widget = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
-        $widgetIconName = $widget['icon'];
-        $absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($widgetIconName, true);
-        if (file_exists($absoluteFilename)) {
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($absoluteFilename)) {
-                $fileName = $widgetIconName;
-            }
-        }
-        return $fileName;
+        $defaultIcon = 'dashboard-widget-default';
+        $widgetSettings = $widget->getSettings();
+        return $widgetSettings['icon'] ?? $defaultIcon;
     }
 }

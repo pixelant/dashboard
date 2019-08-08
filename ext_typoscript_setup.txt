@@ -11,15 +11,12 @@ module.tx_dashboard {
 			viewModel = TYPO3/CMS/Dashboard/Backend/DashboardManager/ViewModel
 		}
 		selectablePrototypesConfiguration {
-        	100 {
-            	identifier = standard
-            	label = dashboardManager.selectablePrototypesConfiguration.standard.label
+			100 {
+				identifier = standard
+				label = dashboardManager.selectablePrototypesConfiguration.standard.label
 			}
 		}
 		translationFile = EXT:dashboard/Resources/Private/Language/locallang.xlf
 		javaScriptTranslationFile = EXT:dashboard/Resources/Private/Language/locallang_dashboard_javascript.xlf
-		includeJsFiles {
-			# default = EXT:dashboard/Resources/Public/Js/dashboard.js
-		}
 	}
 }

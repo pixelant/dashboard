@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Controller;
+namespace Pixelant\Dashboard\Controller;
 
 /***************************************************************
  *
@@ -26,30 +26,37 @@ namespace TYPO3\CMS\Dashboard\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use Pixelant\Dashboard\Domain\Model\Widget;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use Pixelant\Dashboard\Service\TranslationService;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * DashboardController
  */
 class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * @var array
      */
     protected $dashboardSettings;
+
+    /**
+     * @var BackendTemplateView
+     */
+    protected $view;
 
     /**
      * Default View Container
@@ -61,48 +68,60 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * dashboardRepository
      *
-     * @var \TYPO3\CMS\Dashboard\Domain\Repository\DashboardRepository
+     * @var \Pixelant\Dashboard\Domain\Repository\DashboardRepository
      * @inject
      */
     protected $dashboardRepository = null;
 
     /**
-     * dashboardWidgetSettingsRepository
-     *
-     * @var \TYPO3\CMS\Dashboard\Domain\Repository\DashboardWidgetSettingsRepository
-     * @inject
-     */
-    protected $dashboardWidgetSettingsRepository = null;
-
-    /**
      * dashboard
      *
-     * @var \TYPO3\CMS\Dashboard\Domain\Model\Dashboard
+     * @var \Pixelant\Dashboard\Domain\Model\Dashboard
      */
     protected $dashboard = null;
+
+    /**
+     * @var BackendUserAuthentication
+     */
+    private $backendUserAuthentication;
+
+    public function __construct(BackendUserAuthentication $backendUserAuthentication = null)
+    {
+        parent::__construct();
+
+        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
+    }
 
     /**
      * Initialize action
      */
     public function initializeAction()
     {
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-        $querySettings->setRespectStoragePage(false);
-        $this->dashboardRepository->setDefaultQuerySettings($querySettings);
-
-        $configurationManager = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(ConfigurationManagerInterface::class);
-        $this->dashboardSettings = $configurationManager
+        $dashboardSettings = $this->objectManager
+            ->get(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'dashboard', 'dashboardmod1');
 
+        $userTsConfigSettings = GeneralUtility::removeDotsFromTS((array)$this->backendUserAuthentication->getTSConfigProp('tx_dashboard.settings'));
+        $this->dashboardSettings = array_replace($dashboardSettings, $userTsConfigSettings);
+        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        if (empty($this->dashboardSettings['persistence']['storagePid']) || strpos($this->dashboardSettings['persistence']['storagePid'], ',') !== false) {
+            throw new \UnexpectedValueException('tx_dashboard.persistence.storagePid must be set in Dashboard settings or user tsconfig and must be a single page id', 1511102864);
+        }
+        $querySettings->setStoragePageIds([$this->dashboardSettings['persistence']['storagePid']]);
+        $this->dashboardRepository->setDefaultQuerySettings($querySettings);
+
+        $dashBoardUid = null;
         if ($this->request->hasArgument('id')) {
-            $this->dashboard = $this->dashboardRepository->findByUid($this->request->getArgument('id'));
-            if ($this->dashboard->getBeUser()->getuid() != $this->getBackendUser()->user['uid']) {
-                throw new \Exception("Access denied to selected dashboard", 1);
+            $dashBoardUid = (int)$this->request->getArgument('id');
+        }
+        if ($dashBoardUid) {
+            $this->dashboard = $this->dashboardRepository->findByUid($dashBoardUid);
+            if ($this->dashboard->getBeUser()->getUid() !== (int)$this->backendUserAuthentication->user['uid']) {
+                throw new \Exception('Access denied to selected dashboard', 1);
             }
         } else {
-            $this->dashboard = $this->dashboardRepository->findByBeuser($this->getBackendUser()->user['uid'])->getFirst();
-        };
+            $this->dashboard = $this->dashboardRepository->findOneByBeuser($this->backendUserAuthentication->user['uid']);
+        }
     }
 
     /**
@@ -151,29 +170,29 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $this->view->assign('dashboard', $this->dashboard);
     }
 
+    public function initializeChangeAction()
+    {
+        $configuration = $this->arguments->getArgument('items')
+            ->getPropertyMappingConfiguration();
+
+        $configuration->allowAllProperties();
+        $configuration->forProperty('*')->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+        $configuration->forProperty('*.*')->allowAllProperties();
+    }
+
     /**
      * action change
      *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget> $items
      * @return string
      */
-    public function changeAction()
+    public function changeAction($items)
     {
-        $getVars = $this->request->getArguments();
-        $items = $getVars['items'];
-        if (!empty($items) && is_array($items)) {
-            foreach ($items as $index => $item) {
-                $widget = $this->dashboardWidgetSettingsRepository->findByUid($item['uid']);
-                $widget->setX($item['x']);
-                $widget->setY($item['y']);
-                $widget->setWidth($item['width']);
-                $widget->setHeight($item['height']);
-                $this->dashboardWidgetSettingsRepository->update($widget);
-            }
-            $this->objectManager
-                ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
-                ->persistAll();
+        foreach ($items as $widget) {
+            $this->dashboard->updateWidget($widget);
         }
-        return 'sent string was: ' . print_r($getVars['items'], true);
+        $this->dashboardRepository->update($this->dashboard);
+        return 'Updated widget positions';
     }
 
     /**
@@ -184,19 +203,19 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function createWidgetAction()
     {
         $getVars = $this->request->getArguments();
-        if (is_object($this->dashboard)) {
+        if ($this->dashboard) {
             $storagePid = $this->dashboardSettings['persistence']['storagePid'];
             $widgetType = $getVars['widgetType'];
             $widgetSettings = $this->getWidgetSettings($widgetType);
-            $width = (isset($widgetSettings['defaultWidth'])) ? $widgetSettings['defaultWidth'] : 3;
-            $height = (isset($widgetSettings['defaultHeight'])) ? $widgetSettings['defaultHeight'] : 5;
-            $overrideVals = '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][dashboard]=' . $this->dashboard->getUid();
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][widget_identifier]=' . $getVars['widgetType'];
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][width]=' . $width;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][height]=' . $height;
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][y]=' . $this->getNextRow($this->dashboard->getUid());
-            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_dashboardwidgetsettings][x]=0';
-            $params = '&edit[tx_dashboard_domain_model_dashboardwidgetsettings][' . $storagePid . ']=new' . $overrideVals;
+            $width = $widgetSettings['defaultWidth'] ?? 3;
+            $height = $widgetSettings['defaultHeight'] ?? 5;
+            $overrideVals = '&overrideVals[tx_dashboard_domain_model_widget][dashboard]=' . $this->dashboard->getUid();
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][widget_identifier]=' . $getVars['widgetType'];
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][width]=' . $width;
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][height]=' . $height;
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][y]=' . $this->dashboard->findNextAvailableWidgetPosition();
+            $overrideVals .= '&overrideVals[tx_dashboard_domain_model_widget][x]=0';
+            $params = '&edit[tx_dashboard_domain_model_widget][' . $storagePid . ']=new' . $overrideVals;
 
             $returnUrl = urlencode($this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]));
             return BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
@@ -213,51 +232,48 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $getVars = $this->request->getArguments();
 
-        if (isset($GLOBALS['BE_USER']->user['uid'])) {
-            $beUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+        if (isset($this->backendUserAuthentication->user['uid'])) {
+            $beUserUid = (int)$this->backendUserAuthentication->user['uid'];
 
             $beUserRepository = $this->objectManager->get(
                 \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository::class
             );
             $beUser = $beUserRepository->findByUid($beUserUid);
             if ($beUser !== null) {
-                $newDashboard = $this->objectManager->get(\TYPO3\CMS\Dashboard\Domain\Model\Dashboard::class);
+                $newDashboard = $this->objectManager->get(\Pixelant\Dashboard\Domain\Model\Dashboard::class);
                 $newDashboard->setTitle($getVars['dashboardName']);
+                $newDashboard->setPid($this->dashboardSettings['persistence']['storagePid']);
                 $newDashboard->setBeuser($beUser);
                 $this->dashboardRepository->add($newDashboard);
-                $this->objectManager
-                    ->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)
-                    ->persistAll();
+                // We need to call persistAll here to get the uid of the just created dashboard
+                $this->objectManager->get(PersistenceManagerInterface::class)->persistAll();
+                return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
             }
-            // return 'Would create dashboard with name: ' . $getVars['dashboardName'];
-            return $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $newDashboard->getUid()]);
         }
-        return false; //$this->controllerContext->getUriBuilder()->uriFor('index');
+        return false;
     }
 
     /**
      * action renderWidget
      *
+     * @param int $widgetId
      * @return string
      */
-    public function renderWidgetAction()
+    public function renderWidgetAction(int $widgetId)
     {
-        $content = '';
-        $getVars = $this->request->getArguments();
-        $widgetId = $getVars['widgetId'];
         $errorTitle = $this
             ->getLanguageService()
             ->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:error.title');
-
+        $content = '';
         if (!empty($widgetId) && (int)$widgetId > 0) {
-            $widget = $this->dashboardWidgetSettingsRepository->findByUid($widgetId);
+            $widget = $this->dashboard->getWidgetById($widgetId);
             if ($widget) {
-                $widgetConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widget->getWidgetIdentifier()];
-                $widgetClassName = $widgetConfiguration['class'];
-                if (class_exists($widgetClassName)) {
-                    $widgetClass = $this->objectManager->get($widgetClassName);
+                $widgetSettings = $widget->getSettings();
+                $widgetControllerClassName = $widgetSettings['class'];
+                if (class_exists($widgetControllerClassName)) {
+                    $widgetController = $this->objectManager->get($widgetControllerClassName);
                     try {
-                        return $widgetClass->render($widget);
+                        return $widgetController->render($widget);
                     } catch (\Exception $e) {
                         $localizedError = $this
                             ->getLanguageService()
@@ -268,10 +284,10 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                         $content = $this->getHtmlErrorMessage($errorTitle, $localizedError);
                     }
                 } else {
-                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetClassName .' could not be found!');
+                    $content = $this->getHtmlErrorMessage($errorTitle, 'Class : ' . $widgetControllerClassName . ' could not be found!');
                 }
             } else {
-                $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId .'] could not be found!');
+                $content = $this->getHtmlErrorMessage($errorTitle, 'Widget [' . $widgetId . '] could not be found!');
             }
         }
         return $content;
@@ -285,15 +301,17 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected function registerDocheaderMenu()
     {
         // Dashboards
-        $dashboards = $this->dashboardRepository->findByBeuser((int)$GLOBALS['BE_USER']->user['uid']);
+        $dashboards = $this->dashboardRepository->findByBeuser((int)$this->backendUserAuthentication->user['uid']);
         if (!empty($dashboards)) {
             $dashboardMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-            $dashboardMenu->setIdentifier('_dsahboardSelector');
+            $dashboardMenu->setIdentifier('_dashboardSelector');
+            $uriBuilder = $this->controllerContext->getUriBuilder();
             foreach ($dashboards as $index => $dashboard) {
+                $uriBuilder->reset();
                 $menuItem = $dashboardMenu->makeMenuItem()
                     ->setTitle($dashboard->getTitle())
                     ->setHref(
-                        $this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $dashboard->getUid()])
+                        $uriBuilder->uriFor('index', ['id' => $dashboard->getUid()])
                     );
                 if ($dashboard->getUid() === $this->dashboard->getUid()) {
                     $menuItem->setActive(true);
@@ -313,7 +331,6 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         /** @var ButtonBar $buttonBar */
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $getVars = $this->request->getArguments();
 
         // New dashboard button
         $newDashboardButton = $buttonBar->makeLinkButton()
@@ -338,8 +355,8 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $newWidgetButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(
                     [
-                        'identifier' => 'newDashboardWidgetSetting',
-                        'dashboardid' => $this->dashboard->getUid()
+                        'identifier' => 'newWidget',
+                        'dashboardid' => $this->dashboard->getUid(),
                     ]
                 )
                 ->setHref('#')
@@ -363,31 +380,30 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * Returns the json encoded data which is used by the dashboard
      * JavaScript app.
      *
-     * @return string
+     * @return array
      */
-    protected function getDashboardAppInitialData(): string
+    protected function getDashboardAppInitialData(): array
     {
+        $uriBuilder = $this->controllerContext->getUriBuilder();
+        $uriBuilder->reset();
+        $uriArguments = $this->dashboard ? ['id' => $this->dashboard->getUid()] : [];
         $dashboardAppInitialData = [
             'selectableWidgetTypesConfiguration' => $this->getSelectableWidgets(),
             'endpoints' => [
-                'create' => $this->controllerContext->getUriBuilder()->uriFor('create'),
-                'createWidget' => $this->controllerContext->getUriBuilder()->uriFor('createWidget'),
-                'change' => $this->controllerContext->getUriBuilder()->uriFor('change'),
-                'index' => $this->controllerContext->getUriBuilder()->uriFor('index'),
-                'renderWidget' => $this->controllerContext->getUriBuilder()->uriFor('renderWidget'),
+                'create' => $uriBuilder->uriFor('create'),
+                'createWidget' => $uriBuilder->uriFor('createWidget', $uriArguments),
+                'change' => $uriBuilder->uriFor('change', $uriArguments),
+                'index' => $uriBuilder->uriFor('index', $uriArguments),
+                'renderWidget' => $uriBuilder->uriFor('renderWidget', $uriArguments),
                 'editDashboard' => $this->getEditDashboardEndpoint(),
             ],
         ];
 
-        if (is_object($this->dashboard)) {
+        if ($this->dashboard) {
             $dashboardAppInitialData['dashboard'] = [
                 'id' => $this->dashboard->getUid(),
                 'title' => $this->dashboard->getTitle(),
             ];
-            $dashboardAppInitialData['endpoints']['index'] =
-                $this->controllerContext->getUriBuilder()->uriFor(
-                    'index', ['id' => $this->dashboard->getUid()]
-                );
         }
 
         $dashboardAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($dashboardAppInitialData);
@@ -396,7 +412,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $this->dashboardSettings['settings']['translationFile']
         );
 
-        return json_encode($dashboardAppInitialData);
+        return $dashboardAppInitialData;
     }
 
     /**
@@ -406,7 +422,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     protected function getSelectableWidgets(): array
     {
-        $items = $GLOBALS['TCA']['tx_dashboard_domain_model_dashboardwidgetsettings']['columns']['widget_identifier']['config']['items'];
+        $items = $GLOBALS['TCA']['tx_dashboard_domain_model_widget']['columns']['widget_identifier']['config']['items'];
         unset($items['0']);
         if (!empty($items) && is_array($items)) {
             foreach ($items as $index => $values) {
@@ -419,52 +435,14 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     /**
      * Returns array of item configured for widget_identifier
      *
-     * @param string widgetIdentifier
+     * @param string $widgetIdentifier
      *
      * @return array
      */
     protected function getWidgetSettings(string $widgetIdentifier): array
     {
-        $widgetSettings = [];
-
-        $selectableWidgets = $this->getSelectableWidgets();
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier])) {
-            $widgetSettings = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dashboard']['widgets'][$widgetIdentifier];
-        }
-        return $widgetSettings;
-    }
-
-    /**
-     * Returns next available "row"
-     *
-     * @param integer $dasboardId
-     *
-     * @return integer
-     */
-    protected function getNextRow(int $dasboardId): int
-    {
-        $retval = 0;
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder =
-            GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Database\ConnectionPool::class
-            )->getQueryBuilderForTable('tx_dashboard_domain_model_dashboardwidgetsettings');
-
-        $result = $queryBuilder
-            ->select('y', 'height')
-            ->from('tx_dashboard_domain_model_dashboardwidgetsettings')
-            ->where($queryBuilder->expr()->eq('dashboard', $dasboardId))
-            ->andWhere($queryBuilder->expr()->eq('deleted', 0))
-            ->orderBy('y', 'DESC')
-            ->addOrderBy('height', 'DESC')
-            ->execute()
-            ->fetch();
-
-        if ($result) {
-            $retval = $result['y'] + $result['height'];
-        }
-        return $retval;
+        $widget = new Widget($widgetIdentifier);
+        return $widget->getSettings();
     }
 
     /**
@@ -475,7 +453,7 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     protected function getEditDashboardEndpoint()
     {
         $editDashboardEndpoint = '';
-        if (is_object($this->dashboard)) {
+        if ($this->dashboard) {
             $params = '&edit[tx_dashboard_domain_model_dashboard][' . $this->dashboard->getUid() . ']=edit';
             $returnUrl = urlencode($this->controllerContext->getUriBuilder()->uriFor('index', ['id' => $this->dashboard->getUid()]));
             $editDashboardEndpoint = BackendUtility::getModuleUrl('record_edit') . $params . '&returnUrl=' . $returnUrl;
@@ -532,23 +510,13 @@ class DashboardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $content .= '               <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>';
         $content .= '           </div>';
         $content .= '           <div class="media-body">';
-        $content .= '               <h4 class="alert-title">' . $title . '</h4>';
-        $content .= '               <p class="alert-message">' . $message . '</p>';
+        $content .= '               <h4 class="alert-title">' . htmlspecialchars($title) . '</h4>';
+        $content .= '               <p class="alert-message">' . htmlspecialchars($message) . '</p>';
         $content .= '           </div>';
         $content .= '       </div>';
         $content .= '   </div>';
         $content .= '</div>';
         return $content;
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

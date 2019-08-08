@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Dashboard\Domain\Model;
+declare(strict_types=1);
+namespace Pixelant\Dashboard\Domain\Model;
 
 /***************************************************************
  *
@@ -31,7 +32,6 @@ namespace TYPO3\CMS\Dashboard\Domain\Model;
  */
 class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * Title
      *
@@ -50,13 +50,11 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Widgets Settings
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget>
      */
-    protected $dashboardWidgetSettings = null;
+    protected $widgets;
 
     /**
-     * Widgets
-     *
      * @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser
      */
     protected $beuser = null;
@@ -80,7 +78,46 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected function initStorageObjects()
     {
-        $this->dashboardWidgetSettings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->widgets = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
+
+    /**
+     * @return int
+     */
+    public function findNextAvailableWidgetPosition(): int
+    {
+        if (!$this->widgets || $this->widgets->count() === 0) {
+            return 0;
+        }
+        $orderedWidgets = iterator_to_array($this->widgets);
+        usort($orderedWidgets, function($widgetOne, $widgetTwo) {
+            return $widgetOne->getY() + $widgetOne->getHeight() < $widgetTwo->getY() + $widgetTwo->getHeight();
+        });
+
+        return $orderedWidgets[0]->getY() + $orderedWidgets[0]->getHeight();
+    }
+
+    public function updateWidget(Widget $updatedWidget)
+    {
+        $widget = $this->getWidgetById($updatedWidget->getUid());
+        if ($widget) {
+            $this->widgets->detach($widget);
+            $this->widgets->attach($updatedWidget);
+        }
+    }
+
+    /**
+     * @param int $uid
+     * @return Widget|null
+     */
+    public function getWidgetById(int $uid)
+    {
+        foreach ($this->widgets as $widget) {
+            if ($widget->getUid() === $uid) {
+                return $widget;
+            }
+        }
+        return null;
     }
 
     /**
@@ -128,44 +165,41 @@ class Dashboard extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Adds a DashboardWidget
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widget
      */
-    public function addDashboardWidgetSetting(\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSetting)
+    public function addWidget(\Pixelant\Dashboard\Domain\Model\Widget $widget)
     {
-        $this->dashboardWidgetSettings->attach($dashboardWidgetSetting);
+        $this->widgets->attach($widget);
     }
 
     /**
      * Removes a DashboardWidget
      *
-     * @param \TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove The DashboardWidgetSettings to be removed
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \Pixelant\Dashboard\Domain\Model\Widget $widget The Widget to be removed
      */
-    public function removeDashboardWidgetSetting(\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings $dashboardWidgetSettingToRemove)
+    public function removeWidget(\Pixelant\Dashboard\Domain\Model\Widget $widget)
     {
-        $this->dashboardWidgetSettings->detach($dashboardWidgetSettingToRemove);
+        $this->widgets->detach($widget);
     }
 
     /**
-     * Returns the dashboardWidgetSettings
+     * Returns the widget
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget>
      */
-    public function getDashboardWidgetSettings()
+    public function getWidgets()
     {
-        return $this->dashboardWidgetSettings;
+        return $this->widgets;
     }
 
     /**
-     * Sets the dashboardWidgetSettings
+     * Sets the widget
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> $dashboardWidgetSettings
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Dashboard\Domain\Model\DashboardWidgetSettings> dashboardWidgetSettings
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Pixelant\Dashboard\Domain\Model\Widget> $widgets
      */
-    public function setDashboardWidgetSettings(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $dashboardWidgetSettings)
+    public function setWidgets(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $widgets)
     {
-        $this->dashboardWidgetSettings = $dashboardWidgetSettings;
+        $this->widgets = $widgets;
     }
 
     /**
